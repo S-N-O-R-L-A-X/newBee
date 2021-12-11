@@ -1,15 +1,4 @@
 <template>
-  <div>
-    <div class="resumeHead" v-if="!haveResume">
-      <span>创建简历让更多的人发现你</span>
-      <el-button class="createResume" @click="dialogFormVisible = true">新建简历</el-button>
-    </div>
-
-    <el-card v-if="haveResume" class="resumeCard">
-      <p>个人简历-{{resumeList.name}}</p>
-      <el-button class="checkBtn" @click="resumeFormVisible=true">查看简历</el-button>
-    </el-card>
-
     <el-dialog title="我的简历" :visible.sync="resumeFormVisible" :modal-append-to-body="false" class="myDialog">
       <div v-if="!isChange">
         <table border="1" cellspacing="0" style="border-color:#ededed" class="mytable">
@@ -145,10 +134,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-  
-  <NewResume v-bind:create="dialogFormVisible" v-on:update:create='dialogFormVisible=$event'></NewResume>
-
-  </div>
 </template>
 <style scoped>
   .fullRow{
