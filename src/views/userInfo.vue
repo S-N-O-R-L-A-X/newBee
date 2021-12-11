@@ -32,7 +32,7 @@
         </el-tab-pane>
         <el-tab-pane>
           <span slot="label">设置<i class="el-icon-arrow-right"></i></span>
-          <setting></setting>
+          <ModifyAccount></ModifyAccount>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -44,14 +44,14 @@ import fetch from '../api/fetch'
 import Info from '../components/userInfo'
 import Resume from '../components/resume'
 import Delivery from '../components/delivery'
-import Setting from '../components/setting'
+import ModifyAccount from '../components/modifyAccount'
 
 export default {
   components: {
     user: Info,
     myResume: Resume,
     delivery: Delivery,
-    setting: Setting,
+    ModifyAccount,
   },
   data () {
     return {

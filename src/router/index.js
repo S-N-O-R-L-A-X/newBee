@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Index from '../views/Index.vue'
+import UserInfo from '../views/UserInfo.vue'
 
 Vue.use(VueRouter)
 
@@ -35,7 +36,12 @@ const routes = [
     path:'/index',
     name: 'Index',
     component: Index
-  }
+  },
+  {
+    path:'/userInfo',
+    name: 'UserInfo',
+    component: UserInfo
+  },
 ]
 
 const router = new VueRouter({
