@@ -2,42 +2,52 @@
   <div id="container">
     <el-card class="register">
       <div class="choice" ref="choice">
-        
+        <el-switch v-model="isHr"   active-color="#409eff" inactive-color="#13ce66" 
+         active-text="我要招聘" inactive-text="我要找工作"></el-switch>
       </div>
       
-      <el-form :model="user" status-icon :rules="validation" ref="user" label-width="100px" class="hrruleForm">
+      <el-form :model="hrInfo" status-icon :rules="hrrules" ref="hrInfo" label-width="100px" class="hrruleForm">
         <el-form-item prop="username">
-          <el-input class="registerInput" type="text" v-model="user.username" auto-complete="off" placeholder="用户名"></el-input>
+          <el-input class="registerInput" type="text" v-model="hrInfo.username" auto-complete="off" placeholder="用户名"></el-input>
         </el-form-item>
         <el-form-item  prop="password">
-          <el-input type="password" v-model="user.password" auto-complete="off" placeholder="密码"></el-input>
+          <el-input type="password" v-model="hrInfo.password" auto-complete="off" placeholder="密码"></el-input>
         </el-form-item>
         <el-form-item  prop="checkPass">
-          <el-input type="password" v-model="user.checkPass" auto-complete="off" placeholder="确认密码"></el-input>
+          <el-input type="password" v-model="hrInfo.checkPass" auto-complete="off" placeholder="确认密码"></el-input>
         </el-form-item>
 
-        <el-switch v-model="isHr"   active-color="#409eff" inactive-color="#13ce66" 
-          active-text="我要招聘" inactive-text="我要找工作"></el-switch>
-        
-        <el-form-item prop="phone">   
-          <el-input v-model.number="user.phone" placeholder="手机号"></el-input>
-        </el-form-item>
-
-        
-        <el-row >
-          <el-form-item prop="verifyCode">
-          <el-col :span="20" :offset="0">
-            <el-input class="code" v-model.number="user.verifyCode" placeholder="验证码"></el-input>
+        <el-row>
+          <el-col>
+            <el-form-item prop="phone">
+            
+              <el-input v-model.number="hrInfo.phone" placeholder="手机号"></el-input>
+            
+            </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-button  @click="sendCode">{{this.msg}}</el-button>
-          </el-col>
-          </el-form-item>
         </el-row>
-        
-        
+        <el-form-item prop="code">
+        <el-row >
+        <el-col span="10" offset="0">
+          <el-input class="code" v-model.number="hrInfo.code"  placeholder="验证码"></el-input>
+        </el-col>
+        <el-col span="4">
+          <el-button  @click="sendCode">{{this.msg}}</el-button>
+        </el-col>
+        </el-row>
+        </el-form-item>
+        <div v-if="isHr">
+          <el-form-item prop="company">
+             <el-autocomplete class="choose" v-model="hrInfo.company" :fetch-suggestions="querySearch"
+              placeholder="请输入就职公司" @select="handleSelect"></el-autocomplete>
+          </el-form-item>
+           <div @click="changeClick" class="tips" v-if="tipsShow">没有您所在的公司？请添加</div>
+        </div>
+        <el-form-item prop="email">
+          <el-input v-model="hrInfo.email" placeholder="邮箱"></el-input>
+        </el-form-item>
         <el-form-item>
-          <el-button type="primary" class="registerBtn" @click="hrSubmit('user')">注册</el-button>
+          <el-button type="primary" class="registerBtn" @click="hrSubmit('hrInfo')">注册</el-button>
         </el-form-item>
         <div class="footer-tip3" @click="toLogin">
             已有账号?直接登录
@@ -80,7 +90,7 @@
 <script>
 
 import fetch from '../api/fetch'
-import axios from 'axios'
+
 export default {
   data() {
     var checkCode = (rule, value, callback) => {
@@ -129,8 +139,8 @@ export default {
       if (value === "") {
         callback(new Error("请输入密码"))
       } else {
-        if (this.user.checkPass !== "") {
-          this.$refs.user.validateField("checkPass")
+        if (this.hrInfo.checkPass !== "") {
+          this.$refs.hrInfo.validateField("checkPass")
         }
         callback()
       }
@@ -138,7 +148,7 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"))
-      } else if (value !== this.user.password) {
+      } else if (value !== this.hrInfo.password) {
         callback(new Error("两次输入密码不一致!"))
       } else {
         callback()
@@ -163,15 +173,17 @@ export default {
         type: ''
       },
       formLabelWidth: '120px',
-      user: {
-        username: "",
+      hrInfo: {
         password: "",
-        status: "",
+        checkPass: "",
         phone: "",
-        verifyCode: ""
+        username: "",
+        email: "",
+        company: "",
+        code: ""
       },
-      validation: {
-        verifyCode: [{validator: checkCode, trigger: "blur"}],
+      hrrules: {
+        code: [{validator: checkCode, trigger: "blur"}],
         company: [{validator: checkCompany, trigger: "blur"}],
         username: [{validator: validUsername, trigger: "blur"}],
         password: [{validator: validatePass, trigger: "blur"}],
@@ -189,12 +201,11 @@ export default {
   methods: {
 
     sendCode() {
-      const TIME_COUNT=60;
-      if (!/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.user.phone)){
-        
-        axios.get('http://1.15.170.222:88/api/service/sms/',{
-          params:{phone:this.user.phone}
-        }).then(re =>{
+      const TIME_COUNT = 60
+      if (!/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.hrInfo.phone)) return
+      fetch
+        .sendCode(this.hrInfo.phone)
+        .then(res => {
           if (res.status === 200) {
             if (res.data.success === true) {
               $message({
@@ -207,8 +218,6 @@ export default {
         .catch(e => {
           console.log(e)
         })
-      }
-      
       if (!this.timer) {
         this.count = TIME_COUNT
         this.show = false
@@ -241,11 +250,11 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid && !this.tipsShow) {
           let result = {
-            email: this.user.email,
-            password: this.user.password,
-            phone: this.user.phone,
-            username: this.user.username,
-            code: this.user.code,
+            email: this.hrInfo.email,
+            password: this.hrInfo.password,
+            phone: this.hrInfo.phone,
+            username: this.hrInfo.username,
+            code: this.hrInfo.code,
           }
           // hr注册
           if (this.isHr) {

@@ -1,109 +1,114 @@
-const host = 'http://pf.stalary.com'
-// const host = 'http://localhost:10000'
+const api = 'youngoldman.top/api:5555'
+// const api = 'http://localapi:10000'
 
 export default {
+  getUser(){return api + '/user'},
+  
+  login(){return getUser()+'/login'},
+  /*
   getCompany () {
-    return host + '/company'
+    return api + '/company'
   },
   userRegister () {
-    return host + '/user'
+    return api + '/user'
   },
   // 获取全部公司信息
   getComName () {
-    return host + '/company/noPage'
+    return api + '/company/noPage'
   },
   userLogin () {
-    return host + '/user/login'
+    return api + '/user/login'
   },
   getUserInfo () {
-    return host + '/user'
+    return api + '/user'
   },
   sendCode () {
-    return host + '/outside/code'
+    return api + '/outside/code'
   },
   logout () {
-    return host + '/user/logout'
+    return api + '/user/logout'
   },
   // 提交简历信息
   sendResume () {
-    return host + '/resume'
+    return api + '/resume'
   },
   // 获取投递列表
   deliveryList () {
-    return host + '/user/send'
+    return api + '/user/send'
   },
   // 提交用户信息
   putUserInfo () {
-    return host + '/user/info'
+    return api + '/user/info'
   },
   // 修改用户手机号码
   changePhone () {
-    return host + '/user/phone'
+    return api + '/user/phone'
   },
   // 修改用户密码
   changePass () {
-    return host + '/user/password'
+    return api + '/user/password'
   },
   // 修改用户邮箱
   changeEmail () {
-    return host + '/user/email'
+    return api + '/user/email'
   },
   // 获取公司详情
   getCompanyDetail (id) {
-    return host + `/company/${id}`
+    return api + `/company/${id}`
   },
   // 获取简历信息
   getResume () {
-    return host + '/resume'
+    return api + '/resume'
   },
   // 获取岗位详细信息
   getJobDetail (id) {
-    return host + `/recruit/${id}`
+    return api + `/recruit/${id}`
   },
   // 投递简历
   deliveryReusme () {
-    return host + '/recruit/resume'
+    return api + '/recruit/resume'
   },
   // 获取站内信
   getMessage () {
-    return host + '/message/user/get'
+    return api + '/message/user/get'
   },
   // 搜索职位信息
   findJob () {
-    return host + '/recruit'
+    return api + '/recruit'
   },
   // 已读
   readMessage () {
-    return host + '/message/read'
+    return api + '/message/read'
   },
   // hr resumelist
   receiveResume () {
-    return host + '/user/receive'
+    return api + '/user/receive'
   },
   // hr发布职位信息
   publishJob () {
-    return host + '/recruit'
+    return api + '/recruit'
   },
   // 查看hr发布的职位信息
   checkJob () {
-    return host + '/recruit/hr'
+    return api + '/recruit/hr'
   },
   deletejob () {
-    return host + '/recruit'
+    return api + '/recruit'
   },
   hrRegister () {
-    return host + '/user/hr'
+    return api + '/user/hr'
   },
   // 推荐候选人
   recommendCandidate () {
-    return host + '/recruit/recommend/candidate'
+    return api + '/recruit/recommend/candidate'
   },
   // 推荐职位
   recommendJob () {
-    return host + '/recruit/recommend/job'
+    return api + '/recruit/recommend/job'
   },
   // 获取感兴趣的工作
   getRecommandJob () {
-    return host + '/recruit/name'
+    return api + '/recruit/name'
   }
+  */
 }

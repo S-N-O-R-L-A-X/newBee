@@ -6,6 +6,16 @@ let headers = {
   'Authorization': 'Basic ' + localStorage.getItem('token')
 }
 export default {
+  register(){
+    return axios.post(api.getUser(),{headers:headers});
+  },
+  sendCode(){
+    return axios.get('http://1.15.170.222:88/api/service/sms/',{params: {phone: phone}}, {headers: headers})
+  },
+  login(){
+    return axios.post(api.getUser(),JSON.stringify(info),{headers: headers});
+  }
+  /*
   getCompany () {
     return axios.get(api.getCompany(), {params: {size: 9}}, {headers: headers})
   },
@@ -94,4 +104,5 @@ export default {
   addCompany (companyInfo) {
     return axios.post(api.getCompany(), JSON.stringify(companyInfo), {headers: headers})
   }
+  */
 }
