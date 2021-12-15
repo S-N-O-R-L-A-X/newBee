@@ -77,10 +77,10 @@
             //   "usernameORphone":this.user.usernameORphone,
             //   "password":this.user.password
             // }})
-            axios.post('api/user/login',{params:{
+            axios.post('http://youngoldman.top:5555/api/user/login',{
               "usernameORphone":this.loginInfo.usernameORphone,
               "password":this.loginInfo.password            
-            }})
+            })
             
               .then(res => {
                 console.log(res);
@@ -93,7 +93,7 @@
                     if (res.data.status === 2) {
                       this.$router.push({name: 'userInfo', params: {refresh: 1}})
                     } else {
-                      this.$router.push({name: 'hrView', params: {hrRefresh: 2}})
+                      this.$router.push({name: 'HRInfo', params: {hrRefresh: 2}})
                     }
                   } 
                   else if(res.data.code===200){

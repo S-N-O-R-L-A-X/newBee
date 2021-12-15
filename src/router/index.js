@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Index from '../views/Index.vue'
 import UserInfo from '../views/UserInfo.vue'
+import HRInfo from '../views/HRInfo.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,11 @@ const routes = [
     path:'/userInfo',
     name: 'UserInfo',
     component: UserInfo
+  },
+  {
+    path:'/hrInfo',
+    name: 'HRInfo',
+    component: HRInfo
   },
 ]
 
