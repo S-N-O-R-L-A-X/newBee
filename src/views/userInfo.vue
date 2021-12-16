@@ -82,13 +82,13 @@ export default {
     this.head = {
       ContentType: 'application/json',
       Authorization: 'Basic ' + localStorage.getItem('token')
-    }
-    this.getUserInfo()
+    };
+    this.getUserInfo();
     this.refresh = this.$route.params.refresh !== undefined ? this.$route.params.refresh : 0
   },
   watch: {
     refresh () {
-      location.reload()
+      location.reload();
     }
   },
   

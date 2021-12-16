@@ -7,6 +7,7 @@ import Index from '../views/Index.vue'
 import UserInfo from '../views/UserInfo.vue'
 import HRInfo from '../views/HRInfo.vue'
 import MessageCenter from '../views/MessageCenter'
+import CompanyDetail from '../views/CompanyDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -53,6 +54,11 @@ const routes = [
     path:'/messageCenter',
     name: 'MessageCenter',
     component: MessageCenter
+  },
+  {
+    path:'/companyDetail',
+    name: 'CompanyDetail',
+    component: CompanyDetail
   },
 ]
 

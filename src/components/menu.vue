@@ -160,8 +160,10 @@ export default {
     },
 
     logout(){
+      let tk=localStorage.getItem('token');
+      
       axios.get('http://youngoldman.top:5555/api/user/logout',{
-
+          token:tk,
       })
       .then(res => {
           if (res.status === 200) {

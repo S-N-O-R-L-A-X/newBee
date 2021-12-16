@@ -13,16 +13,19 @@
         </el-form>
       </el-collapse-item>
       <el-collapse-item title="修改密码" name="2" class="set">
-        <el-form :model="passForm" status-icon :rules="passwordrules" ref="passForm" label-width="100px"
+        <el-form :model="passwordForm" status-icon :rules="passwordrules" ref="passwordForm" label-width="100px"
                  class="demo-ruleForm">
-          <el-form-item label="新密码" prop="pass" class="settinginput">
-            <el-input type="password" v-model="passForm.password" auto-complete="off"></el-input>
+          <el-form-item label="旧密码" prop="oldPassword" class="settinginput">
+            <el-input type="password" v-model="passwordForm.oldPassword" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="确认密码" prop="checkpass" class="settinginput">
-            <el-input type="password" v-model="passForm.checkpass" auto-complete="off"></el-input>
+          <el-form-item label="新密码" prop="newPassword" class="settinginput">
+            <el-input type="password" v-model="passwordForm.newPassword" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="againNew" class="settinginput">
+            <el-input type="password" v-model="passwordForm.againNew" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class="btn" @click="changePass('passForm')">确定</el-button>
+            <el-button class="btn" @click="changePassword('passwordForm')">确定</el-button>
           </el-form-item>
         </el-form>
       </el-collapse-item>
@@ -78,7 +81,7 @@
       var checkpass = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('请输入正确的密码'))
-        } else if (value !== this.passForm.password) {
+        } else if (value !== this.passwordForm.password) {
           return callback(new Error('两次密码不一致'))
         } else {
           callback()
@@ -102,9 +105,10 @@
         phoneForm: {
           phone: ''
         },
-        passForm: {
-          password: '',
-          checkpass: ''
+        passwordForm: {
+          oldPassword: '',
+          newPassword: '',
+          againNew:'',
         },
         emailForm: {
           email: ''
@@ -142,11 +146,16 @@
           }
         })
       },
-      changePass (formName) {
+      changePassword (formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            delete this.passForm.checkpass
-            fetch.changePass(this.passForm).then(res => {
+            delete this.passwordForm.checkpass;
+            axios.post('http://youngoldman.top:5555/api/user/updatePassword',{
+              "oldPassword":this.passwordForm.oldPassword,
+              "newpassword":this.passwordForm.newpassword,
+            })
+
+            fetch.changePass(this.passwordForm).then(res => {
                if (res.data.success) {
                  this.$message({
                    message: '修改成功',

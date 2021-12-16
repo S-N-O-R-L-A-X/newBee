@@ -1,19 +1,22 @@
 <template>
   <div>
-    <advertisement></advertisement>
+    <Advertisement></Advertisement>
     
     <div class="division">
       <h3>热门企业</h3>
       <!-- <h3 style="color: #888;font-weight: 400">--- Hot ---</h3> -->
     </div>
 
-    <div class="cardContain">
+    <CompanyCarousel></CompanyCarousel>
+
+    <!-- <div class="cardContain">
       <div class="wrapper-card">
         <div class="card" v-for="(item, key) in companyList" :key="key">
-          <img :src="item.logoUrl" class="image" @click="getCompanyDetail(item.id)">
+          <img :src="item.logo" class="image" @click="getCompanyDetail(item.id)">
+          {{item.description}} {{item.name}}
         </div>
      </div>
-    </div>
+    </div> -->
 
     <!--推荐-->
     <div class="division" v-if="isLogin">
@@ -146,27 +149,21 @@
 
 <script>
 import fetch from '../api/fetch';
-import advertisement from '../components/advertisement';
-
+import Advertisement from '../components/indexComponents/advertisement';
+import axios from 'axios'
+import CompanyCarousel from '../components/indexComponents/companyCarousel.vue';
 
 export default {
-  components:{advertisement},
+  components:{Advertisement,CompanyCarousel},
   data () {
     return {
-      crouselImg: [
-        {img: 'https://sxsimg.xiaoyuanzhao.com/3C/09/3C4A275077015CBF398443CC21774709.png'},
-        {img: 'https://sxsimg.xiaoyuanzhao.com/C3/55/C35273E2AAA17DBA580304E05DF22155.png'},
-        {img: 'https://sxsimg.xiaoyuanzhao.com/C6/FC/C60F54D6D175ABAF3E9A33F0FDE867FC.png'},
-        {img: 'https://sxsimg.xiaoyuanzhao.com/FD/0C/FDBBBD21A98136E3054ADDD432A5020C.png'}
-
-      ],
       activeIndex2: '1',
       currentDate: '完美',
       company: '',
       companyList: [],
       jobList: [],
       recommandList: [],
-      isHr: localStorage.getItem('role') === '1',
+      isHr: localStorage.getItem('role')==='1',
       isLogin: localStorage.getItem('token') ? true : false,
       isShow:  false,
       getResumeList: {
@@ -193,11 +190,12 @@ export default {
   },
 
   mounted () {
-    window.addEventListener('scroll', this.handler)
-    this.getCompany()
-    this.getJob()
-    this.getRecommand()
+    window.addEventListener('scroll', this.handler);
+    this.getCompany();
+    this.getJob();
+    this.getRecommand();
   },
+  
   methods: {
     handler() {
       let info = document.getElementById('aboutusInfo') || null
@@ -220,14 +218,17 @@ export default {
 
     jobDetail (id) {
       localStorage.setItem('jobId', id)
-      this.$router.push({name: 'jobInfo'})
+      // this.$router.push('JobInfo')
+      this.$router.push('companyDetail');
     },
 
     getJob () {
-      fetch.findJob().then(res => {
+      axios.get('http://youngoldman.top:5555/api/company/getCompany',{
+      })
+      .then(res => {
         if (res.status === 200) {
-          if (res.data.success === true) {
-            this.jobList = res.data.data.recruitList
+          if (res.data.code===0) {
+            this.jobList=res.data;
           }
         }
       }).catch(e => {
@@ -236,16 +237,23 @@ export default {
     },
 
     getCompany () {
-      fetch.getCompany().then(res => {
+      axios.get('http://youngoldman.top:5555/api/company/getCompany',{
+      })
+      .then(res => {
+        console.log(res);
         if (res.status === 200) {
-          this.companyList = res.data.data.companyList
+          if (res.data.code===0) {
+            this.companyList=res.data.data;
+          }
         }
+      }).catch(e => {
+        console.log(e)
       })
     },
 
     getCompanyDetail (id) {
-      localStorage.setItem('companyId', id)
-      this.$router.push({name: 'companyDetail'})
+      localStorage.setItem('companyId', id);
+      this.$router.push('companyDetail');
     },
     // 获取推荐列表
     getRecommand () {
