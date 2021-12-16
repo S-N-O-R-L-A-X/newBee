@@ -6,6 +6,7 @@ import Register from '../views/Register.vue'
 import Index from '../views/Index.vue'
 import UserInfo from '../views/UserInfo.vue'
 import HRInfo from '../views/HRInfo.vue'
+import MessageCenter from '../views/MessageCenter'
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ const routes = [
     path:'/hrInfo',
     name: 'HRInfo',
     component: HRInfo
+  },
+  {
+    path:'/messageCenter',
+    name: 'MessageCenter',
+    component: MessageCenter
   },
 ]
 

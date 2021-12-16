@@ -45,7 +45,7 @@
             </el-form-item>
           </el-form>
         </el-dialog>
-        <span v-if="!isShow" class="tab" @click="logout()" >退出登录</span>
+        <span v-if="!isShow" class="tab" @click="logout()">退出登录</span>
       </div>
     </div>
   </el-header>
@@ -54,6 +54,7 @@
 
 <script>
 import fetch from '../api/fetch'
+import axios from 'axios'
 
 export default {
   data () {
@@ -141,7 +142,7 @@ export default {
         case 2:this.$router.push('userInfo');break;
         case 3:
         case 5:
-          this.$router.push('infoCenter');break;
+          this.$router.push('messageCenter');break;
         case 4:this.$router.push('login');break;
         // case 5:this.$router.push('infoCenter');break;
         case 6:this.$router.push('hrView');break;
@@ -157,27 +158,31 @@ export default {
       }
       this.$router.push({name: 'search', params: {count: 1}})
     },
-    logout () {
-      fetch
-        .logout()
-        .then(res => {
+
+    logout(){
+      axios.get('http://youngoldman.top:5555/api/user/logout',{
+
+      })
+      .then(res => {
           if (res.status === 200) {
             this.$message({
               message: res.data.msg,
               type: 'success'
             })
-            sessionStorage.removeItem('userId')
+            // sessionStorage.removeItem('userId')
             localStorage.removeItem('role')
             localStorage.removeItem('token')
-            localStorage.removeItem('count')
-            this.websocket.close()
+            // localStorage.removeItem('count')
+            // this.websocket.close()
             this.$router.push({name: 'login'})
           }
         })
         .catch(e => {
           console.log(e)
         })
+
     },
+
     addjob (formName) {
       this.publishvisible = false
       this.publishInfo.hrId = sessionStorage.getItem('userId')
@@ -215,12 +220,22 @@ export default {
     }
   },
   mounted () {
-    if (sessionStorage.getItem('userId')) {
-      this.isShow = false
+    // console.log(sessionStorage.getItem('token'));
+    if(localStorage.getItem('token')){
+      this.isShow=false;
     }
-    if (localStorage.getItem('role') === '1') {
-      this.isHr = true
+
+    if(localStorage.getItem('role')==='2'){
+      this.isHr=true;
     }
+
+    // if (sessionStorage.getItem('token')) {
+    //   this.isShow = false
+      
+    // }
+    // if (localStorage.getItem('role') === '2') {
+    //   this.isHr = true;
+    // }
   },
 }
 </script>
@@ -248,7 +263,7 @@ export default {
     font-weight: 500;
   }
   .contain .tab{
-    
+    cursor: pointer;
     color: white;
     font-size: 16px;
     margin: 10px;

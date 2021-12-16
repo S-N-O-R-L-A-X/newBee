@@ -81,17 +81,16 @@
               "usernameORphone":this.loginInfo.usernameORphone,
               "password":this.loginInfo.password            
             })
-            
               .then(res => {
                 console.log(res);
                 if (res.status === 200) {
                   if (res.data.code===0) {//interviewee
                     localStorage.setItem('token', res.data.token)
                     // localStorage.setItem('companyId', res.data.data.companyId)
-                    // localStorage.setItem('role', res.data.data.role)
+                    localStorage.setItem('role', res.data.status)
                     // sessionStorage.setItem('userId', res.data.data.userId)
-                    if (res.data.status === 2) {
-                      this.$router.push({name: 'userInfo', params: {refresh: 1}})
+                    if (res.data.status ===1) {
+                      this.$router.push({name: 'UserInfo', params: {refresh: 1}})
                     } else {
                       this.$router.push({name: 'HRInfo', params: {hrRefresh: 2}})
                     }

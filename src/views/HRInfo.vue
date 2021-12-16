@@ -37,8 +37,11 @@ export default {
   },
   watch: {
     hrRefresh () {
-      location.reload()
+      location.reload();
     }
+  },
+  created:function(){
+      console.log(localStorage.getItem('token'));
   }
 }
 </script>
