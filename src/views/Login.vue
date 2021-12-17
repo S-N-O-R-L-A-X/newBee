@@ -59,6 +59,7 @@
         classList:[],
       }
     },
+
     mounted() {
         
     },
@@ -90,10 +91,11 @@
                     localStorage.setItem('role', res.data.status)
                     // sessionStorage.setItem('userId', res.data.data.userId)
                     if (res.data.status ===1) {
-                      this.$router.push({name: 'UserInfo', params: {refresh: 1}})
+                      this.$router.push({name: 'UserInfo', params: {refresh: 1}});
                     } else {
                       this.$router.push({name: 'HRInfo', params: {hrRefresh: 2}})
                     }
+                    window.location.reload();
                   } 
                   else if(res.data.code===200){
                     this.$message({

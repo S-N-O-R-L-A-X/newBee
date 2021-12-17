@@ -36,11 +36,11 @@ export default {
             axios.get('http://youngoldman.top:5555/api/company/getCompany',{
             })
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === 200) {
-                if (res.data.code===0) {
-                    this.companyList=res.data.data;
-                }
+                    if (res.data.code===0) {
+                        this.companyList=res.data.data;
+                    }
                 }
             }).catch(e => {
                 console.log(e)

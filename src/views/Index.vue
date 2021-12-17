@@ -149,8 +149,8 @@
 
 <script>
 import fetch from '../api/fetch';
+import axios from 'axios';
 import Advertisement from '../components/indexComponents/advertisement';
-import axios from 'axios'
 import CompanyCarousel from '../components/indexComponents/companyCarousel.vue';
 
 export default {
@@ -160,7 +160,7 @@ export default {
       activeIndex2: '1',
       currentDate: '完美',
       company: '',
-      companyList: [],
+      // companyList: [],
       jobList: [],
       recommandList: [],
       isHr: localStorage.getItem('role')==='1',
@@ -191,7 +191,7 @@ export default {
 
   mounted () {
     window.addEventListener('scroll', this.handler);
-    this.getCompany();
+    // this.getCompany();
     this.getJob();
     this.getRecommand();
   },

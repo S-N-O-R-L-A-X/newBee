@@ -122,11 +122,7 @@
         </el-form-item> -->
         
         <el-form-item label="技术栈" prop="skills" v-for="(item, key) in resumeList.skills" :key="key">
-          
             <el-input placeholder="技术" class="input" v-model="item.name"></el-input>
-            
-           
-
           <el-col span="4">
             <el-button @click="addSkill()" class="addbtn">添加</el-button>
           </el-col>

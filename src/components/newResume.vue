@@ -14,7 +14,6 @@
           </el-select>
         </el-form-item>
   
-        
         <el-form-item label="年龄" prop="age">
           <el-input v-model="resumeList.age" ></el-input>
         </el-form-item>

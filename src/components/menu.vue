@@ -4,18 +4,18 @@
       <div>
         <span @click="redirect(1)" class="tab">首页</span>
         <span v-if="isHr" @click="changeStatus" class="tab">发布职位</span>
-        <span v-if="isHr && !isShow" @click="redirect(6)" class="tab">个人中心</span>
-        <span @click="redirect(2)" class="tab" v-if="!isHr && !isShow">个人中心</span>
+        <span v-if="isHr && !isLogin" @click="redirect(6)" class="tab">个人中心</span>
+        <span @click="redirect(2)" class="tab" v-if="!isHr && !isLogin">个人中心</span>
         <span class="tab" v-if="!isHr">
           <el-input placeholder="搜索心仪的职位" style="width:18rem" v-model="content" @change="getJob(content)" prefix-icon="iconfont el-icon-search"></el-input>
         </span>
       </div>
       <div>
-        <span @click="redirect(3)" class="tab" v-show="!isShow">
+        <span @click="redirect(3)" class="tab" v-show="!isLogin">
           <i class="el-icon-message" style="margin-right:0.3rem" @click="redirect(5)">
             </i>消息中心<span class="icon" v-show="count > 0" ref="icon">{{ count }}</span>
           </span>
-        <span v-if="isShow">
+        <span v-if="isLogin">
           <el-button style="background:#2F2F2F;" @click="redirect(4)"> <span class="tab">登录</span></el-button>
           <el-button style="background:#2F2F2F;" @click="toRegister()"> <span class="tab">注册</span></el-button>
         </span>
@@ -45,7 +45,7 @@
             </el-form-item>
           </el-form>
         </el-dialog>
-        <span v-if="!isShow" class="tab" @click="logout()">退出登录</span>
+        <span v-if="!isLogin" class="tab" @click="logout()">退出登录</span>
       </div>
     </div>
   </el-header>
@@ -101,7 +101,7 @@ export default {
       content: '',
       companyList: [],
       msg: '',
-      isShow: true,
+      isLogin: true,
       publishRules: {
         title: [{validator: checktitle, trigger: 'blur'}],
         content: [{validator: checkintroduce, trigger: 'blur'}],
@@ -111,6 +111,7 @@ export default {
   },
   created () {
     this.initWs();
+    // location.reload();
   },
   
   methods: {
@@ -162,8 +163,8 @@ export default {
     logout(){
       let tk=localStorage.getItem('token');
       
-      axios.get('http://youngoldman.top:5555/api/user/logout',{
-          token:tk,
+      axios.get('http://youngoldman.top:5555/api/user/logout/'+tk,{
+          // token:tk,
       })
       .then(res => {
           if (res.status === 200) {
@@ -172,15 +173,20 @@ export default {
               type: 'success'
             })
             // sessionStorage.removeItem('userId')
-            localStorage.removeItem('role')
-            localStorage.removeItem('token')
+            localStorage.removeItem('role');
+            localStorage.removeItem('token');
             // localStorage.removeItem('count')
             // this.websocket.close()
-            this.$router.push({name: 'login'})
+            this.isLogin=true;
+            this.$router.push('login');
           }
         })
         .catch(e => {
           console.log(e)
+        })
+        .finally(()=>{
+          console.log(localStorage.getItem('token'));
+          
         })
 
     },
@@ -219,12 +225,22 @@ export default {
   watch: {
     amount () {
       location.reload()
-    }
+    },
+    // updateisLogin(){
+    //   if(localStorage.getItem('token')){
+    //     this.isLogin=false;
+    //   }
+    //   else{
+    //     this.isLogin=true;
+    //   }
+    // }
+    
   },
   mounted () {
+    
     // console.log(sessionStorage.getItem('token'));
     if(localStorage.getItem('token')){
-      this.isShow=false;
+      this.isLogin=false;
     }
 
     if(localStorage.getItem('role')==='2'){
@@ -232,7 +248,7 @@ export default {
     }
 
     // if (sessionStorage.getItem('token')) {
-    //   this.isShow = false
+    //   this.isLogin = false
       
     // }
     // if (localStorage.getItem('role') === '2') {
