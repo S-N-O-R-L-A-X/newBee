@@ -19,6 +19,7 @@
           <el-button style="background:#2F2F2F;" @click="redirect(4)"> <span class="tab">登录</span></el-button>
           <el-button style="background:#2F2F2F;" @click="toRegister()"> <span class="tab">注册</span></el-button>
         </span>
+
         <el-dialog title="发布职位" :visible.sync="publishvisible">
           <el-form :model="publishInfo" :rules="publishRules" ref='publishInfo'>
             <el-form-item label="职位名称" prop="title" class="jobinput">
@@ -45,6 +46,7 @@
             </el-form-item>
           </el-form>
         </el-dialog>
+        
         <span v-if="!isLogin" class="tab" @click="logout()">退出登录</span>
       </div>
     </div>
