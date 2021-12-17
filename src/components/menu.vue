@@ -3,7 +3,7 @@
     <div class="contain">
       <div>
         <span @click="redirect(1)" class="tab">首页</span>
-        <span v-if="isHr" @click="changeStatus" class="tab">发布职位</span>
+        <span v-if="isHr" @click="createJob=true" class="tab">发布职位</span>
         <span v-if="isHr && !isLogin" @click="redirect(6)" class="tab">个人中心</span>
         <span @click="redirect(2)" class="tab" v-if="!isHr && !isLogin">个人中心</span>
         <span class="tab" v-if="!isHr">
@@ -20,7 +20,8 @@
           <el-button style="background:#2F2F2F;" @click="toRegister()"> <span class="tab">注册</span></el-button>
         </span>
 
-        <el-dialog title="发布职位" :visible.sync="publishvisible">
+        <NewJob v-bind:newJobVisible="createJob" v-on:update:newJobVisible='createJob=$event'></NewJob>
+        <!-- <el-dialog title="发布职位" :visible.sync="publishvisible">
           <el-form :model="publishInfo" :rules="publishRules" ref='publishInfo'>
             <el-form-item label="职位名称" prop="title" class="jobinput">
               <el-input class="require" v-model="publishInfo.title"></el-input>
@@ -45,8 +46,8 @@
               <el-button @click="addjob('publishInfo')">确定</el-button>
             </el-form-item>
           </el-form>
-        </el-dialog>
-        
+        </el-dialog> -->
+
         <span v-if="!isLogin" class="tab" @click="logout()">退出登录</span>
       </div>
     </div>
@@ -57,8 +58,10 @@
 <script>
 import fetch from '../api/fetch'
 import axios from 'axios'
+import NewJob from './newJob'
 
 export default {
+  components: {NewJob},
   data () {
     var checktitle = (rule, value, callback) => {
       if (!value) {
@@ -98,7 +101,8 @@ export default {
           }
         ]
       },
-      publishvisible: false,
+      createJob:false,
+      // publishvisible: false,
       isHr: false,
       content: '',
       companyList: [],
