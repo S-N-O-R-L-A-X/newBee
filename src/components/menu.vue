@@ -197,33 +197,7 @@ export default {
 
     },
 
-    addjob (formName) {
-      this.publishvisible = false
-      this.publishInfo.hrId = sessionStorage.getItem('userId')
-      this.publishInfo.companyId = localStorage.getItem('companyId')
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          fetch.publishJob(this.publishInfo).then(res => {
-            if (res.status === 200) {
-              this.amount++
-              this.$refs[formName].resetFields()
-            }
-          }).catch(e => {
-            console.log(e)
-          })
-        }
-      })
-    },
-    deleteItem (key) {
-      this.publishInfo.skillList.splice(key, 1)
-    },
-    addskill () {
-      let newskills = {
-        weight: 0,
-        name: ''
-      }
-      this.publishInfo.skillList.push(newskills)
-    },
+    
     changeStatus() {
       this.publishvisible = true
     }

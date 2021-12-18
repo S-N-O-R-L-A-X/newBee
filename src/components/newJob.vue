@@ -1,30 +1,51 @@
 <template>
-    <el-dialog title="发布职位" :visible.sync="newJobVisible" :show-close="false">
-        <el-form :model="jobInfo" :rules="publishRules" ref='jobInfo'>
+    <el-dialog title="发布职位" :visible.sync="newJobVisible" :show-close="false" class="jobDialog">
+        <el-form :model="jobInfo" :rules="publishRules" ref='jobInfo' label-width="100px">
         <el-form-item label="职位名称" prop="title" class="jobinput">
             <el-input class="require" v-model="jobInfo.title"></el-input>
         </el-form-item>
+        
 
-        <el-form-item label="职位名称" prop="location" class="jobinput">
-            <el-input class="require" v-model="jobInfo.location.city"></el-input>
-            <el-input class="require" v-model="jobInfo.location.district"></el-input>
-        </el-form-item>
-        <el-form-item label="职位介绍" prop="content" class="jobinput">
-            <el-input type="textarea" rows="10" class="require" v-model="jobInfo.content"></el-input>
+        <el-form-item label="工作地点" prop="location" class="jobinput">
+            <el-cascader :options="options" v-model="location" @change="handleChange()" clearable></el-cascader>
         </el-form-item>
 
-        <el-form-item label="技术栈" prop="skillList">
-            <el-button @click="addskill()" class="addbtn">添加</el-button>
-            <div v-for="(item, key) in jobInfo.skillList" :key="key">
-            <input placeholder="技术" class="requireinput" v-model="item.name"/>
-            <select class="requireselect" v-model="item.weight">
+
+        <el-form-item label="薪水" prop="salary" class="jobinput">
+            <el-col :span="6">
+                <el-input class="require" v-model="jobInfo.salary.baseSalary"></el-input>
+            </el-col>
+            <el-col :span="2">
+                --
+            </el-col>
+            <el-col :span="6">
+                <el-input class="require" v-model="jobInfo.salary.highSalary"></el-input>
+            </el-col>
+        </el-form-item>        
+
+
+        <el-form-item label="职位介绍" prop="description" class="jobinput">
+            <el-input type="textarea" rows="10" class="require" v-model="jobInfo.description"></el-input>
+        </el-form-item>
+
+        <el-form-item label="技术栈" prop="skills" v-for="(item, key) in jobInfo.skills" :key="key">
+          <el-col :span="10">
+            <el-input v-model="item.name"></el-input>
+          </el-col>
+
+          <el-col :span="10">
+              <select class="select" v-model="item.level">
                 <option label="了解" value=1></option>
                 <option label="熟悉" value=2></option>
                 <option label="掌握" value=3></option>
                 <option label="精通" value=4></option>
-            </select>
-            <i class="el-icon-error delete" @click="deleteItem(key)"></i>
-            </div>
+              </select>
+              <i class="el-icon-error delete" @click="deleteItem(key)" v-if="jobInfo.skills.length>1"></i>
+          </el-col>  
+          
+          <el-col :span="4">
+            <el-button @click="addSkill()" >添加</el-button>
+          </el-col>
         </el-form-item>
 
         <el-form-item>
@@ -37,6 +58,7 @@
 
 <script>
 import axios from 'axios'
+import {regionDataPlus,CodeToText} from 'element-china-area-data'
 
 export default {
     props:["newJobVisible"],
@@ -63,19 +85,24 @@ export default {
             }
         }
         return{
-            newJobVisible:false,
+            options: regionDataPlus,
+            
             jobInfo: {
                 title: '',
-                content: '',
+                description: '',
                 companyId: '',
-                baseSalary:0,
-                highSalary:0,
-                employeeId:0,
-                location:{
-                    city:'',
-                    district:''
+                salary:{
+                    baseSalary:0,
+                    highSalary:0,
                 },
-                skillList: [
+                
+                employeeId:0,
+                // location:{
+                //     city:'',
+                //     district:''
+                // },
+                location:[],
+                skills: [
                     {
                         name: '',
                         weight: 0
@@ -84,12 +111,19 @@ export default {
             },
             publishRules: {
                 title: [{validator: checktitle, trigger: 'blur'}],
-                content: [{validator: checkintroduce, trigger: 'blur'}],
+                description: [{validator: checkintroduce, trigger: 'blur'}],
                 skillList: [{validator: checkskill, trigger: 'blur'}]
             }
         }
     },
     methods:{
+        handleChange(){
+            let loc='';
+            for(let i=0;i<this.selectedOption.length;++i){
+                loc+=CodeToText[this.selectedOption[i]];
+            }
+            console.log(loc);
+        },
         addjob (formName) {
             this.newJobVisible = false
             this.jobInfo.hrId = sessionStorage.getItem('userId')
@@ -97,18 +131,34 @@ export default {
             this.$refs[formName].validate(valid => {
                 if (valid) {
                     axios.post('http://youngoldman.top:5555/api/job/insert',{
-                        
+                        type:this.jobInfo.title,
+                        baseSalary:this.jobInfo.baseSalary,
+                        highSalary: this.jobInfo.highSalary,
+                        companyId: this.jobInfo.companyId,
+                        location: this.jobInfo.location,
+                        description: this.jobInfo.description,
+                        employeeId: this.jobInfo.employeeId,
                     })
                     .then(res => {
                         if (res.status === 200) {
-                        this.amount++
-                        this.$refs[formName].resetFields()
+                            // this.amount++;
+                            this.$refs[formName].resetFields()
                         }
                     }).catch(e => {
                         console.log(e)
                     })
                 }
             })
+        },
+        deleteItem (key) {
+            this.jobInfo.skills.splice(key, 1)
+        },
+        addSkill () {
+            let newskill= {
+                weight: 0,
+                name: ''
+            }
+            this.jobInfo.skills.push(newskill)
         },
         cancelSubmit () {
             this.newJobVisible = false;
@@ -119,5 +169,63 @@ export default {
 </script>
 
 <style>
+    .jobDialog{
+        width:90%;
+    }
+    .input {
+    width: 45%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    outline: 0;
+    background: #fff;
+    padding: 0 15px;
+    margin: auto 11.2px 14px auto;
+  }
+  .select {
+    width: 45%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    outline: 0;
+    background: #fff;
+    padding: 0 15px;
+    margin: auto 11.2px 14px auto;
+  }
+  /* .requireinput {
+    width: 35%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    outline: 0;
+    background: #fff;
+    padding: 0 15px;
+    margin: auto 11.2px 14px auto;
+  } */
+
+  /* .requireselect {
+    width: 35%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    outline: 0;
+    background: #fff;
+    padding: 0 15px;
+    margin: auto 11.2px 14px auto;
+  } */
+
+  /* .require {
+    width: 80%;
+  } */
+
+
+  .delete {
+    color: #dcdfe6;
+    position: relative;
+  }
+
+  .delete:hover {
+    color: red;
+  }
 
 </style>

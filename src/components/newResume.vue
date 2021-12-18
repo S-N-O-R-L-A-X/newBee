@@ -55,7 +55,7 @@
                 <option label="掌握" value=3></option>
                 <option label="精通" value=4></option>
               </select>
-              <i class="el-icon-error deleteIt" @click="deleteItem(key)"></i>
+              <i class="el-icon-error delete" @click="deleteItem(key)"></i>
           </el-col>  
           
           <el-col :span="4">
@@ -76,90 +76,7 @@
       </el-form>
     </el-dialog>
 </template>
-<style scoped>
-  .input {
-    width: 45%;
-    height: 40px;
-    border-radius: 4px;
-    border: 1px solid #dcdfe6;
-    outline: 0;
-    background: #fff;
-    padding: 0 15px;
-    margin: auto 11.2px 14px auto;
-  }
-  .deleteIt {
-    color: #dcdfe6;
-    position: relative;
-  }
-  .deleteIt:hover {
-    color: red;
-  }
-  .select {
-    width: 45%;
-    height: 40px;
-    border-radius: 4px;
-    border: 1px solid #dcdfe6;
-    outline: 0;
-    background: #fff;
-    padding: 0 15px;
-    margin: auto 11.2px 14px auto;
-  }
 
-  .mytable {
-    width: 80%;
-    margin: 0;
-  }
-
-  .progress {
-    width: 182px;
-    border: 0;
-  }
-
-  .modBtn {
-    margin: 14px;
-  }
-
-  .resumeCard {
-    width: 830px;
-    text-align: left;
-    height: 100px;
-    border-left: 5px solid #888;
-  }
-
-  .createResume {
-    position: relative;
-    left: 224px;
-  }
-
-  .resumeHead {
-    width: 100%;
-    border: 1px solid #ededed;
-    background: #f4f4f4;
-    padding: 21px;
-  }
-
-  .checkBtn {
-    position: relative;
-    top: -22.4px;
-    left: 680px;
-  }
-
-  .addbtn {
-    position: relative;
-    top: 40px;
-    left: 280px;
-  }
-
-  /* .resumeInfoForm {
-    width: 60%;
-    
-  } */
-  .myDialog {
-    width: 90%;
-  }
-
-  
-</style>
 
 <script>/* eslint-disable indent */
 
@@ -389,3 +306,38 @@ export default {
 
 }
 </script>
+
+
+<style scoped>
+  .input {
+    width: 45%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    outline: 0;
+    background: #fff;
+    padding: 0 15px;
+    margin: auto 11.2px 14px auto;
+  }
+  .delete {
+    color: #dcdfe6;
+    position: relative;
+  }
+  .delete:hover {
+    color: red;
+  }
+  .select {
+    width: 45%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    outline: 0;
+    background: #fff;
+    padding: 0 15px;
+    margin: auto 11.2px 14px auto;
+  }
+
+  .myDialog {
+    width: 90%;
+  }
+</style>
