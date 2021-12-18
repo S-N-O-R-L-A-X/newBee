@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新建简历" v-bind:visible.sync="create" :modal-append-to-body="false" class="myDialog">
+  <el-dialog title="新建简历" v-bind:visible.sync="create" :modal-append-to-body="false" class="myDialog" :show-close="false">
       <el-form :model="resumeList" status-icon :rules="resumerules" ref="resumeInfo" label-width="120px"
                class="resumeInfoForm">
        

@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="发布职位" :visible.sync="newJobVisible">
+    <el-dialog title="发布职位" :visible.sync="newJobVisible" :show-close="false">
         <el-form :model="jobInfo" :rules="publishRules" ref='jobInfo'>
         <el-form-item label="职位名称" prop="title" class="jobinput">
             <el-input class="require" v-model="jobInfo.title"></el-input>
@@ -26,8 +26,10 @@
             <i class="el-icon-error delete" @click="deleteItem(key)"></i>
             </div>
         </el-form-item>
+
         <el-form-item>
-            <el-button @click="addjob('jobInfo')">确定</el-button>
+            <el-button @click="cancelSubmit()">取 消</el-button>
+            <el-button @click="addjob('jobInfo')">确 定</el-button>
         </el-form-item>
         </el-form>
     </el-dialog>
@@ -39,6 +41,27 @@ import axios from 'axios'
 export default {
     props:["newJobVisible"],
     data(){
+        var checktitle = (rule, value, callback) => {
+        if (!value) {
+                return callback(new Error('职位名称不能为空'))
+            } else {
+                callback()
+            }
+            }
+            var checkintroduce = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('职位介绍不能为空'))
+            } else {
+                callback()
+            }
+            }
+            var checkskill = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('技术要求不能为空'))
+            } else {
+                callback()
+            }
+        }
         return{
             newJobVisible:false,
             jobInfo: {
@@ -68,7 +91,7 @@ export default {
     },
     methods:{
         addjob (formName) {
-            this.publishvisible = false
+            this.newJobVisible = false
             this.jobInfo.hrId = sessionStorage.getItem('userId')
             this.jobInfo.companyId = localStorage.getItem('companyId')
             this.$refs[formName].validate(valid => {
@@ -87,22 +110,9 @@ export default {
                 }
             })
         },
-        addjob (formName) {
-            this.jobInfo.hrId = sessionStorage.getItem('userId')
-            this.jobInfo.companyId = localStorage.getItem('companyId')
-            this.$refs[formName].validate(valid => {
-                if (valid) {
-                fetch.publishJob(this.jobInfo).then(res => {
-                    if (res.status === 200) {
-                        this.amount++;
-                        this.$refs[formName].resetFields();
-                        this.newJobVisible=false;
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-                }
-            })
+        cancelSubmit () {
+            this.newJobVisible = false;
+            this.$emit('update:newJobVisible', false);
         },
     }
 }
