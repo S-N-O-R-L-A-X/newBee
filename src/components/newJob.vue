@@ -1,32 +1,34 @@
 <template>
     <el-dialog title="发布职位" :visible.sync="newJobVisible" :show-close="false" class="jobDialog">
-        <el-form :model="jobInfo" :rules="publishRules" ref='jobInfo' label-width="100px">
+        <el-form :model="jobInfo" :rules="jobRules" ref='jobInfo' label-width="100px">
         <el-form-item label="职位名称" prop="title" class="jobinput">
-            <el-input class="require" v-model="jobInfo.title"></el-input>
+            <el-input v-model="jobInfo.title"></el-input>
         </el-form-item>
         
 
         <el-form-item label="工作地点" prop="location" class="jobinput">
             <el-cascader :options="options" v-model="jobInfo.location" @change="handleChange()" clearable></el-cascader>
-            
         </el-form-item>
 
 
         <el-form-item label="薪水" prop="salary" class="jobinput">
-            <el-col :span="6">
-                <el-input class="require" v-model="jobInfo.salary.baseSalary"></el-input>
+            <el-col :span="10">
+                <el-input-number v-model="jobInfo.baseSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
+                <!-- <el-input v-model="jobInfo.baseSalary"></el-input> -->
             </el-col>
-            <el-col :span="2">
+            <el-col :span="4">
                 --
             </el-col>
-            <el-col :span="6">
-                <el-input class="require" v-model="jobInfo.salary.highSalary"></el-input>
+            <el-col :span="10">
+                <el-input-number v-model="jobInfo.highSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
+
+                <!-- <el-input v-model="jobInfo.highSalary"></el-input> -->
             </el-col>
         </el-form-item>        
 
 
         <el-form-item label="职位介绍" prop="description" class="jobinput">
-            <el-input type="textarea" rows="10" class="require" v-model="jobInfo.description"></el-input>
+            <el-input type="textarea" rows="10" v-model="jobInfo.description"></el-input>
         </el-form-item>
 
         <!-- <el-form-item label="技术栈" prop="skills" v-for="(item, key) in jobInfo.skills" :key="key">
@@ -64,71 +66,91 @@ import {regionDataPlus,CodeToText} from 'element-china-area-data'
 export default {
     props:["newJobVisible"],
     data(){
-        var checktitle = (rule, value, callback) => {
-        if (!value) {
+        var checkTitle = (rule, value, callback) => {
+            if (!value) {
                 return callback(new Error('职位名称不能为空'))
             } else {
                 callback()
             }
+        }
+        var checkLocation = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('工作地点不能为空'))
+            } else {
+                callback()
             }
-            var checkintroduce = (rule, value, callback) => {
+        }
+        // var checkSalary = (rule, value, callback) => {
+        //     let reg=new RegExp(/([1-9]([0-9]+)?(.[0-9]{1,2})?$)|(^(0){1}$)|([0-9].0-9?$)/);
+        //     console.log(value);
+        //     if (!value) {
+        //         return callback(new Error('薪水不能为空'))
+        //     } 
+        //     else if(reg.test(value)) {
+        //         return callback(new Error('请输入正确的工资！'));
+        //     }
+        //     else{
+        //         callback()
+        //     }
+        // }
+        var checkDescription = (rule, value, callback) => {
             if (!value) {
                 return callback(new Error('职位介绍不能为空'))
             } else {
                 callback()
             }
-            }
-            var checkskill = (rule, value, callback) => {
-            if (!value) {
-                return callback(new Error('技术要求不能为空'))
-            } else {
-                callback()
-            }
         }
+        // var checkSkill = (rule, value, callback) => {
+        //     if (!value) {
+        //         return callback(new Error('技术要求不能为空'))
+        //     } else {
+        //         callback()
+        //     }
+        // }
         return{
             options: regionDataPlus,
             
             jobInfo: {
                 title: '',
                 description: '',
-                companyId: '',
-                salary:{
-                    baseSalary:0,
-                    highSalary:0,
-                },
-                
-                employeeId:0,
-                // location:{
-                //     city:'',
-                //     district:''
-                // },
-                location:[],
-                skills: [
-                    {
-                        name: '',
-                        weight: 0
-                    }
-                ]
+                // companyId: '',
+                baseSalary:'',
+                highSalary:'',
+                // employeeId:0,
+                location:'',
+                // skills: [
+                //     {
+                //         name: '',
+                //         weight: 0
+                //     }
+                // ]
             },
-            publishRules: {
-                title: [{validator: checktitle, trigger: 'blur'}],
-                description: [{validator: checkintroduce, trigger: 'blur'}],
-                skillList: [{validator: checkskill, trigger: 'blur'}]
+            jobRules: {
+                title: [{validator: checkTitle, trigger: 'blur'}],
+                location: [{validator:checkLocation, trigger: 'blur'}],
+                description: [{validator: checkDescription, trigger: 'blur'}],
+                // salary: [{validator: checkSalary, trigger: 'blur'}],
+                // skills: [{validator: checkSkill, trigger: 'blur'}]
             }
         }
     },
     methods:{
         handleChange(){
             let loc='';
-            for(let i=0;i<this.selectedOption.length;++i){
-                loc+=CodeToText[this.selectedOption[i]];
-            }
+            // for(let i=0;i<this.location.length;++i){
+            //     loc+=CodeToText[this.location[i]];
+            // }
             console.log(loc);
         },
         addjob (formName) {
-            this.newJobVisible = false
-            this.jobInfo.hrId = sessionStorage.getItem('userId')
-            this.jobInfo.companyId = localStorage.getItem('companyId')
+            if(this.jobInfo.baseSalary>this.jobInfo.highSalary){
+                this.$message({
+                    message:"基础工资高于最高工资！",
+                    type:"warning",
+                })
+                return ;
+            }            
+            
             this.$refs[formName].validate(valid => {
                 if (valid) {
                     axios.post('http://youngoldman.top:5555/api/job/insert',{
@@ -143,7 +165,8 @@ export default {
                     .then(res => {
                         if (res.status === 200) {
                             // this.amount++;
-                            this.$refs[formName].resetFields()
+                            this.$refs[formName].resetFields();
+                            this.newJobVisible=false;
                         }
                     }).catch(e => {
                         console.log(e)
@@ -151,16 +174,16 @@ export default {
                 }
             })
         },
-        deleteItem (key) {
-            this.jobInfo.skills.splice(key, 1)
-        },
-        addSkill () {
-            let newskill= {
-                weight: 0,
-                name: ''
-            }
-            this.jobInfo.skills.push(newskill)
-        },
+        // deleteItem (key) {
+        //     this.jobInfo.skills.splice(key, 1)
+        // },
+        // addSkill () {
+        //     let newskill= {
+        //         weight: 0,
+        //         name: ''
+        //     }
+        //     this.jobInfo.skills.push(newskill)
+        // },
         cancelSubmit () {
             this.newJobVisible = false;
             this.$emit('update:newJobVisible', false);
