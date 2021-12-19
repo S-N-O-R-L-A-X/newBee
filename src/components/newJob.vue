@@ -29,7 +29,7 @@
             <el-input type="textarea" rows="10" class="require" v-model="jobInfo.description"></el-input>
         </el-form-item>
 
-        <el-form-item label="技术栈" prop="skills" v-for="(item, key) in jobInfo.skills" :key="key">
+        <!-- <el-form-item label="技术栈" prop="skills" v-for="(item, key) in jobInfo.skills" :key="key">
           <el-col :span="10">
             <el-input v-model="item.name"></el-input>
           </el-col>
@@ -47,7 +47,7 @@
           <el-col :span="4">
             <el-button @click="addSkill()" >添加</el-button>
           </el-col>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item>
             <el-button @click="cancelSubmit()">取 消</el-button>

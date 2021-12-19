@@ -6,6 +6,7 @@
         <span v-if="isHr" @click="createJob=true" class="tab">发布职位</span>
         <span v-if="isHr && !isLogin" @click="redirect(6)" class="tab">个人中心</span>
         <span @click="redirect(2)" class="tab" v-if="!isHr && !isLogin">个人中心</span>
+        <span @click="redirect(7)" class="tab" v-if="!isHr && !isLogin">工作广场</span>
         <span class="tab" v-if="!isHr">
           <el-input placeholder="搜索心仪的职位" style="width:18rem" v-model="content" @change="getJob(content)" prefix-icon="iconfont el-icon-search"></el-input>
         </span>
@@ -21,32 +22,6 @@
         </span>
 
         <NewJob v-bind:newJobVisible="createJob" v-on:update:newJobVisible='createJob=$event'></NewJob>
-        <!-- <el-dialog title="发布职位" :visible.sync="publishvisible">
-          <el-form :model="publishInfo" :rules="publishRules" ref='publishInfo'>
-            <el-form-item label="职位名称" prop="title" class="jobinput">
-              <el-input class="require" v-model="publishInfo.title"></el-input>
-            </el-form-item>
-            <el-form-item label="职位介绍" prop="content" class="jobinput">
-              <el-input type="textarea" rows="10" class="require" v-model="publishInfo.content"></el-input>
-            </el-form-item>
-            <el-form-item label="技术栈" prop="skillList">
-              <el-button @click="addskill()" class="addbtn">添加</el-button>
-              <div v-for="(item, key) in publishInfo.skillList" :key="key">
-                <input placeholder="技术" class="requireinput" v-model="item.name"/>
-                <select class="requireselect" v-model="item.weight">
-                  <option label="了解" value=1></option>
-                  <option label="熟悉" value=2></option>
-                  <option label="掌握" value=3></option>
-                  <option label="精通" value=4></option>
-                </select>
-                <i class="el-icon-error delete" @click="deleteItem(key)"></i>
-              </div>
-            </el-form-item>
-            <el-form-item>
-              <el-button @click="addjob('publishInfo')">确定</el-button>
-            </el-form-item>
-          </el-form>
-        </el-dialog> -->
 
         <span v-if="!isLogin" class="tab" @click="logout()">退出登录</span>
       </div>
@@ -153,6 +128,7 @@ export default {
         case 4:this.$router.push('login');break;
         // case 5:this.$router.push('infoCenter');break;
         case 6:this.$router.push('hrInfo');break;
+        case 7:this.$router.push('allJobs');break;
         default:break;
       }
     },
@@ -163,7 +139,7 @@ export default {
       if (value !== null) {
         localStorage.setItem('content', value)
       }
-      this.$router.push({name: 'search', params: {count: 1}})
+      this.$router.push({name: 'allJobs', params: {count: 1}})
     },
 
     logout(){

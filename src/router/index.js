@@ -8,6 +8,7 @@ import UserInfo from '../views/UserInfo.vue'
 import HRInfo from '../views/HRInfo.vue'
 import MessageCenter from '../views/MessageCenter'
 import CompanyDetail from '../views/CompanyDetail.vue'
+import AllJobs from '../views/AllJobs.vue'
 
 Vue.use(VueRouter)
 
@@ -59,6 +60,11 @@ const routes = [
     path:'/companyDetail',
     name: 'CompanyDetail',
     component: CompanyDetail
+  },
+  {
+    path:'/allJobs',
+    name: 'AllJobs',
+    component: AllJobs
   },
 ]
 
