@@ -7,7 +7,8 @@
         
 
         <el-form-item label="工作地点" prop="location" class="jobinput">
-            <el-cascader :options="options" v-model="location" @change="handleChange()" clearable></el-cascader>
+            <el-cascader :options="options" v-model="jobInfo.location" @change="handleChange()" clearable></el-cascader>
+            
         </el-form-item>
 
 

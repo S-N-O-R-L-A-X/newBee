@@ -16,25 +16,25 @@
           <el-input type="password" v-model="user.checkPass" auto-complete="off" placeholder="确认密码"></el-input>
         </el-form-item>
 
-        <el-switch v-model="isHr"   active-color="#409eff" inactive-color="#13ce66" 
+        <el-switch v-model="isHr" active-color="#409eff" inactive-color="#13ce66" 
           active-text="我要招聘" inactive-text="我要找工作"></el-switch>
         
-        <el-form-item prop="phone">   
+        <!-- <el-form-item prop="phone">   
           <el-input v-model.number="user.phone" placeholder="手机号"></el-input>
-        </el-form-item>
-
+        </el-form-item> -->
         
-        <el-row >
-          <el-form-item prop="verifyCode">
-          <el-col :span="20" :offset="0">
+        
+        <el-form-item prop="verifyCode">
+          <el-col :span="10">
+            <el-input v-model.number="user.phone" placeholder="手机号"></el-input>
+          </el-col>
+          <el-col :span="10" >
             <el-input class="code" v-model.number="user.verifyCode" placeholder="验证码"></el-input>
           </el-col>
           <el-col :span="4">
-            <el-button  @click="sendCode">{{this.msg}}</el-button>
+            <el-button  @click="sendCode">{{msg}}</el-button>
           </el-col>
-          </el-form-item>
-        </el-row>
-        
+        </el-form-item>
         
         <el-form-item>
           <el-button type="primary" class="registerBtn" @click="hrSubmit('user')">注册</el-button>
@@ -43,36 +43,7 @@
             已有账号?直接登录
         </div>
       </el-form>
-      
-      
     </el-card>
-
-    <el-dialog title="公司信息" :visible.sync="dialogShow">
-      <el-form :model="companyInfo" class="companyForm">
-        <el-form-item  :label-width="formLabelWidth">
-          <el-input v-model="companyInfo.name" auto-complete="off" placeholder="名称"></el-input>
-        </el-form-item>
-        <el-form-item  :label-width="formLabelWidth">
-          <el-input v-model="companyInfo.address" auto-complete="off" placeholder="地址"></el-input>
-        </el-form-item>
-        <el-form-item  :label-width="formLabelWidth">
-          <el-input v-model="companyInfo.avatar" auto-complete="off" placeholder="logo"></el-input>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth">
-          <el-input v-model="companyInfo.introduce" auto-complete="off" placeholder="简介"></el-input>
-        </el-form-item>
-        <el-form-item  :label-width="formLabelWidth">
-          <el-input v-model="companyInfo.scale" auto-complete="off" placeholder="规模"></el-input>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth">
-          <el-input v-model="companyInfo.type" auto-complete="off" placeholder="类型"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogShow = false">取 消</el-button>
-        <el-button type="primary" @click="submitCompanyInfo">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -191,10 +162,11 @@ export default {
     sendCode() {
       const TIME_COUNT=60;
       if (!/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.user.phone)){
-        
-        axios.get('http://1.15.170.222:88/api/service/sms/',{
-          params:{phone:this.user.phone}
-        }).then(re =>{
+        let link='http://1.15.170.222:88/api/service/sms/'+this.user.phone;
+        axios.get(link,{
+
+        }).then(res =>{
+          console.log(res);
           if (res.status === 200) {
             if (res.data.success === true) {
               $message({
@@ -202,6 +174,7 @@ export default {
                 type: 'success'
               })
             }
+            
           }
         })
         .catch(e => {
@@ -228,13 +201,33 @@ export default {
       }
     },
     register(){
-      fetch.register({
-        "username":this.user.username,
-        "phone":this.user.phone,
-        "password":this.user.password,
-        "status":this.user.status,
-        "verifyCode":this.user.verifyCode,
-      }).then
+      this.$refs[formName].validate(valid => {
+        if (valid && !this.tipsShow) {
+          axios.post("http://youngoldman.top:5555/api/user/register",{
+            username:this.user.username,
+            phone:this.user.phone,
+            password:this.user.password,
+            status:this.user.status,
+            verifyCode: this.user.verifyCode,
+          })
+        }
+      })
+      .then(res=>{
+        if(res.status===200){
+          if(res.data.code===0){
+            this.$router.push('login');
+          }
+          else if(res.data.code===100){
+            $message({
+                message: res.data.msg,
+                type: 'warning'
+              })
+          }
+        }
+      })
+      .catch(e=>{
+        alert(e);
+      })
     },
 
     hrSubmit(formName) {

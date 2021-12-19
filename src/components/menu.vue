@@ -152,7 +152,7 @@ export default {
           this.$router.push('messageCenter');break;
         case 4:this.$router.push('login');break;
         // case 5:this.$router.push('infoCenter');break;
-        case 6:this.$router.push('hrView');break;
+        case 6:this.$router.push('hrInfo');break;
         default:break;
       }
     },

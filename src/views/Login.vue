@@ -17,7 +17,7 @@
             <el-button type="primary" class="loginBtn" @click="submitForm('loginInfo')" >登录</el-button>
           </el-form-item>
           <div class="footer-tip3" @click="toRegister()">
-            已有账号?直接登录
+            还没有账号?先去注册
           </div>
         </el-form>
       </div>
@@ -79,8 +79,8 @@
             //   "password":this.user.password
             // }})
             axios.post('http://youngoldman.top:5555/api/user/login',{
-              "usernameORphone":this.loginInfo.usernameORphone,
-              "password":this.loginInfo.password            
+              usernameORphone:this.loginInfo.usernameORphone,
+              password:this.loginInfo.password            
             })
               .then(res => {
                 console.log(res);
