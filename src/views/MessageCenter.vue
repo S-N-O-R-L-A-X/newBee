@@ -1,30 +1,29 @@
 <template>
   <div>
     <el-card class="infocard" v-if="isShow">
-      <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1524746733938&di=9ae24b5205e97c2876b48d3ff26f1c23&imgtype=0&src=http%3A%2F%2Fwww.snlfjx.com%2Fforum%2FSkin%2Fimgs%2Fno-data.png"/>
+      <!-- <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1524746733938&di=9ae24b5205e97c2876b48d3ff26f1c23&imgtype=0&src=http%3A%2F%2Fwww.snlfjx.com%2Fforum%2FSkin%2Fimgs%2Fno-data.png"/> -->
       <p>暂时没有消息哦</p>
     </el-card>
-  <el-card class="infocard" v-for="(item, key) in infoList" :key="key" v-show="!isShow">
-    <i class="el-icon-message myMsg" ></i>
-    <div class="infoTitle" @click="info(item.content, item.id)">
-      <p>{{item.title}}</p>
-    </div>
-   <p class="time">{{item.createTime}}</p>
-     <el-tag v-if="item.readState" class="haveRead">已读</el-tag>
-      <el-tag v-else type="warning" class="haveRead" >未读</el-tag>
-  </el-card>
-  <el-dialog  title="系统通知" :visible.sync="dialogVisible" width="30%" >
-  <span>{{content}}</span>
-  <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="confirmClick">确定</el-button>
-  </span>
-</el-dialog>
+    <el-card class="infocard" v-for="(item, key) in infoList" :key="key" v-show="!isShow">
+      <i class="el-icon-message myMsg" ></i>
+      <div class="infoTitle" @click="info(item.content, item.id)">
+        <p>{{item.title}}</p>
+      </div>
+    <p class="time">{{item.createTime}}</p>
+      <el-tag v-if="item.readState" class="haveRead">已读</el-tag>
+        <el-tag v-else type="warning" class="haveRead" >未读</el-tag>
+    </el-card>
+    <el-dialog  title="系统通知" :visible.sync="dialogVisible" width="30%" >
+      <span>{{content}}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="confirmClick">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import fetch from '../api/fetch'
-import ElCard from '../../node_modules/element-ui/packages/card/src/main.vue'
 export default {
   data () {
     return {
@@ -36,9 +35,7 @@ export default {
       count: localStorage.getItem('count')
     }
   },
-  components: {
-    ElCard,
-  },
+  
   mounted () {
     this.getMessage()
   },

@@ -7,9 +7,9 @@
         <span v-if="isHr && !isLogin" @click="redirect(6)" class="tab">个人中心</span>
         <span @click="redirect(2)" class="tab" v-if="!isHr && !isLogin">个人中心</span>
         <span @click="redirect(7)" class="tab" v-if="!isHr && !isLogin">工作广场</span>
-        <span class="tab" v-if="!isHr">
+        <!-- <span class="tab" v-if="!isHr">
           <el-input placeholder="搜索心仪的职位" style="width:18rem" v-model="content" @change="getJob(content)" prefix-icon="iconfont el-icon-search"></el-input>
-        </span>
+        </span> -->
       </div>
       <div>
         <span @click="redirect(3)" class="tab" v-show="!isLogin">
@@ -139,7 +139,8 @@ export default {
       if (value !== null) {
         localStorage.setItem('content', value)
       }
-      this.$router.push({name: 'allJobs', params: {count: 1}})
+      // this.$router.push({name: 'allJobs', params: {count: 1}})
+      this.$router.push('allJobs');
     },
 
     logout(){

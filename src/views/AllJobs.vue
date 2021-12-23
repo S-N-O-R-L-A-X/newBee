@@ -1,5 +1,8 @@
 <template>
   <div>
+    
+    <el-input placeholder="搜索心仪的职位" style="width:18rem" v-model="content" @change="searchJob()" prefix-icon="iconfont el-icon-search"></el-input>
+
     <el-card class="nojob" v-if="list.length===0">暂时没有该岗位信息</el-card>
     <el-card v-if="list.length>0" v-for="(item, key) in list" :key="key" class="jobcard">
       <div  @click="findDetail(item.companyId)">
@@ -21,20 +24,23 @@ import axios from 'axios'
 export default {
   data () {
     return {
-      content: localStorage.getItem('content'),
+      content:"",
       list: [],
       
     }
   },
+  // created(){
+  //   this.getAllJobs();
+  // },
   mounted () {
-    this.getJob()
+      this.getAllJobs();
   },
   methods: {
     findDetail (id) {
       localStorage.setItem('jobId', id)
       this.$router.push('jobInfo');
     },
-    getJob () {
+    getAllJobs () {
       axios.get('http://youngoldman.top:5555/api/job/list')
         .then(res => {
           console.log(res);
@@ -48,7 +54,25 @@ export default {
         .catch(e => {
           console.log(e)
         })
-    }
+    },
+    searchJob () {
+      console.log("search");
+      axios.get('http://youngoldman.top:5555/api/job/query',{
+        type:this.content
+      })
+        .then(res => {
+          console.log(res);
+          if (res.status === 200) {
+            if (res.data.code===0) {
+              this.list=res.data.data;
+            }
+          }
+          console.log(this.list);
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
   }
 }
 </script>
