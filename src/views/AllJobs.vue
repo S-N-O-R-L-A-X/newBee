@@ -3,10 +3,11 @@
     <el-card class="nojob" v-if="list.length===0">暂时没有该岗位信息</el-card>
     <el-card v-if="list.length>0" v-for="(item, key) in list" :key="key" class="jobcard">
       <div  @click="findDetail(item.companyId)">
-        <!-- <img class="jobavatar" :src="item.company.avatar"/> -->
+        <img class="jobavatar" :src="item.companyLogo"/>
         <div class="introduce">
+          <p>{{item.companyName}}</p>
           <p>{{item.type}}</p>
-          <p>{{item.location}}<span>|</span>{{item.baseSalary}}<span>|</span>{{item.highSalary}}</p>
+          <p><i class="el-icon-location-outline" ></i>{{item.location}}<span>|</span><i class="el-icon-money"></i>薪水{{item.baseSalary}}-{{item.highSalary}}</p>
         </div>
       </div>
     </el-card>
@@ -31,7 +32,7 @@ export default {
   methods: {
     findDetail (id) {
       localStorage.setItem('jobId', id)
-      this.$router.push({name: 'jobInfo'})
+      this.$router.push('jobInfo');
     },
     getJob () {
       axios.get('http://youngoldman.top:5555/api/job/list')
