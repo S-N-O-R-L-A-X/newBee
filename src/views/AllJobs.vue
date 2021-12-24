@@ -1,8 +1,24 @@
 <template>
   <div>
-    
-    <el-input placeholder="搜索心仪的职位" style="width:18rem" v-model="content" @change="searchJob()" prefix-icon="iconfont el-icon-search"></el-input>
-
+    <el-form>
+      <el-form-item>
+        <el-input placeholder="搜索心仪的职位" style="width:18rem" v-model="jobInfo.content" @change="searchJob()" prefix-icon="iconfont el-icon-search"></el-input>
+      </el-form-item>
+      <el-form-item label="工作地点" prop="location" class="jobinput">
+          <el-cascader :options="options" v-model="jobInfo.location" @change="handleChange()" clearable></el-cascader>
+      </el-form-item>
+      <el-form-item label="薪水" prop="salary" class="jobinput">
+          <el-col :span="10">
+              <el-input-number v-model="jobInfo.baseSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
+          </el-col>
+          <el-col :span="4">
+              --
+          </el-col>
+          <el-col :span="10">
+              <el-input-number v-model="jobInfo.highSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
+          </el-col>
+      </el-form-item> 
+    </el-form>
     <el-card class="nojob" v-if="list.length===0">暂时没有该岗位信息</el-card>
     <el-card v-if="list.length>0" v-for="(item, key) in list" :key="key" class="jobcard">
       <div  @click="findDetail(item.companyId)">
@@ -20,13 +36,21 @@
 <script>
 import fetch from '../api/fetch'
 import axios from 'axios'
+import {regionDataPlus,CodeToText} from 'element-china-area-data'
+
 
 export default {
   data () {
     return {
-      content:"",
+      options: regionDataPlus,
       list: [],
       
+      jobInfo:{
+        location:"",
+        content:"",
+        baseSalary:"",
+        highSalary:"",
+      }
     }
   },
   // created(){
@@ -57,9 +81,9 @@ export default {
     },
     searchJob () {
       console.log("search");
-      axios.get('http://youngoldman.top:5555/api/job/query',{
-        type:this.content
-      })
+      axios.get('http://youngoldman.top:5555/api/job/query',{params:{
+        type:this.content,
+      }})
         .then(res => {
           console.log(res);
           if (res.status === 200) {
@@ -87,7 +111,7 @@ export default {
 }
 .jobavatar {
   float: left;
-  width: 126px;
+  width: 250px;
   height: 110px;
   margin: auto 14px 20px auto;
 }

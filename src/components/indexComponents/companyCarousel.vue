@@ -5,8 +5,11 @@
         <el-carousel-item v-for="(item, key) in companyList" :key="key">
           <el-card>
             <div slot="header" class="clearfix">
-                <span>{{item.name}}</span>
-                <img :src="item.logo" class="image" @click="getCompanyDetail(item.id)">
+                
+                <div class=container>
+                    <span>{{item.name}}</span>
+                    <img :src="item.logo" class="image" @click="getCompanyDetail(item.id)">
+                </div>
             </div>
             <div>
                 {{item.description}}
@@ -58,4 +61,6 @@ export default {
 .image {
     cursor: pointer;
 }
+
+
 </style>
