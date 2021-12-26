@@ -146,6 +146,7 @@
 
   </div>
 </template>
+
 <style scoped>
   .fullRow{
     width:100%;

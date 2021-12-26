@@ -1,64 +1,29 @@
 <template>
-  <!-- <el-dialog title="新建简历" :modal-append-to-body="false" class="myDialog" :show-close="false"> -->
-      <el-form :model="resumeList" status-icon :rules="resumerules" ref="resumeInfo" label-width="120px"
-               class="resumeInfoForm">
-       
-        <el-form-item label="岗位名称" prop="name">
-          <el-input v-model="resumeList.name" auto-complete="off"></el-input>
-        </el-form-item>
-      
-        <el-form-item label="年龄" prop="age">
-          <el-input v-model="resumeList.age" ></el-input>
-        </el-form-item>
-        
-
-        <el-form-item label="职位介绍" prop="content">
-            <el-input type="textarea" rows="10" class="require" v-model="resumeList.content"></el-input>
-        </el-form-item>
-
-        
-        <el-form-item label="学校" prop="school">
-          <el-input v-model="resumeList.school"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model="resumeList.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="resumeList.email"></el-input>
-        </el-form-item>
-
-        <el-form-item label="技术栈" prop="skills" v-for="(item, key) in resumeList.skills" :key="key">
-          <el-col :span="10">
-            <el-input v-model="item.name"></el-input>
+<el-collapse v-model="showSearch">
+  <el-collapse-item >
+<el-card class="mycard">
+ <el-form>
+      <el-form-item>
+        <el-input placeholder="搜索心仪的职位"  v-model="jobInfo.content" @change="searchJob()" prefix-icon="iconfont el-icon-search"></el-input>
+      </el-form-item>
+      <el-form-item label="工作地点" prop="location" class="jobinput">
+          <el-cascader :options="options" v-model="jobInfo.location" @change="handleChange()" clearable></el-cascader>
+      </el-form-item>
+      <el-form-item label="薪水" prop="salary" class="jobinput">
+          <el-col :span="6">
+              <el-input-number v-model="jobInfo.baseSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
           </el-col>
-
-          <el-col :span="10">
-              <select class="select" v-model="item.level">
-                <option label="了解" value=1></option>
-                <option label="熟悉" value=2></option>
-                <option label="掌握" value=3></option>
-                <option label="精通" value=4></option>
-              </select>
-              <i class="el-icon-error delete" @click="deleteItem(key)"></i>
-          </el-col>  
-          
           <el-col :span="4">
-            <el-button @click="addSkill()" >添加</el-button>
+              --
           </el-col>
-        </el-form-item>
-        
-        <el-form-item label="工作(实习)经历" prop="experience">
-          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="resumeList.experience "></el-input>
-        </el-form-item>
-        <el-form-item label="获奖经历" prop="awards">
-          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="resumeList.awards"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="cancelSubmit">取消</el-button>
-          <el-button type="primary" @click="changeResume('resumeInfo')">确定</el-button>
-        </el-form-item>
-      </el-form>
-    <!-- </el-dialog> -->
+          <el-col :span="6">
+              <el-input-number v-model="jobInfo.highSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
+          </el-col>
+      </el-form-item> 
+    </el-form>
+</el-card>
+  </el-collapse-item>
+</el-collapse>
 </template>
 
 
@@ -145,69 +110,16 @@ export default {
         callback()
       }
     }
+   
     return {
-      len: 0,
-      tip: 0,
-      isChange: false,
-      dialogFormVisible: false,
-      resumeFormVisible: false,
-      resumeList: {
-        userId: sessionStorage.getItem('userId'),
-        location:{
-                    city:'',
-                    district:''
-                },
-        name: '',
-        sex: '',
-        introduce: '',
-        avatar: '',
-        endTime: '',
-        experience: '',
-        skills: [
-          {
-            level: 0,
-            name: ''
-          }
-        ]
-      },
-      tableList: [],
-      haveResume: false,
-      value: '',
-      options: [
-        {
-          value: '2018',
-          label: '2018'
-        },
-        {
-          value: '2019',
-          label: '2019'
-        },
-        {
-          value: '2020',
-          label: '2020'
-        },
-        {
-          value: '2021',
-          label: '2021'
-        },
-        {
-          value: '2022',
-          label: '2022'
-        }
-      ],
       
-      resumerules: {
-        name: [{validator: checkname, trigger: 'blur'}],
-        sex: [{validator: checksex, trigger: 'blur'}],
-        address: [{validator: checkaddress, trigger: 'blur'}],
-        introduce: [{validator: checkintroduce, trigger: 'blur'}],
-        endTime: [{validator: checkendTime, trigger: 'blur'}],
-        phone: [{validator: checkphone, trigger: 'blur'}],
-        school: [{validator: checkschool, trigger: 'blur'}],
-        age: [{validator: checkage, trigger: 'blur'}],
-        email: [{validator: checkemail, trigger: 'blur'}],
-        experience: [{validator: checkexperience, trigger: 'blur'}],
-        awards: [{validator: checkaward, trigger: 'blur'}]
+      list: [],
+      showSearch:false,
+      jobInfo:{
+        location:"",
+        content:"",
+        baseSalary:"",
+        highSalary:"",
       }
     }
   },
@@ -321,5 +233,10 @@ export default {
 
   .myDialog {
     width: 90%;
+  }
+
+  .mycard{
+    width:80%;
+    height:60%;
   }
 </style>

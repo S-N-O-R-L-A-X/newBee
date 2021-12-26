@@ -1,24 +1,31 @@
 <template>
   <div>
-    <el-form>
-      <el-form-item>
-        <el-input placeholder="搜索心仪的职位" style="width:18rem" v-model="jobInfo.content" @change="searchJob()" prefix-icon="iconfont el-icon-search"></el-input>
-      </el-form-item>
-      <el-form-item label="工作地点" prop="location" class="jobinput">
-          <el-cascader :options="options" v-model="jobInfo.location" @change="handleChange()" clearable></el-cascader>
-      </el-form-item>
-      <el-form-item label="薪水" prop="salary" class="jobinput">
-          <el-col :span="10">
-              <el-input-number v-model="jobInfo.baseSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
-          </el-col>
-          <el-col :span="4">
-              --
-          </el-col>
-          <el-col :span="10">
-              <el-input-number v-model="jobInfo.highSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
-          </el-col>
-      </el-form-item> 
-    </el-form>
+    <el-collapse>
+      <el-collapse-item title="搜索框">
+        <el-card>
+          <el-form class="searchForm" :inline="true">
+            <el-form-item>
+              <el-input placeholder="搜索心仪的职位" style="width:20rem" v-model="jobInfo.content" @change="searchJob()" prefix-icon="iconfont el-icon-search"></el-input>
+            </el-form-item>
+            <el-form-item label="工作地点" prop="location" class="jobinput">
+                <el-cascader :options="options" v-model="jobInfo.location" @change="handleChange()" clearable></el-cascader>
+            </el-form-item>
+            <el-form-item label="薪水" prop="salary" class="jobinput">
+                <!-- <el-col :span="8"> -->
+                    <el-input-number v-model="jobInfo.baseSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
+                <!-- </el-col> -->
+                <!-- <el-col :span="4"> -->
+                    --
+                <!-- </el-col> -->
+                <!-- <el-col :span="8"> -->
+                    <el-input-number v-model="jobInfo.highSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
+                <!-- </el-col> -->
+            </el-form-item> 
+          </el-form>
+        </el-card>
+      </el-collapse-item>
+    </el-collapse>
+
     <el-card class="nojob" v-if="list.length===0">暂时没有该岗位信息</el-card>
     <el-card v-if="list.length>0" v-for="(item, key) in list" :key="key" class="jobcard">
       <div  @click="findDetail(item.companyId)">
