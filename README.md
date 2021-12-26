@@ -24,11 +24,19 @@ You can run the following command in powershell to check whether node.js has bee
 
 
 
-What I have learned
+#### What I have learned
 
 1.login and register
 
 how to save tokens
 
 2.use element-china-area-data
+
+
+
+
+
+#### Bugs to be fixed
+
+1.search in Alljobs
 

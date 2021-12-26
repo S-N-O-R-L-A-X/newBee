@@ -10,17 +10,12 @@
             <el-form-item label="工作地点" prop="location" class="jobinput">
                 <el-cascader :options="options" v-model="jobInfo.location" @change="handleChange()" clearable></el-cascader>
             </el-form-item>
-            <el-form-item label="薪水" prop="salary" class="jobinput">
-                <!-- <el-col :span="8"> -->
-                    <el-input-number v-model="jobInfo.baseSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
-                <!-- </el-col> -->
-                <!-- <el-col :span="4"> -->
-                    --
-                <!-- </el-col> -->
-                <!-- <el-col :span="8"> -->
-                    <el-input-number v-model="jobInfo.highSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
-                <!-- </el-col> -->
+            <el-form-item label="期望薪水" prop="salary" class="jobinput">
+                <el-input-number v-model="jobInfo.salary" size="small" :min="1" :max="10000000" label="描述文字"></el-input-number> 
             </el-form-item> 
+            <el-form-item>
+              <el-button type="primary" @click="searchJob()">查询</el-button>
+            </el-form-item>
           </el-form>
         </el-card>
       </el-collapse-item>
@@ -55,8 +50,7 @@ export default {
       jobInfo:{
         location:"",
         content:"",
-        baseSalary:"",
-        highSalary:"",
+        salary:"",
       }
     }
   },
@@ -87,9 +81,14 @@ export default {
         })
     },
     searchJob () {
-      console.log("search");
+      console.log(this.jobInfo.content);
+      console.log(this.jobInfo.salary);
+      console.log(this.jobInfo.location);
+
       axios.get('http://youngoldman.top:5555/api/job/query',{params:{
-        type:this.content,
+        type:this.jobInfo.content,
+        salary:this.jobInfo.salary,
+        location:this.jobInfo.location
       }})
         .then(res => {
           console.log(res);
