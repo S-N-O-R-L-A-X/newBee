@@ -17,23 +17,58 @@
         <el-form-item label="年龄" prop="age">
           <el-input v-model="resumeList.age" ></el-input>
         </el-form-item>
-
+        <el-form-item label="地址" prop="address">
+          <el-input v-model="resumeList.address"></el-input>
+        </el-form-item>
+        <el-form-item label="我的简介" prop="introduce">
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="resumeList.introduce"></el-input>
+        </el-form-item>
+        <el-form-item label="毕业年份" prop="endTime">
+          <el-select v-model="resumeList.endTime" >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="学校" prop="school">
+          <el-input v-model="resumeList.school"></el-input>
+        </el-form-item>
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="resumeList.phone"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="resumeList.email"></el-input>
         </el-form-item>
-        
-        <el-form-item label="地址" prop="address">
-          <el-input v-model="resumeList.address"></el-input>
-        </el-form-item>
-        <el-form-item label="详述" prop="introduce">
-          <el-input type="textarea" placeholder="建议填写自己的技术栈，获奖情况，项目经历，工作经历等等" :autosize="{ minRows: 6, maxRows: 10}" v-model="resumeList.introduce"></el-input>
-        </el-form-item>
 
+        <el-form-item label="技术栈" prop="skills" v-for="(item, key) in resumeList.skills" :key="key">
+          <el-col :span="10">
+            <el-input v-model="item.name"></el-input>
+          </el-col>
+
+          <el-col :span="10">
+              <select class="select" v-model="item.level">
+                <option label="了解" value=1></option>
+                <option label="熟悉" value=2></option>
+                <option label="掌握" value=3></option>
+                <option label="精通" value=4></option>
+              </select>
+              <i class="el-icon-error delete" @click="deleteItem(key)"></i>
+          </el-col>  
+          
+          <el-col :span="4">
+            <el-button @click="addSkill()" >添加</el-button>
+          </el-col>
+        </el-form-item>
         
-        
+        <el-form-item label="工作(实习)经历" prop="experience">
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="resumeList.experience "></el-input>
+        </el-form-item>
+        <el-form-item label="获奖经历" prop="awards">
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="resumeList.awards"></el-input>
+        </el-form-item>
         <el-form-item>
           <el-button @click="cancelSubmit">取消</el-button>
           <el-button type="primary" @click="changeResume('resumeInfo')">确定</el-button>

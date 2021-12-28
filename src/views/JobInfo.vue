@@ -17,7 +17,7 @@
         <p>{{company.introduce}}</p>
         <p>{{company.address}}<span>|</span>{{company.scale}}<span>|</span>{{company.type}}</p> -->
         </div>
-        <el-button class="jobbtn" @click="sendResume()" v-if="!isHr&&isLogin">投递简历</el-button>
+        <el-button class="jobbtn" @click="dialogVisible=true" v-if="!isHr&&isLogin">投递简历</el-button>
       </el-card>
       <el-card class="jobcard">
         <div class="jobintroduce">职位介绍</div>
@@ -31,6 +31,8 @@
         </div>
       </el-card>
    </div>
+  <NewResume v-bind:create="dialogVisible" v-on:update:create='dialogVisible=$event'></NewResume>
+
 </div>
 </template>
 
@@ -38,7 +40,9 @@
 <script>
 import fetch from '../api/fetch'
 import axios from 'axios'
+import NewResume from '../components/newResume'
 export default {
+  components:{NewResume},
   data () {
     return {
       company: [],
@@ -55,7 +59,8 @@ export default {
         highSalary:'',
         location:'',
         title:'',
-      }
+      },
+      dialogVisible:false,
     }
   },
   mounted () {
@@ -90,11 +95,6 @@ export default {
               this.isShow = true
             }
             if (res.data.code === 0) {
-              // this.company = res.data.data.company
-              // this.hr = res.data.data.hr
-              // this.recruit = res.data.data.recruit
-              // this.recruitId = this.recruit.id
-              // this.title = this.recruit.title
               this.jobInfo.companyName=res.data.data.companyName;
               this.jobInfo.companyLogo=res.data.data.companyLogo;
               this.jobInfo.title=res.data.data.type;
