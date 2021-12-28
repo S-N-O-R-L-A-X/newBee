@@ -10,21 +10,19 @@
         <img :src="jobInfo.companyLogo" class="avatar">
         <div class="introduce">
         <p class="title">{{jobInfo.companyName}}</p>
-        <p>{{company.introduce}}</p>
-        <p>{{company.address}}<span>|</span>{{company.scale}}<span>|</span>{{company.type}}</p>
-
+        <!-- <p>{{jobInfo.introduce}}</p> -->
+        <!-- <p>{{jobInfo.location}}<span>|</span>{{company.scale}}<span>|</span>{{company.type}}</p> -->
+        <p>{{jobInfo.location}}</p>
         <!-- <p class="title">{{recruit.title}}</p>
         <p>{{company.introduce}}</p>
         <p>{{company.address}}<span>|</span>{{company.scale}}<span>|</span>{{company.type}}</p> -->
         </div>
-        <el-button class="jobbtn" @click="sendResume()" v-if="!isHr && isLogin">投递简历</el-button>
+        <el-button class="jobbtn" @click="sendResume()" v-if="!isHr&&isLogin">投递简历</el-button>
       </el-card>
       <el-card class="jobcard">
         <div class="jobintroduce">职位介绍</div>
         <div class="jobcontent">
-        
-        <p>{{recruit.content}}</p>
-
+          <p>{{jobInfo.description}}</p>
         </div>
         <div class="jobintroduce">联系hr</div>
         <div class="hrinfo">
@@ -61,14 +59,19 @@ export default {
     }
   },
   mounted () {
-    this.getJobDetail()
+    this.getJobDetail();
+    
   },
   computed: {
     isHr() {
-      if(localStorage.getItem('role') === '1') {
-      return true
-     }
-     return false
+      console.log(localStorage.getItem('role'));
+      if(localStorage.getItem('role') ==='1') {
+        return false;
+      }
+      else{
+        return true;
+      }
+      
     },
     isLogin() {
       return localStorage.getItem('token') ? true : false
@@ -97,6 +100,8 @@ export default {
               this.jobInfo.title=res.data.data.type;
               this.jobInfo.baseSalary=res.data.data.baseSalary;
               this.jobInfo.highSalary=res.data.data.highSalary;
+              this.jobInfo.location=res.data.data.location;
+              this.jobInfo.description=res.data.data.description;
             }
           }
         })
@@ -105,11 +110,9 @@ export default {
         })
     },
     sendResume () {
-      let body = {
-        recruitId: this.recruitId,
-        title: this.title
-      }
-      fetch.deliveryReusme(body).then(res => {
+      let link="http://youngoldman.top:5555/api/jobHunter/delivery/"+localStorage.getItem('token');
+      axios.post(link,)
+      .then(res => {
         if (res.status === 200) {
           this.$message({
             message: res.data.data,
