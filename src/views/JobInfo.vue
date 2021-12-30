@@ -24,11 +24,11 @@
         <div class="jobcontent">
           <p>{{jobInfo.description}}</p>
         </div>
-        <div class="jobintroduce">联系hr</div>
+        <!-- <div class="jobintroduce">联系hr</div>
         <div class="hrinfo">
-          <span><i class="el-icon-news"></i>{{hr.username}}</span>
+          <span><i class="el-icon-news"></i>{{hr}}</span>
           <a :href= "`mailto:${hr.email}`"><span><i class="el-icon-message"></i>{{hr.email}}</span></a>
-        </div>
+        </div> -->
       </el-card>
    </div>
   <NewResume v-bind:create="dialogVisible" v-on:update:create='dialogVisible=$event'></NewResume>
@@ -46,9 +46,7 @@ export default {
   data () {
     return {
       company: [],
-      hr: [],
-      recruit: [],
-      recruitId: 0,
+      
       title: '',
       isShow: false,
       jobInfo:{
@@ -60,6 +58,7 @@ export default {
         location:'',
         title:'',
       },
+      HRid:null,
       dialogVisible:false,
     }
   },
@@ -85,7 +84,7 @@ export default {
   methods: {
     getJobDetail () {
       let jobId = localStorage.getItem('jobId');
-      console.log(jobId);
+      
       let link='http://youngoldman.top:5555/api/job/query/'+jobId;
       axios.get(link)
         .then(res => {
@@ -102,6 +101,7 @@ export default {
               this.jobInfo.highSalary=res.data.data.highSalary;
               this.jobInfo.location=res.data.data.location;
               this.jobInfo.description=res.data.data.description;
+              this.HRid=res.data.data.employeeId;
             }
           }
         })

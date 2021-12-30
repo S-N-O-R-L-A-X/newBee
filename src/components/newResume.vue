@@ -28,10 +28,12 @@
         <el-form-item label="地址" prop="address">
           <el-input v-model="resumeList.address"></el-input>
         </el-form-item>
-        <el-form-item label="详述" prop="introduce">
-          <el-input type="textarea" placeholder="建议填写自己的技术栈，获奖情况，项目经历，工作经历等等" :autosize="{ minRows: 6, maxRows: 10}" v-model="resumeList.introduce"></el-input>
+        <el-form-item label="能力介绍" prop="advantage">
+          <el-input type="textarea" placeholder="建议填写自己的技术栈，获奖情况等等" :autosize="{ minRows: 6, maxRows: 10}" v-model="resumeList.advantage"></el-input>
         </el-form-item>
-
+        <el-form-item label="个人经历" prop="experience">
+          <el-input type="textarea" placeholder="建议填写自己的项目经历，工作经历等等" :autosize="{ minRows: 6, maxRows: 10}" v-model="resumeList.experience"></el-input>
+        </el-form-item>
         
         
         <el-form-item>
@@ -46,6 +48,7 @@
 <script>/* eslint-disable indent */
 
 import fetch from '../api/fetch'
+import axios from 'axios'
 
 export default {
   props:["create"],
@@ -138,23 +141,14 @@ export default {
         address: '',
         name: '',
         sex: '',
-        introduce: '',
-        age: '',
-        avatar: '',
-        awards: '',
+        adavantage: '',
         email: '',
-        endTime: '',
         experience: '',
         phone: '',
-        school: '',
-        skills: [
-          {
-            level: 0,
-            name: ''
-          }
-        ]
+        // school: '',
       },
       tableList: [],
+      employeeId: null,
       haveResume: false,
       value: '',
       options: [
@@ -194,9 +188,14 @@ export default {
       }
     }
   },
-  mounted () {
-    let userId = sessionStorage.getItem('userId')
-    this.getResume(userId)
+  // async created(){
+    // await this.getEmployeeInfo();
+  // },
+  async mounted () {
+    // let userId = sessionStorage.getItem('userId')
+    await this.getEmployeeInfo();
+    this.getResume();
+    
   },
   watch: {
     tip() {
@@ -205,6 +204,30 @@ export default {
     
   },
   methods: {
+    getEmployeeInfo(){
+      let link="http://youngoldman.top:5555/api/jobHunter/getJHInfo/"+localStorage.getItem('token');
+      axios.get(link)
+      .then(res => {
+        console.log(res);
+        if(res.status === 200){
+          this.employeeId=res.data.data.uid;
+          
+          // console.log("gotta!"+this.employeeId);
+        }
+      })
+    },
+    getHrInfo(){
+      let link="http://youngoldman.top:5555/api/employee/getEmployeeInfo/"+localStorage.getItem('token');
+      axios.get(link)
+      .then(res => {
+        console.log(res);
+        if(res.status === 200){
+          this.employeeId=res.data.data.uid;
+          
+          // console.log("gotta!"+this.employeeId);
+        }
+      })
+    },
     cancelChange () {
       this.isChange = !this.isChange
     },
@@ -215,10 +238,52 @@ export default {
     deleteItem (key) {
       this.resumeList.skills.splice(key, 1)
     },
+    
+    async getResume () {
+      
+      console.log(this.employeeId);
+      localStorage.getItem('');
+      axios.get('http://youngoldman.top:5555/api/resume/query',{
+        hid:this.employeeId
+      })
+        .then(res => {
+          if (res.status === 200) {
+            console.log(res);
+            if (res.data.success === true) {
+              if (res.data.data !== null) {
+                this.haveResume = true
+                this.resumeList = res.data.data
+                this.tableList = res.data.data
+                
+              } else {
+                this.haveResume = false
+              }
+            }
+          }
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
     changeResume (formName) {
+      // await this.getEmployeeInfo();
       this.$refs[formName].validate(valid => {
         if (valid) {
-          fetch.sendResume(this.resumeList).then(res => {
+          axios.post('http://youngoldman.top:5555/api/job/delivery',{
+            name:this.resumeList.name,
+            gender:this.resumeList.gender,
+            birthday:this.resumeList.birthday,
+            location: this.resumeList.location,
+            phone:this.resumeList.phone,
+            email:this.resumeList.email,
+            advantage:this.resumeList.advantage,
+            page:this.resumeList.experience,
+            jid:this.localStorage.getItem('jobId'),
+            eid:this.employeeId,
+            hid:this.localStorage.getItem(''),
+          })
+          .then(res=>{
+  
             if (res.status === 200) {
               if (res.data.success) {
                 this.$message({
@@ -237,36 +302,6 @@ export default {
         }
       })
     },
-    getResume (userId) {
-      fetch
-        .getResume(userId)
-        .then(res => {
-          if (res.status === 200) {
-            if (res.data.success === true) {
-              if (res.data.data !== null) {
-                this.haveResume = true
-                this.resumeList = res.data.data
-                this.tableList = res.data.data
-                this.len = res.data.data.skills.length
-              } else {
-                this.haveResume = false
-              }
-            }
-          }
-        })
-        .catch(e => {
-          console.log(e)
-        })
-    },
-    addSkill () {
-      let newskills = {
-        id: 0,
-        level: 0,
-        name: '',
-        resumeId: 0
-      }
-      this.resumeList.skills.push(newskills)
-    }
   },
 
 }

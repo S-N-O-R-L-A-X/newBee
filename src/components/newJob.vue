@@ -20,7 +20,7 @@
                 --
             </el-col>
             <el-col :span="10">
-                <el-input-number v-model="jobInfo.highSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
+                <el-input-number v-model="jobInfo.highSalary" size="small" :min="1000" :max="400000" label="描述文字"></el-input-number>
 
                 <!-- <el-input v-model="jobInfo.highSalary"></el-input> -->
             </el-col>
@@ -153,7 +153,8 @@ export default {
             
             this.$refs[formName].validate(valid => {
                 if (valid) {
-                    axios.post('http://youngoldman.top:5555/api/job/insert',{
+                    let link='http://youngoldman.top:5555/api/job/insert/'+localStorage.getItem('token');
+                    axios.post(link,{
                         type:this.jobInfo.title,
                         baseSalary:this.jobInfo.baseSalary,
                         highSalary: this.jobInfo.highSalary,
