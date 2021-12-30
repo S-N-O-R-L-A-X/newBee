@@ -11,9 +11,9 @@
         </el-form-item>
 
 
-        <el-form-item label="薪水" prop="salary" class="jobinput">
+        <el-form-item label="月薪" prop="salary" class="jobinput">
             <el-col :span="10">
-                <el-input-number v-model="jobInfo.baseSalary" size="small" :min="1" :max="1000" label="描述文字"></el-input-number>
+                <el-input-number v-model="jobInfo.baseSalary" size="small" :min="1000" :max="300000" label="描述文字"></el-input-number>
                 <!-- <el-input v-model="jobInfo.baseSalary"></el-input> -->
             </el-col>
             <el-col :span="4">

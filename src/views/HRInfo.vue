@@ -21,6 +21,8 @@
 import receive from '../components/hrtabs/getResume'
 import setting from '../components/setting'
 import manageJob from '../components/hrtabs/manageJob'
+import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -33,6 +35,7 @@ export default {
     manageJob
   },
   mounted () {
+    this.getBasicInfo();
     this.hrRefresh = this.$route.params.hrRefresh !== undefined ? this.$route.params.hrRefresh : 0
   },
   watch: {
@@ -40,8 +43,23 @@ export default {
       location.reload();
     }
   },
-  created:function(){
-      console.log(localStorage.getItem('token'));
+  // created:function(){
+  //     console.log(localStorage.getItem('token'));
+  // },
+  methods:{
+    getBasicInfo(){
+      axios.get("http://youngoldman.top:5555/api/employee/getEmployeeInfo"+localStorage.getItem('token'))
+      .then(res=>{
+        if(res.status === 200){
+          if(res.data.code===0){
+            localStorage.setItem('uid',res.data.uid);
+          }
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    }
   }
 }
 </script>

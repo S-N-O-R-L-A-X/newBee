@@ -8,7 +8,132 @@
     </div>
 
     <CompanyCarousel></CompanyCarousel>
-    
+
+    <!-- <div class="cardContain">
+      <div class="wrapper-card">
+        <div class="card" v-for="(item, key) in companyList" :key="key">
+          <img :src="item.logo" class="image" @click="getCompanyDetail(item.id)">
+          {{item.description}} {{item.name}}
+        </div>
+     </div>
+    </div> -->
+
+    <!--推荐-->
+    <div class="division" v-if="isLogin">
+      <h3>{{isHr ? '推荐候选人': '推荐职位'}}</h3>
+      <!-- <h3 style="color: #888;font-weight: 400">---- Hot ----</h3> -->
+    </div>
+
+    <!--推荐候选人--->
+    <div class="recommand" v-if="isLogin">
+      <!---简历弹窗-->
+      <el-dialog :title="getResumeList.name+'的简历'" :visible.sync="isShow">
+        <table border="1" cellspacing="0" style="border-color:#ededed" class="mytable">
+          <tr>
+            <td>姓名：</td>
+            <td>{{getResumeList.name}}</td>
+          </tr>
+          <tr>
+            <td>年龄：</td>
+            <td>{{getResumeList.age}}</td>
+          </tr>
+          <tr>
+            <td>性别：</td>
+            <td>{{getResumeList.sex}}</td>
+          </tr>
+          <tr>
+            <td>电话：</td>
+            <td>{{getResumeList.phone}}</td>
+          </tr>
+          <tr>
+            <td>邮箱：</td>
+            <td>{{getResumeList.email}}</td>
+          </tr>
+          <tr>
+            <td>地址：</td>
+            <td>{{getResumeList.address}}</td>
+          </tr>
+          <tr>
+            <td>学校：</td>
+            <td>{{getResumeList.school}}</td>
+          </tr>
+          <tr>
+            <td>毕业时间：</td>
+            <td>{{getResumeList.endTime}}</td>
+          </tr>
+          <tr>
+            <td>技术栈：</td>
+            <td>
+          <tr v-for="(item, key) in getResumeList.skills" :key="key">
+            <td class="progress2">{{item.name}}</td>
+            <td class="progress2">熟悉程度：
+              <el-progress :text-inside="true" :stroke-width="15" :percentage="item.level*25"></el-progress>
+            </td>
+          </tr>
+          </td>
+          </tr>
+          <tr>
+            <td>实习（工作）经历：</td>
+            <td>{{getResumeList.experience}}</td>
+          </tr>
+          <tr>
+            <td>自我介绍：</td>
+            <td>{{getResumeList.introduce}}</td>
+          </tr>
+          <tr>
+            <td>获奖经历：</td>
+            <td>{{getResumeList.awards}}</td>
+          </tr>
+        </table>
+      </el-dialog>
+
+      <el-carousel height="180px" v-if="isHr">
+        <el-carousel-item v-for="(recommand, key) in recommandList" :key="key" class="el-carousel-item">
+          <div v-for="(candidate, key) in recommand.candidateList" :key="key" class="recommandList" @click="getTableList(candidate.userId)">
+            <el-progress type="circle" :percentage="candidate.rate" :width=100 :stroke-width="8"></el-progress>
+            <div class="recommandInfo">
+              <p>{{recommand.title}}</p>
+              <p>{{candidate.name}}</p>
+              <p>{{candidate.school}}</p>
+            </div>
+          </div>
+        </el-carousel-item>
+      </el-carousel>
+
+
+      <!--推荐职位-->
+      <el-carousel height="180px" v-else>
+        <el-carousel-item  class="el-carousel-item">
+            <div class="recommandJob" v-for="(recommand, key) in recommandList" :key="key" @click="jobDetail(recommand.recruitId)">
+              <p>{{recommand.companyName}}</p>
+              <p>{{recommand.title}}</p>
+            </div>
+        </el-carousel-item>
+      </el-carousel>
+    </div>
+
+    <!--热门职位-->
+    <!-- <div class="division">
+      <h3>热门职位</h3>
+      <h3 style="color: #888;font-weight: 400">--- JOBS ---</h3>
+    </div>
+    <div class="newsContain">
+      <div class="temp">
+      <div class="newsItem"  v-for = "(item, key) in jobList" :key = "key" @click="jobDetail(item.recruit.id)">
+        <div class="picContain" ontouchstart="this.classList.toggle('hover');">
+          <div class="flipper">
+        <span class="itemPic">{{item.company.name}}</span>
+        <span class="back">{{item.company.createTime}}</span>
+          </div>
+      </div>
+      <div>
+        <p>{{item.recruit.title}}</p>
+        <p style="margin-top:25px">{{item.recruit.content}}</p>
+        </div>
+      </div>
+      </div>
+    </div>
+ -->
     <div class="aboutus">
       <div id="aboutusInfo">
         <h2>关于我们</h2>
@@ -130,7 +255,43 @@ export default {
       localStorage.setItem('companyId', id);
       this.$router.push('companyDetail');
     },
+    // 获取推荐列表
+    getRecommand () {
+      if (this.isLogin) {
+        if (this.isHr) {
+        fetch.recommendCandidate().then(res => {
+          if (res.status === 200) {
+            this.recommandList = res.data.data
+          }
+        })
+      } else {
+        fetch.recommendJob().then(res => {
+        if (res.status === 200) {
+          this.recommandList = res.data.data
+        }
+      })
+      }
+    }
   },
+  // 查看推荐候选人
+  getTableList(id) {
+      this.isShow = true
+        fetch
+          .getResume(id)
+          .then(res => {
+            if (res.status === 200) {
+              if (res.data.success === true) {
+                if (res.data.data !== null) {
+                  this.getResumeList = res.data.data
+                }
+              }
+            }
+          })
+          .catch(e => {
+            console.log(e)
+          })
+      }
+},
 
 }
 </script>
