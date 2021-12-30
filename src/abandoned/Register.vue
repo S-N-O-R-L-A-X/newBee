@@ -207,7 +207,7 @@ export default {
         .sendCode(this.hrInfo.phone)
         .then(res => {
           if (res.status === 200) {
-            if (res.data.success === true) {
+            if (res.data.code === true) {
               $message({
                 message: '发送成功',
                 type: 'success'

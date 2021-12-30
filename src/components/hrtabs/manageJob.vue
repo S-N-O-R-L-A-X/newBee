@@ -47,7 +47,7 @@ export default {
     deletejob (id) {
       fetch.deletejob(id).then(res => {
         if (res.status === 200) {
-          if (res.data.success === true) {
+          if (res.data.code === true) {
             this.count++
           }
         }

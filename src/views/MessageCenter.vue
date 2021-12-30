@@ -56,7 +56,7 @@ export default {
         .getMessage()
         .then(res => {
           if (res.status === 200) {
-            if (res.data.success === true) {
+            if (res.data.code === true) {
               this.infoList = res.data.data
               if (this.infoList.length !== 0) {
                 this.isShow = false

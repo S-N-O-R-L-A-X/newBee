@@ -255,7 +255,7 @@ export default {
         if (valid) {
           fetch.sendResume(this.resumeList).then(res => {
             if (res.status === 200) {
-              if (res.data.success) {
+              if (res.data.code===0) {
                 this.$message({
                   message: '保存成功',
                   type: 'success'
@@ -277,7 +277,7 @@ export default {
         .getResume(userId)
         .then(res => {
           if (res.status === 200) {
-            if (res.data.success === true) {
+            if (res.data.code === true) {
               if (res.data.data !== null) {
                 this.haveResume = true
                 this.resumeList = res.data.data

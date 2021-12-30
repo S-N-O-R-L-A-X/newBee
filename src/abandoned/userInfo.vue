@@ -348,7 +348,7 @@
               .putUserInfo(this.list)
               .then(res => {
                 console.log('list', this.list)
-                if (res.data.success) {
+                if (res.data.code===0) {
                   this.$message({
                     message: '保存成功',
                     type: 'success'

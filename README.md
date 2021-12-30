@@ -32,13 +32,13 @@ how to save tokens
 
 2.use element-china-area-data
 
-
+3.async,await
 
 
 
 #### Bugs to be fixed
 
-1.search in Alljobs
+
 
 
 

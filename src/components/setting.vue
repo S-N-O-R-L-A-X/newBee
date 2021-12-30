@@ -127,7 +127,7 @@
           if (valid) {
             fetch.changePhone(this.phoneForm).then(res => {
               if (res.status === 200) {
-                if (res.data.success) {
+                if (res.data.code===0) {
                   this.$message({
                     message: '修改成功',
                     type: 'success'
@@ -147,7 +147,7 @@
           if (valid) {
             delete this.passForm.checkpass
             fetch.changePass(this.passForm).then(res => {
-               if (res.data.success) {
+               if (res.data.code===0) {
                  this.$message({
                    message: '修改成功',
                    type: 'success'

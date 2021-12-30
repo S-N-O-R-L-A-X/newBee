@@ -252,7 +252,7 @@ export default {
         .then(res => {
           if (res.status === 200) {
             console.log(res);
-            if (res.data.success === true) {
+            if (res.data.code === true) {
               if (res.data.data !== null) {
                 this.haveResume = true
                 this.resumeList = res.data.data
@@ -287,7 +287,7 @@ export default {
           })
           .then(res=>{
             if (res.status === 200) {
-              if (res.data.success) {
+              if (res.data.code===0) {
                 this.$message({
                   message: '投递成功',
                   type: 'success'
