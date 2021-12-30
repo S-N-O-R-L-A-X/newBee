@@ -217,7 +217,7 @@ export default {
       })
     },
     getHrInfo(){
-      let link="http://youngoldman.top:5555/api/employee/getEmployeeInfo/"+localStorage.getItem('token');
+      let link="http://youngoldman.top:5555/api/employee/getEmployeeInfo/";
       axios.get(link)
       .then(res => {
         console.log(res);

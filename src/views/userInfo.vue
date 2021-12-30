@@ -63,7 +63,7 @@ export default {
         address: '',
         introduce: '',
         endTime: '',
-        education: '',
+        education: [{degree:"",name:"",startTime:"",endTime:""},],
         school: '',
         intentionCompany: '',
         intentionJob: ''

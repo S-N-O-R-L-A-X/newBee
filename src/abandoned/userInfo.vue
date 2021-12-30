@@ -46,30 +46,55 @@
     </table>
     <el-form  :model="list" status-icon :rules="rules2" ref="list" label-width="100px" class="formWrap"
              v-if="isEdit">
-      <!-- <el-form-item label="昵称" prop="nickname">
+      <el-form-item label="昵称" prop="nickname">
         <el-input v-model="list.nickname" auto-complete="off"></el-input>
-      </el-form-item> -->
+      </el-form-item>
        <el-form-item label="姓名" prop="name">
         <el-input v-model="list.name" auto-complete="off"></el-input>
       </el-form-item>
-      <!-- <el-form-item label="性别" prop="sex">
+      <el-form-item label="性别" prop="sex">
         <el-select v-model="list.sex" placeholder="请选择性别" style="width: 100%">
           <el-option label="男" value="男"></el-option>
           <el-option label="女" value="女"></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="地址" prop="address">
+        <el-input v-model="list.address"></el-input>
+      </el-form-item>
+      <el-form-item label="我的简介" prop="introduce">
+        <el-input v-model="list.introduce"></el-input>
+      </el-form-item>
+      <el-form-item label="毕业年份" prop="endTime">
+        <el-select v-model="list.endTime" style="width: 100%">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      
+      <!-- <el-form-item label="学校" prop="school">
+        <el-input v-model="list.school"></el-input>
+      </el-form-item>
+      <el-form-item label="学历" prop="education">
+        <el-select v-model="list.education" style="width: 100%">
+          <el-option
+            v-for="item in educationOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item> -->
 
-      <!-- <el-form-item label="我的简介" prop="introduce">
-        <el-input v-model="list.introduce"></el-input>
-      </el-form-item> -->
-      
-      <el-form-item label="学历信息" prop="school"  v-for="(item, key) in list.education" :key="key">
-        <el-row :gutter="20">
-        <el-col :span="11">
+      <el-form-item label="学校" prop="school"  v-for="(item, key) in list.education" :key="key">
+        <el-col :span="12">
           <el-input v-model="item.school"></el-input>
         </el-col>
         
-        <el-col :span="11">
+        <el-col :span="12">
           <el-select v-model="item.degree" style="width: 100%">
             <el-option
               v-for="item in educationOptions"
@@ -80,25 +105,22 @@
           </el-select>
           
         </el-col>
-        </el-row>
-
-        <el-row>
+        
         <el-col :span="10" size="small">
-          <el-input-number v-model="item.startTime" controls-position="right" :min="1930" :max="2022"></el-input-number>
+          <el-input-number v-model="item.startTime" controls-position="right" :min="1920" :max="2022"></el-input-number>
         </el-col>
 
         <el-col :span="10" size="small">
-          <el-input-number v-model="item.endTime" controls-position="right" :min="1930" :max="2022"></el-input-number>
+          <el-input-number v-model="item.endTime" controls-position="right" :min="1920" :max="2022"></el-input-number>
         </el-col>
-        <i class="el-icon-error delete" @click="deleteItem(key)" v-if="list.education.length>1"></i>
+        <i class="el-icon-error delete" @click="deleteItem(key)"></i>
         <el-col :span="4">
           <el-button @click="addEducation()" >添加</el-button>
         </el-col>
-        </el-row>
       </el-form-item>
 
 
-      <!-- <el-form-item label="我想去的公司" prop="intentionCompany">
+      <el-form-item label="我想去的公司" prop="intentionCompany">
         <el-select v-model="intentionCompany" multiple placeholder="请选择" style="width: 100%">
           <el-option
             v-for="item in companyOptions"
@@ -107,7 +129,7 @@
             :value="item.value">
         </el-option>
        </el-select>
-      </el-form-item> -->
+      </el-form-item>
       <el-form-item label="感兴趣的工作" prop="intentionJob">
         <el-select v-model="intentionJob" multiple placeholder="请选择" style="width: 100%">
           <el-option
@@ -137,7 +159,7 @@
   }
 
   .formWrap {
-    width: 80%;
+    width: 500px;
     font-size: 18px;
   }
 
@@ -237,7 +259,28 @@
           intentionCompany: [{validator: checkcompany, trigger: 'blur'}],
           intentionJob: [{validator: checkjob, trigger: 'blur'}]
         },
-        
+        options: [
+          {
+            value: '2018',
+            label: '2018'
+          },
+          {
+            value: '2019',
+            label: '2019'
+          },
+          {
+            value: '2020',
+            label: '2020'
+          },
+          {
+            value: '2021',
+            label: '2021'
+          },
+          {
+            value: '2022',
+            label: '2022'
+          }
+        ],
         educationOptions: [
           {
             value: '高中及以下',
@@ -262,30 +305,9 @@
           
         ],
         companyOptions: [],
-        jobOptions: [{
-            value: '前端工程师',
-            label: '前端工程师'
-          },
-          {
-            value: '后端工程师',
-            label: '后端工程师'
-          },
-          {
-            value: 'JAVA工程师',
-            label: 'JAVA工程师'
-          },
-          {
-            value: 'C++工程师',
-            label: 'C++工程师'
-          },
-          {
-            value: '数据分析师',
-            label: '数据分析师'
-          },],
+        jobOptions: [],
         intentionCompany: [],
-        intentionJob: [
-          
-        ]
+        intentionJob: []
       }
     },
     mounted() {
