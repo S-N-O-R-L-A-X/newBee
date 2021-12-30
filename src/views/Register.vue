@@ -16,7 +16,7 @@
           <el-input type="password" v-model="user.checkPass" auto-complete="off" placeholder="确认密码"></el-input>
         </el-form-item>
 
-        <el-switch v-model="isHr" active-color="#409eff" inactive-color="#13ce66" 
+        <el-switch v-model="user.status" active-color="#409eff" inactive-color="#13ce66" active-value="1" inactive-value="0"
           active-text="我要招聘" inactive-text="我要找工作"></el-switch>
         
         <!-- <el-form-item prop="phone">   
@@ -140,7 +140,7 @@ export default {
       user: {
         username: "",
         password: "",
-        status: "",
+        status: 0,
         phone: "",
         verifyCode: ""
       },
@@ -191,7 +191,7 @@ export default {
         this.timer = setInterval(() => {
           if (this.count > 0 && this.count <= TIME_COUNT) {
             this.count--;
-            this.msg = this.count + "s后发送"
+            this.msg = this.count + "s后可重发"
             if (this.count === 0) {
               this.msg = '发送验证码'
             }
@@ -206,10 +206,11 @@ export default {
     register(formName){
       this.$refs[formName].validate(valid => {
         if (valid && !this.tipsShow) {
+          
           axios.post("http://youngoldman.top:5555/api/user/register",{
             username:this.user.username,
-            phone:this.user.phone,
             password:this.user.password,
+            phone:this.user.phone,
             status:this.user.status,
             verifyCode: this.user.verifyCode,
           })
@@ -217,6 +218,12 @@ export default {
             if(res.status===200){
               if(res.data.code===0){
                 this.$router.push('login');
+              }
+              else if(res.data.code===201){
+                this.$message({
+                    message: res.data.msg,
+                    type: 'warning'
+                  })
               }
               else if(res.data.code===100){
                 this.$message({

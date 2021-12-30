@@ -62,6 +62,7 @@ export default {
       index: 0,
       count: 0,
       amount: 0,
+      websocket: null,
       publishInfo: {
         hrId: '',
         title: '',
@@ -88,8 +89,34 @@ export default {
       }
     }
   },
+  created () {
+    this.initWs();
+    // location.reload();
+  },
   
   methods: {
+    initWs () {
+      if (sessionStorage.getItem('userId') !== null) {
+        if ('WebSocket' in window) {
+          this.websocket = new WebSocket('ws://pf.stalary.com/push/ws/' + `${sessionStorage.getItem('userId')}`, [])
+        } else {
+          alert('浏览器不支持WebSocket')
+        }
+        this.websocket.onopen = this.openWS
+        this.websocket.onmessage = this.receiveWSMessage
+        this.websocket.onclose = this.closeWS
+      }
+    },
+    openWS (e) {
+      console.log('建立连接')
+    },
+    receiveWSMessage (e) {
+      console.log('接收消息' + e.data)
+      this.count = parseInt(e.data)
+    },
+    closeWS (e) {
+      console.log('关闭连接')
+    },
     redirect (num) {
       switch(num){
         case 1:this.$router.push('index');break;
@@ -131,7 +158,7 @@ export default {
             localStorage.removeItem('role');
             localStorage.removeItem('token');
             // localStorage.removeItem('count')
-
+            // this.websocket.close()
             this.isLogin=true;
             this.$router.push('login');
           }
