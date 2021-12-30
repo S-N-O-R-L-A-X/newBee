@@ -235,133 +235,11 @@ export default {
       })
     },
 
-    hrSubmit(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid && !this.tipsShow) {
-          let result = {
-            email: this.user.email,
-            password: this.user.password,
-            phone: this.user.phone,
-            username: this.user.username,
-            code: this.user.code,
-          }
-          // hr注册
-          if (this.isHr) {
-            result.companyId = this.companyId;
-            fetch.hrRegister(result).then(res => {
-            if (res.status == 200) {
-                if (res.data.code === 0) {
-                  this.$message({
-                    message: "注册成功",
-                    type: "success"
-                  });
-                  this.$router.push({ name: "login" });
-                } else {
-                  this.$message({
-                    message: res.data.msg,
-                    type: "warning"
-                   });
-                }
-               }
-            }).catch(e => {
-            console.log(e)
-          })
-        } 
-        else {
-
-        // 用户注册
-        fetch
-          .userRegister(result)
-          .then(res => {
-            if (res.status == 200) {
-              if (res.data.code === 0) {
-                this.$message({
-                  message: "注册成功",
-                  type: "success"
-                });
-                this.$router.push({ name: "login" });
-                } else {
-                this.$message({
-                  message: res.data.msg,
-                  type: "warning"
-                  });
-                }
-               }
-            })
-            .catch(e => {
-              this.$message({
-                message: "注册失败",
-                type: "warning"
-              });
-            });
-        }
-        }
-      })
-    },
-
-    // 获取公司职位名称
-    getCompany() {
-      fetch
-        .getCompany()
-        .then(res => {
-          for (let item of res.data.data.companyList) {
-            this.options.push({value: item.name, label: item.id})
-          }
-        })
-        .catch(e => {
-          console.log(e)
-        })
-    },
-
     toLogin() {
       this.$router.push("/login");
     },
 
-    // 公司查询
-    querySearch(queryString, cb) {
-        var options = this.options;
-        var results = queryString ? options.filter(this.createFilter(queryString)) : options;
-        // 调用 callback 返回建议列表的数据
-        console.log('ressshs', results)
-        if (results.length === 0) {
-          this.tipsShow = true;
-        } else {
-          this.tipsShow = false;
-        }
-        cb(results);
-    },
-
-    createFilter(queryString) {
-        return (option) => {
-          return (option.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-        };
-    },
-    // 选择公司
-    handleSelect(item) {
-      this.companyId = item.label;
-    },
-    // 控制添加公司弹窗显示
-    changeClick() {
-      this.dialogShow = true;
-    },
-    // 提交公司信息
-    submitCompanyInfo() {
-      fetch.addCompany(this.companyInfo).then(res => {
-          if (res.data.code === 0) {
-              this.$message({
-                message: "添加成功",
-                type: "success"
-              });
-              this.$router.push({ name: "login" });
-              } else {
-                this.$message({
-                  message: res.data.msg,
-                  type: "warning"
-                  });
-            }
-      })
-      console.log(this.companyInfo)
-    },
+    
     // 注册切换角色
     changeTabs(isHr) {
       if (!isHr) {
@@ -374,7 +252,7 @@ export default {
       this.isHr = isHr;
     },
     toIndex() {
-      this.$router.push({name: 'index'})
+      this.$router.push('index');
     }
   }
 }
