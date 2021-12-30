@@ -2,10 +2,11 @@
   <div>
     <el-card v-if="cid===null">
       <p>您的公司还未在本平台收录哦，快来记录您的公司吧！</p>
-      <el-form :model="company" status-icon :rules="phonerules" ref="company" label-width="100px"
+      <el-form :model="company" status-icon :rules="companyRules" ref="company" label-width="100px"
                 class="demo-ruleForm">
-        <el-form-item label="公司名" prop="name" class="settinginput">
-          <el-input v-model="company.name" auto-complete="off"></el-input>
+        <el-form-item label="公司名" prop="name" class="settinginput" >
+          <el-autocomplete v-model="company.name" style="width:100%" :fetch-suggestions="querySearchAsync"></el-autocomplete>
+          <!-- <el-input v-model="company.name" auto-complete="on"></el-input> -->
         </el-form-item>
 
         <el-form-item label="公司描述" prop="description" class="settinginput">
@@ -14,8 +15,7 @@
         <el-form-item label="公司头像" prop="logo" >
           <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/"
             :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove"
-            :limit="1" :on-exceed="handleExceed" :before-upload="beforeAvatarUpload"
-            :file-list="fileList">
+            :limit="1" :before-upload="beforeAvatarUpload" :file-list="fileList">
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
@@ -25,15 +25,16 @@
         </el-form-item>
       </el-form>
     </el-card>
-
+    
     <el-card v-else>
       <el-input v-model="cid">请输入您所在的公司id</el-input>
       <el-button @click="changeCompany()">提交</el-button>
     </el-card>
+
   </div>
 </template>
 <script>
-
+import axios from 'axios'
 export default {
   data () {
     var checkCompanyName = (rule, value, callback) => {
@@ -58,10 +59,11 @@ export default {
       }
     }
     return {
-      
+      companyList:[],
+      fileList:[],
       company:{name:null,logo:null,description:null},
       cid:localStorage.getItem("cid"),
-      rules: {
+      companyRules: {
           name: [{validator: checkCompanyName, trigger: 'blur'}],
           description: [{validator: checkCompanyDescription, trigger: 'blur'}],
           logo: [{validator: checkCompanyLogo, trigger: 'blur'}],
@@ -69,6 +71,7 @@ export default {
     }
   },
   mounted () {
+    this.getCompany();
     console.log(localStorage.getItem("cid"));
   },
   watch: {
@@ -77,7 +80,39 @@ export default {
     }
   },
   methods: {
-     
+    getCompany () {
+        axios.get('http://youngoldman.top:5555/api/company/getCompany',{
+        })
+        .then(res => {
+            // console.log(res);
+            if (res.status === 200) {
+                if (res.data.code===0) {
+                  for(let i=0;i<res.data.data.length;++i){
+                    let obj={value:res.data.data[i].name};
+                    this.companyList.push(obj);
+                  }
+                  
+                }
+            }
+        }).catch(e => {
+            console.log(e)
+        })
+    },
+    querySearchAsync(queryString, cb) {//used for autocomplete
+      var restaurants = this.companyList;
+      var results = queryString ? this.companyList.filter(this.createStateFilter(queryString)) : this.companyList;
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(results);
+      }, 3000 * Math.random());
+    },
+    createStateFilter(queryString) {
+      return (name) => {
+        return (name.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+      };
+    },
+
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
