@@ -36,6 +36,7 @@ export default {
   },
   mounted () {
     this.getBasicInfo();
+    
     this.hrRefresh = this.$route.params.hrRefresh !== undefined ? this.$route.params.hrRefresh : 0
   },
   watch: {
@@ -48,11 +49,12 @@ export default {
   // },
   methods:{
     getBasicInfo(){
-      axios.get("http://youngoldman.top:5555/api/employee/getEmployeeInfo"+localStorage.getItem('token'))
+      axios.get("http://youngoldman.top:5555/api/employee/getEmployeeInfo/"+localStorage.getItem('token'))
       .then(res=>{
+        console.log(res);
         if(res.status === 200){
           if(res.data.code===0){
-            localStorage.setItem('uid',res.data.uid);
+            localStorage.setItem('uid',res.data.data.uid);
           }
         }
       })

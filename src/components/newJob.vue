@@ -150,18 +150,17 @@ export default {
                 })
                 return ;
             }            
-            
+            console.log(localStorage.getItem('uid'));
             this.$refs[formName].validate(valid => {
                 if (valid) {
-                    let link='http://youngoldman.top:5555/api/job/insert/'+localStorage.getItem('token');
-                    axios.post(link,{
+                    axios.post('http://youngoldman.top:5555/api/job/insert/',{
                         type:this.jobInfo.title,
                         baseSalary:this.jobInfo.baseSalary,
                         highSalary: this.jobInfo.highSalary,
                         // companyId: this.jobInfo.companyId,
                         location: this.jobInfo.location,
                         description: this.jobInfo.description,
-                        employeeId: this.jobInfo.employeeId,
+                        employeeId: localStorage.getItem('uid'),
                     })
                     .then(res => {
                         if (res.status === 200) {
