@@ -1,9 +1,8 @@
 <template>
   <div class="getResumeWrap">
     <div v-if="show" class="nofind">
-      <img
-        src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1524746733938&di=9ae24b5205e97c2876b48d3ff26f1c23&imgtype=0&src=http%3A%2F%2Fwww.snlfjx.com%2Fforum%2FSkin%2Fimgs%2Fno-data.png" style="margin: 0 auto">
-      <p>暂时没有记录哦</p>
+      <el-empty description="暂时没有收到简历哦"></el-empty>
+      
     </div>
     <div v-for="(item, index) in list" :key="index" v-if="!show">
       <el-card shadow="hover" class="receiveBox">
@@ -141,7 +140,7 @@
 
 <script>
   import fetch from '../../api/fetch'
-
+  import axios from 'axios'
   export default {
     data() {
       return {
@@ -175,8 +174,11 @@
     },
     methods: {
       getList() {
-        fetch.receiveResume().then(res => {
-          this.list = res.data.data.receiveList
+        let link="http://youngoldman.top:5555/api/employee/getJHResumes/"+localStorage.getItem('token');
+        axios.get(link)
+        .then(res => {
+          console.log(res);
+          this.list = res.data.data;
           if (this.list.length === 0) {
             this.show = true
           }

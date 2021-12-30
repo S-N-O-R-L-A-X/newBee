@@ -80,9 +80,7 @@
           </el-select>
           
         </el-col>
-        </el-row>
-
-        <el-row>
+        
         <el-col :span="10" size="small">
           <el-input-number v-model="item.startTime" controls-position="right" :min="1930" :max="2022"></el-input-number>
         </el-col>
