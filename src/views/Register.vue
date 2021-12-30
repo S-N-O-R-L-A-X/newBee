@@ -26,10 +26,11 @@
         
         <el-form-item prop="verifyCode">
           <el-col :span="10">
-            <el-input v-model.number="user.phone" placeholder="手机号"></el-input>
+            <el-input v-model="user.phone" placeholder="手机号"></el-input>
           </el-col>
+        
           <el-col :span="10" >
-            <el-input class="code" v-model.number="user.verifyCode" placeholder="验证码"></el-input>
+            <el-input class="code" v-model="user.verifyCode" placeholder="验证码"></el-input>
           </el-col>
           <el-col :span="4">
             <el-button  @click="sendCode">{{msg}}</el-button>
@@ -37,7 +38,7 @@
         </el-form-item>
         
         <el-form-item>
-          <el-button type="primary" class="registerBtn" @click="hrSubmit('user')">注册</el-button>
+          <el-button type="primary" class="registerBtn" @click="register('user')">注册</el-button>
         </el-form-item>
         <div class="footer-tip3" @click="toLogin">
             已有账号?直接登录
@@ -61,14 +62,15 @@ export default {
         callback()
       }
     }
+
     var checkCompany = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("请选择公司"))
       } else {
         return callback()
       }
-
     }
+
     var checkPhone = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("请输入手机号"))
@@ -78,6 +80,7 @@ export default {
         callback()
       }
     }
+
     var checkEmail = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("请输入邮箱"))
@@ -154,27 +157,27 @@ export default {
   },
 
   mounted() {
-    this.getCompany()
+    // this.getCompany()
   },
 
   methods: {
 
     sendCode() {
       const TIME_COUNT=60;
-      if (!/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.user.phone)){
-        let link='http://1.15.170.222:88/api/service/sms/'+this.user.phone;
-        console.log(link);
+      
+      if (/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.user.phone)){
+        let link='http://youngoldman.top:5555/api/service/sms/'+this.user.phone;
+        
         axios.get(link)
         .then(res =>{
           console.log(res);
           if (res.status === 200) {
-            if (res.data.success === true) {
-              $message({
+            if (res.data.code === 0) {
+              this.$message({
                 message: '发送成功',
                 type: 'success'
-              })
+              });
             }
-            
           }
         })
         .catch(e => {
@@ -187,7 +190,7 @@ export default {
         this.show = false
         this.timer = setInterval(() => {
           if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--
+            this.count--;
             this.msg = this.count + "s后发送"
             if (this.count === 0) {
               this.msg = '发送验证码'
@@ -200,7 +203,7 @@ export default {
         }, 1000)
       }
     },
-    register(){
+    register(formName){
       this.$refs[formName].validate(valid => {
         if (valid && !this.tipsShow) {
           axios.post("http://youngoldman.top:5555/api/user/register",{
@@ -210,23 +213,23 @@ export default {
             status:this.user.status,
             verifyCode: this.user.verifyCode,
           })
+          .then(res=>{
+            if(res.status===200){
+              if(res.data.code===0){
+                this.$router.push('login');
+              }
+              else if(res.data.code===100){
+                this.$message({
+                    message: res.data.msg,
+                    type: 'warning'
+                  })
+              }
+            }
+          })
+          .catch(e=>{
+            alert(e);
+          })
         }
-      })
-      .then(res=>{
-        if(res.status===200){
-          if(res.data.code===0){
-            this.$router.push('login');
-          }
-          else if(res.data.code===100){
-            $message({
-                message: res.data.msg,
-                type: 'warning'
-              })
-          }
-        }
-      })
-      .catch(e=>{
-        alert(e);
       })
     },
 

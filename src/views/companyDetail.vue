@@ -1,14 +1,14 @@
 <template>
  <div>
     <el-card class="companycard" style="height: 180px">
-      <img :src="detail.avatar" class="avatar">
+      <img :src="detail.logo" class="avatar">
       <div class="introduce">
       <p class="title">{{detail.name}}</p>
-      <p>{{detail.introduce}}</p>
+      <p>{{detail.description}}</p>
       <p>{{detail.address}}<span>|</span>{{detail.scale}}<span>|</span>{{detail.type}}</p>
       </div>
     </el-card>
-    <el-card class="companycard">
+    <!-- <el-card class="companycard">
       <div class="job">招聘信息</div>
       <p v-if="!isShow" class="nojob">暂时没有招聘信息哦</p>
         <div v-if="isShow"  v-for="(item, key) in recruit" :key="key">
@@ -17,7 +17,7 @@
           <p><i class="el-icon-location"></i>{{detail.address}}<span>|</span>{{detail.scale}}<span>|</span>{{detail.type}}</p>
           </div>
       </div>
-    </el-card>
+    </el-card> -->
   </div>
 </template>
 <style>
@@ -84,15 +84,14 @@ p span {
 </style>
 
 <script>
-import fetch from '../api/fetch'
 import axios from 'axios'
 export default {
   data () {
     return {
       companyId: localStorage.getItem('companyId'),
-      detail: [],
-      recruit: [],
-      isShow: true
+      detail: {},
+      // recruit: [],
+      // isShow: true
     }
   },
   mounted () {
@@ -100,16 +99,26 @@ export default {
   },
   methods: {
     getCompanyInfo () {
-      fetch
-        .getCompanyDetail(this.companyId)
+      
+      axios.get('http://youngoldman.top:5555/api/company/getCompany')
         .then(res => {
           if (res.status === 200) {
-            if (res.data.success === true) {
-              this.detail = res.data.data.company
-              this.recruit = res.data.data.recruitList
-              if (this.recruit.length === 0) {
-                this.isShow = false
+            if (res.data.code === 0) {
+              let companies = res.data.data;
+              
+              for(let i=0;i<companies.length;i++) {//need to ask backend to add a new interface for searching by id
+                console.log(companies[i]);
+                console.log(this.companyId)
+                if(companies[i].id==this.companyId){
+                  
+                  this.detail=companies[i];
+                  break;
+                }
               }
+              console.log(this.detail);
+              // if (this.recruit.length === 0) {
+              //   this.isShow = false
+              // }
             }
           }
         })
