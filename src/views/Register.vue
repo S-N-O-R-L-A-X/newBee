@@ -19,11 +19,6 @@
         <el-switch v-model="user.status" active-color="#409eff" inactive-color="#13ce66" active-value="1" inactive-value="0"
           active-text="我要招聘" inactive-text="我要找工作"></el-switch>
         
-        <!-- <el-form-item prop="phone">   
-          <el-input v-model.number="user.phone" placeholder="手机号"></el-input>
-        </el-form-item> -->
-        
-        
         <el-form-item prop="verifyCode">
           <el-col :span="10">
             <el-input v-model="user.phone" placeholder="手机号"></el-input>
