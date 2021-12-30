@@ -158,7 +158,7 @@ export default {
                         type:this.jobInfo.title,
                         baseSalary:this.jobInfo.baseSalary,
                         highSalary: this.jobInfo.highSalary,
-                        companyId: this.jobInfo.companyId,
+                        // companyId: this.jobInfo.companyId,
                         location: this.jobInfo.location,
                         description: this.jobInfo.description,
                         employeeId: this.jobInfo.employeeId,

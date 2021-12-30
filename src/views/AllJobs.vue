@@ -23,7 +23,7 @@
 
     <el-card class="nojob" v-if="list.length===0">暂时没有该岗位信息</el-card>
     <el-card v-if="list.length>0" v-for="(item, key) in list" :key="key" class="jobcard">
-      <div  @click="findDetail(item.companyId)">
+      <div  @click="findDetail(item.id)">
         <img class="jobavatar" :src="item.companyLogo"/>
         <div class="introduce">
           <p>{{item.companyName}}</p>

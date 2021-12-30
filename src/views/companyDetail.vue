@@ -85,6 +85,7 @@ p span {
 
 <script>
 import fetch from '../api/fetch'
+import axios from 'axios'
 export default {
   data () {
     return {

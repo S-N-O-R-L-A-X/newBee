@@ -149,6 +149,8 @@ export default {
       },
       tableList: [],
       employeeId: null,
+      hid: null,
+      eid: null,
       haveResume: false,
       value: '',
       options: [
@@ -191,9 +193,10 @@ export default {
   // async created(){
     // await this.getEmployeeInfo();
   // },
-  async mounted () {
+  mounted () {
     // let userId = sessionStorage.getItem('userId')
-    await this.getEmployeeInfo();
+    this.getEmployeeInfo();
+    this.getHrInfo();
     this.getResume();
     
   },
@@ -204,29 +207,29 @@ export default {
     
   },
   methods: {
-    getEmployeeInfo(){
+    // 通过token获取Hunter的id
+    getHrInfo(){
       let link="http://youngoldman.top:5555/api/jobHunter/getJHInfo/"+localStorage.getItem('token');
       axios.get(link)
       .then(res => {
         console.log(res);
         if(res.status === 200){
-          this.employeeId=res.data.data.uid;
-          
+          this.hid=res.data.data.uid;
+          console.log("hid==>" + this.hid)
           // console.log("gotta!"+this.employeeId);
         }
       })
     },
-    getHrInfo(){
-      let link="http://youngoldman.top:5555/api/employee/getEmployeeInfo/";
-      axios.get(link)
-      .then(res => {
-        console.log(res);
-        if(res.status === 200){
-          this.employeeId=res.data.data.uid;
-          
-          // console.log("gotta!"+this.employeeId);
-        }
-      })
+
+    getEmployeeInfo(){
+      // 通过工作获取对应的employee的id
+      axios
+        .get("http://youngoldman.top:5555/api/job/query/"+localStorage.getItem("jobId"))
+        .then((res) => {
+          this.eid = res.data.data.employeeId;
+          console.log("eid==>" + this.eid);
+        });
+
     },
     cancelChange () {
       this.isChange = !this.isChange
@@ -240,11 +243,11 @@ export default {
     },
     
     async getResume () {
-      
-      console.log(this.employeeId);
-      localStorage.getItem('');
+      console.log(this.eid);
+      console.log(this.hid)
+      // localStorage.getItem('');
       axios.get('http://youngoldman.top:5555/api/resume/query',{
-        hid:this.employeeId
+        hid:this.hid
       })
         .then(res => {
           if (res.status === 200) {
@@ -254,7 +257,6 @@ export default {
                 this.haveResume = true
                 this.resumeList = res.data.data
                 this.tableList = res.data.data
-                
               } else {
                 this.haveResume = false
               }
@@ -265,11 +267,12 @@ export default {
           console.log(e)
         })
     },
+
     changeResume (formName) {
       // await this.getEmployeeInfo();
       this.$refs[formName].validate(valid => {
         if (valid) {
-          axios.post('http://youngoldman.top:5555/api/job/delivery',{
+          axios.post('http://youngoldman.top:5555/api/resume/delivery',{
             name:this.resumeList.name,
             gender:this.resumeList.gender,
             birthday:this.resumeList.birthday,
@@ -278,27 +281,28 @@ export default {
             email:this.resumeList.email,
             advantage:this.resumeList.advantage,
             page:this.resumeList.experience,
-            jid:this.localStorage.getItem('jobId'),
+            jid:localStorage.getItem('jobId'),
             eid:this.employeeId,
-            hid:this.localStorage.getItem(''),
+            hid:this.hid,
           })
           .then(res=>{
-  
             if (res.status === 200) {
               if (res.data.success) {
                 this.$message({
-                  message: '保存成功',
+                  message: '投递成功',
                   type: 'success'
                 })
-                this.tip++
-                this.resumeFormVisible = false
-                this.dialogFormVisible = false
-                this.isChange = false
+                this.tip++;
+                // this.resumeFormVisible = false;
+                this.create = false;
+                // this.isChange = false;
               }
+              this.$emit('update:create', false);
             }
           }).catch(e => {
             console.log(e)
           })
+
         }
       })
     },

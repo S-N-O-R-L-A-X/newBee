@@ -163,9 +163,9 @@ export default {
       const TIME_COUNT=60;
       if (!/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.user.phone)){
         let link='http://1.15.170.222:88/api/service/sms/'+this.user.phone;
-        axios.get(link,{
-
-        }).then(res =>{
+        console.log(link);
+        axios.get(link)
+        .then(res =>{
           console.log(res);
           if (res.status === 200) {
             if (res.data.success === true) {

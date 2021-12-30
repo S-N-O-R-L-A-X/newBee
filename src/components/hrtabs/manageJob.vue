@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div v-if="show" class="nofind">
-      <p>暂时没有发布的职位哦，快去发布吧</p>
+      <el-empty description="暂时没有发布的职位哦，快去发布吧"></el-empty>
     </div>
     <el-card  v-for="(item, key) in joblist" :key="key" class="mycard" v-if="!show" @click="checkDetail(item.id)">
       <p class="myflex">{{item.title}}</p>
