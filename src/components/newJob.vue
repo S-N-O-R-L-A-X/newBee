@@ -137,11 +137,11 @@ export default {
     },
     methods:{
         handleChange(){
-            this.loc='';
+            this.jobInfo.loc='';
             for(let i=0;i<this.jobInfo.location.length;++i){
-                this.loc+=CodeToText[this.jobInfo.location[i]];
+                this.jobInfo.loc+=CodeToText[this.jobInfo.location[i]];
             }
-            console.log(this.loc);
+            console.log(this.jobInfo.loc);
         },
         addjob (formName) {
             if(this.jobInfo.baseSalary>this.jobInfo.highSalary){
@@ -154,7 +154,7 @@ export default {
             console.log(localStorage.getItem('uid'));
             this.$refs[formName].validate(valid => {
                 if (valid) {
-                    console.log(this.jobInfo.loc)
+                    
                     console.log(this.jobInfo.loc+this.jobInfo.title+this.jobInfo.baseSalary
                     +this.jobInfo.highSalary+localStorage.getItem('cid')+this.jobInfo.description+localStorage.getItem('uid'));
                     axios.post('http://youngoldman.top:5555/api/job/insert',{
@@ -169,6 +169,10 @@ export default {
                     .then(res => {
                         console.log(res);
                         if (res.status === 200) {
+                            this.$message({
+                                message: '创建成功',
+                                type: 'success'
+                            });
                             // this.amount++;
                             this.$refs[formName].resetFields();
                             this.newJobVisible=false;
