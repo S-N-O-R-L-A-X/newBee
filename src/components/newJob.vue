@@ -118,6 +118,7 @@ export default {
                 highSalary:'',
                 // employeeId:0,
                 location:'',
+                loc:'',
                 // skills: [
                 //     {
                 //         name: '',
@@ -136,11 +137,11 @@ export default {
     },
     methods:{
         handleChange(){
-            let loc='';
-            // for(let i=0;i<this.location.length;++i){
-            //     loc+=CodeToText[this.location[i]];
-            // }
-            console.log(loc);
+            this.loc='';
+            for(let i=0;i<this.jobInfo.location.length;++i){
+                this.loc+=CodeToText[this.jobInfo.location[i]];
+            }
+            console.log(this.loc);
         },
         addjob (formName) {
             if(this.jobInfo.baseSalary>this.jobInfo.highSalary){
@@ -153,16 +154,20 @@ export default {
             console.log(localStorage.getItem('uid'));
             this.$refs[formName].validate(valid => {
                 if (valid) {
-                    axios.post('http://youngoldman.top:5555/api/job/insert/',{
+                    console.log(this.jobInfo.loc)
+                    console.log(this.jobInfo.loc+this.jobInfo.title+this.jobInfo.baseSalary
+                    +this.jobInfo.highSalary+localStorage.getItem('cid')+this.jobInfo.description+localStorage.getItem('uid'));
+                    axios.post('http://youngoldman.top:5555/api/job/insert',{
                         type:this.jobInfo.title,
                         baseSalary:this.jobInfo.baseSalary,
                         highSalary: this.jobInfo.highSalary,
-                        // companyId: this.jobInfo.companyId,
-                        location: this.jobInfo.location,
+                        companyId: localStorage.getItem('cid'),
+                        location: this.jobInfo.loc,
                         description: this.jobInfo.description,
                         employeeId: localStorage.getItem('uid'),
                     })
                     .then(res => {
+                        console.log(res);
                         if (res.status === 200) {
                             // this.amount++;
                             this.$refs[formName].resetFields();
