@@ -21,36 +21,14 @@
             </el-col>
             <el-col :span="10">
                 <el-input-number v-model="jobInfo.highSalary" size="small" :min="1000" :max="400000" label="描述文字"></el-input-number>
-
-                <!-- <el-input v-model="jobInfo.highSalary"></el-input> -->
             </el-col>
         </el-form-item>        
 
 
         <el-form-item label="职位介绍" prop="description" class="jobinput">
-            <el-input type="textarea" rows="10" v-model="jobInfo.description"></el-input>
+            <v-md-editor v-model="jobInfo.description" height="20rem"></v-md-editor>
         </el-form-item>
-
-        <!-- <el-form-item label="技术栈" prop="skills" v-for="(item, key) in jobInfo.skills" :key="key">
-          <el-col :span="10">
-            <el-input v-model="item.name"></el-input>
-          </el-col>
-
-          <el-col :span="10">
-              <select class="select" v-model="item.level">
-                <option label="了解" value=1></option>
-                <option label="熟悉" value=2></option>
-                <option label="掌握" value=3></option>
-                <option label="精通" value=4></option>
-              </select>
-              <i class="el-icon-error delete" @click="deleteItem(key)" v-if="jobInfo.skills.length>1"></i>
-          </el-col>  
-          
-          <el-col :span="4">
-            <el-button @click="addSkill()" >添加</el-button>
-          </el-col>
-        </el-form-item> -->
-
+        
         <el-form-item>
             <el-button @click="cancelSubmit()">取 消</el-button>
             <el-button @click="addjob('jobInfo')">确 定</el-button>
@@ -109,8 +87,10 @@ export default {
         // }
         return{
             options: regionDataPlus,
-            
+            text:'',
+            editor:false,
             jobInfo: {
+                
                 title: '',
                 description: '',
                 // companyId: '',

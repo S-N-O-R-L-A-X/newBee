@@ -24,6 +24,18 @@ You can run the following command in powershell to check whether node.js has bee
 
 
 
+#### What I have used
+
+1.vue
+
+2.elementui
+
+3.vuemarkdowneditor
+
+4.element-china-area-data
+
+
+
 #### What I have learned
 
 1.login and register
@@ -34,7 +46,7 @@ how to save tokens
 
 3.async,await
 
-
+4.markdown editor
 
 
 
@@ -46,4 +58,3 @@ how to save tokens
 
 #### What can be improved
 
-1.Use editor in textarea

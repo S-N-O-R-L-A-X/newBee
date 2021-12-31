@@ -1,17 +1,26 @@
 <template>
-
+  <div>
+    <el-form>
+      <el-form-item>
+      <v-md-editor v-model="md" height="400px"></v-md-editor>
+      </el-form-item>
+    </el-form>
+  <!-- <v-md-editor :value="md" height="400px"></v-md-editor> -->
+   <!-- <v-md-preview :text="md"></v-md-preview> -->
+  <!-- <v-md-preview-html :html="md" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
+ </div>
 </template>
 
 
 <script>/* eslint-disable indent */
-
-import fetch from '../api/fetch'
 import axios from 'axios'
+
 export default {
+
     data () {
    
     return {
-      
+      md:'#### 标题',
       list: [],
       showSearch:false,
       jobInfo:{
