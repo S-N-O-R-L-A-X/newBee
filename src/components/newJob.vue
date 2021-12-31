@@ -138,8 +138,12 @@ export default {
     methods:{
         handleChange(){
             this.jobInfo.loc='';
-            for(let i=0;i<this.jobInfo.location.length;++i){
+            let n=this.jobInfo.location.length;
+            for(let i=0;i<n;++i){
                 this.jobInfo.loc+=CodeToText[this.jobInfo.location[i]];
+                if(i<n-1){
+                    this.jobInfo.loc+=':'
+                }
             }
             console.log(this.jobInfo.loc);
         },

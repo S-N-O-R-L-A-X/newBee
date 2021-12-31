@@ -4,7 +4,8 @@
       <el-empty description="暂时没有发布的职位哦，快去发布吧"></el-empty>
     </div>
     <el-card  v-for="(item, key) in jobList" :key="key" class="mycard" v-if="!show" @click="checkDetail(item.id)">
-      <p class="myflex">{{item.type}} {{item.companyName}}</p>
+      <p class="myflex">{{item.type}} {{item.companyName}} {{item.location}}</p>
+      <p class="myflex"></p>
       <el-button class="delbtn" @click="deletejob(item.id)">删除职位</el-button>
     </el-card>
   </div>
@@ -53,9 +54,13 @@ export default {
     },
     deletejob (id) {
       axios.get("http://youngoldman.top:5555/api/job/delete/"+id)
-      then(res => {
+      .then(res => {
         if (res.status === 200) {
           if (res.data.code === 0) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
             this.count++;
           }
         }
