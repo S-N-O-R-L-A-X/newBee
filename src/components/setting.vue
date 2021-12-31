@@ -26,7 +26,7 @@
           </el-form-item>
         </el-form>
       </el-collapse-item>
-      <el-collapse-item title="修改邮箱" name="3" class="set">
+      <!-- <el-collapse-item title="修改邮箱" name="3" class="set">
         <el-form :model="emailForm" status-icon :rules="emailrules" ref="emailForm" label-width="100px"
                  class="demo-ruleForm">
           <el-form-item label="邮箱" prop="email" class="settinginput">
@@ -36,7 +36,7 @@
             <el-button class="btn" @click="changeEmail('emailForm')">确定</el-button>
           </el-form-item>
         </el-form>
-      </el-collapse-item>
+      </el-collapse-item> -->
     </el-collapse>
   </div>
 </template>
