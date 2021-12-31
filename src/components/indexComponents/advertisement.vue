@@ -20,7 +20,9 @@ export default {
         {img: 'https://sxsimg.xiaoyuanzhao.com/3C/09/3C4A275077015CBF398443CC21774709.png'},
         {img: 'https://sxsimg.xiaoyuanzhao.com/C3/55/C35273E2AAA17DBA580304E05DF22155.png'},
         {img: 'https://sxsimg.xiaoyuanzhao.com/C6/FC/C60F54D6D175ABAF3E9A33F0FDE867FC.png'},
-        {img: 'https://sxsimg.xiaoyuanzhao.com/FD/0C/FDBBBD21A98136E3054ADDD432A5020C.png'}
+        {img: 'https://sxsimg.xiaoyuanzhao.com/FD/0C/FDBBBD21A98136E3054ADDD432A5020C.png'},
+        {img: 'https://sxsimg.xiaoyuanzhao.com/adservice/image/20211222104630NtxDyd7oKgmD3ROU4b.jpeg?x-oss-process=image/format,jpg/quality,q_90/resize,w_1200'},
+        {img:'https://sxsimg.xiaoyuanzhao.com/adservice/image/20211226221859majH8oG2PLGyIhvQgV.jpeg?x-oss-process=image/format,jpg/quality,q_90/resize,w_1200'},
       ],
     }
   },

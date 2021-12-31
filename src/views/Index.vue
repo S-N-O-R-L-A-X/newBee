@@ -1,42 +1,21 @@
 <template>
   <div>
     <Advertisement></Advertisement>
-    
-    <div class="division">
-      <h3>热门企业</h3>
-      <!-- <h3 style="color: #888;font-weight: 400">--- Hot ---</h3> -->
-    </div>
-
     <CompanyCarousel></CompanyCarousel>
+    <ContactUs></ContactUs>
     
-    <!-- <div class="aboutus">
-      <div id="aboutusInfo">
-        <h2>关于我们</h2>
-        <p>面向互联网求职招聘，提供更多的实习和工作机会</p>
-        <p>即刻起，点赞你的生活，从这一份工作开始。</p>
-      </div>
-    </div> -->
-
-    <footer class="footer">
-      <div class="division"><h3>联系我们</h3>
-      
-        <h3 style="color:white;font-weight: 400">--- CONTACT ---</h3>
-        <i class="el-icon-link"></i>
-        <el-link href="https://github.com/S-N-O-R-L-A-X/newBee" target="_blank"  style="color:white">https://github.com/S-N-O-R-L-A-X/newBee</el-link>
-       
-      </div>
-    </footer>
   </div>
 </template>
 
 <script>
 
 import axios from 'axios';
-import Advertisement from '../components/indexComponents/advertisement';
+import Advertisement from '../components/indexComponents/advertisement.vue';
 import CompanyCarousel from '../components/indexComponents/companyCarousel.vue';
+import ContactUs from '../components/indexComponents/contactUs.vue';
 
 export default {
-  components:{Advertisement,CompanyCarousel},
+  components:{Advertisement,CompanyCarousel,ContactUs},
   data () {
     return {
       activeIndex2: '1',
@@ -225,17 +204,6 @@ body {
   transform: rotateY(180deg);
 }
 
-.footer {
-  width: 100%;
-  height: 100px;
-  background: black;
-  /* padding-top:20px */
-}
-
-.footer a {
-  color: black;
-  text-decoration: none;
-}
 
 .aboutus  {
   width: 100%;

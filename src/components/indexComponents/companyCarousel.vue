@@ -1,6 +1,7 @@
 <template>
   <div class="cardContain">
     <div class="wrapper-card">
+      <h3>热门企业</h3>
       <el-carousel>
         <el-carousel-item v-for="(item, key) in companyList" :key="key">
           <el-card>
