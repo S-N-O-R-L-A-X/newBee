@@ -67,7 +67,9 @@
       },
       getList() {
         
-          axios.get()//
+          axios.get("http://youngoldman.top:5555/api/resume/query/",{
+            hid:localStorage.getItem("uid")
+          })
           .then(res => {
             if (res.status === 200) {
               if (res.data.data === null) {

@@ -267,8 +267,7 @@
       }
     },
     mounted() {
-      this.getCompanyName()
-      this.getJobName()
+
     },
     watch: {
       list(val, oldVal) {

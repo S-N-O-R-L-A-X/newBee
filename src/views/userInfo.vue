@@ -26,10 +26,10 @@
           <span slot="label">我的简历<i class="el-icon-arrow-right"></i></span>
           <my-resume></my-resume>
         </el-tab-pane>
-        <!-- <el-tab-pane> could be 
+        <el-tab-pane>
           <span slot="label">投递记录<i class="el-icon-arrow-right"></i></span>
           <delivery></delivery>
-        </el-tab-pane> -->
+        </el-tab-pane>
         <el-tab-pane>
           <span slot="label">设置<i class="el-icon-arrow-right"></i></span>
           <ModifyAccount></ModifyAccount>
@@ -40,11 +40,11 @@
 </template>
 
 <script>
-import fetch from '../api/fetch'
 import Info from '../components/userInfo'
 import Resume from '../components/resume'
 import Delivery from '../components/delivery'
 import ModifyAccount from '../components/modifyAccount'
+import axios from 'axios'
 
 export default {
   components: {
@@ -95,15 +95,30 @@ export default {
   },
   
   methods: {
-    getUserInfo () {
-      fetch
-        .getUserInfo()
-        .then(res => {
-          this.list = res.data.data !== null ? res.data.data : this.list
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    // getUserInfo () {
+    //   fetch
+    //     .getUserInfo()
+    //     .then(res => {
+    //       this.list = res.data.data !== null ? res.data.data : this.list
+    //     })
+    //     .catch(err => {
+    //       console.log(err)
+    //     })
+    // },
+    getUserInfo(){
+      
+      axios.get("http://youngoldman.top:5555/api/jobHunter/getJHInfo/"+localStorage.getItem('token'))
+      .then(res => {
+        if(res.status === 200){
+          if(res.data.code === 0){
+            localStorage.setItem('uid',res.data.data.uid);
+            console.log(localStorage.getItem('uid'));
+          }
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      })
     },
     handleAvatarSuccess (res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
