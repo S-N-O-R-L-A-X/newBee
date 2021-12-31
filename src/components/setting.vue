@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-collapse>
-      <el-collapse-item title="修改手机号" name="1" class="set">
+      <!-- <el-collapse-item title="修改手机号" name="1" class="set">
         <el-form :model="phoneForm" status-icon :rules="phonerules" ref="phoneForm" label-width="100px"
                  class="demo-ruleForm">
           <el-form-item label="手机号" prop="phone" class="settinginput">
@@ -11,7 +11,7 @@
             <el-button class="btn" @click="changePhone('phoneForm')">确定</el-button>
           </el-form-item>
         </el-form>
-      </el-collapse-item>
+      </el-collapse-item> -->
       <el-collapse-item title="修改密码" name="2" class="set">
         <el-form :model="passForm" status-icon :rules="passwordrules" ref="passForm" label-width="100px"
                  class="demo-ruleForm">
@@ -122,36 +122,40 @@
       }
     },
     methods: {
-      changePhone (formName) {
+      // changePhone (formName) {
+      //   this.$refs[formName].validate(valid => {
+      //     if (valid) {
+      //       fetch.changePhone(this.phoneForm).then(res => {
+      //         if (res.status === 200) {
+      //           if (res.data.code===0) {
+      //             this.$message({
+      //               message: '修改成功',
+      //               type: 'success'
+      //             })
+      //           }
+      //         }
+      //       }).catch(e => {
+      //         console.log(e)
+      //       })
+      //     } else {
+      //       console.log('error submit!!')
+      //     }
+      //   })
+      // },
+      changePass (formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            fetch.changePhone(this.phoneForm).then(res => {
-              if (res.status === 200) {
-                if (res.data.code===0) {
+            delete this.passForm.checkpass;
+            axios.post("http://youngoldman.top:5555/api/user/updatePassword/"+localStorage.getItem('token'))
+            then(res => {
+              if (res.status===200) {
+                if(res.data.code===0){
                   this.$message({
                     message: '修改成功',
                     type: 'success'
                   })
                 }
-              }
-            }).catch(e => {
-              console.log(e)
-            })
-          } else {
-            console.log('error submit!!')
-          }
-        })
-      },
-      changePass (formName) {
-        this.$refs[formName].validate(valid => {
-          if (valid) {
-            delete this.passForm.checkpass
-            fetch.changePass(this.passForm).then(res => {
-               if (res.data.code===0) {
-                 this.$message({
-                   message: '修改成功',
-                   type: 'success'
-                 })
+                 
                }
             }).catch(e => {
               console.log(e)

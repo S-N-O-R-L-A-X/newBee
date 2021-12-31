@@ -97,7 +97,7 @@
                     }
                     window.location.reload();
                   } 
-                  else if(res.data.code===200){
+                  else if(res.data.code===100){
                     this.$message({
                       message: '用户名或密码错误',
                       type: 'warning'
