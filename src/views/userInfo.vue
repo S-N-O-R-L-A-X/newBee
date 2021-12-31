@@ -75,7 +75,9 @@ export default {
   },
   computed: {
     setDefault () {
-      return this.list.avatar ? this.list.avatar : 'https://upload-images.jianshu.io/upload_images/9381131-a48cdb07b37dcff1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
+      let img="https://pic45.photophoto.cn/20171012/0005081858537968_b.jpg";
+      
+      return this.list.avatar ? this.list.avatar : img;
     }
   },
   mounted () {

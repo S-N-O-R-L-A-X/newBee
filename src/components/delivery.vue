@@ -64,8 +64,8 @@
     },
     methods: {
       checkDetail(id) {
-        localStorage.setItem('jobId', id)
-        this.$router.push({name: 'jobInfo'})
+        localStorage.setItem('jobId', id);
+        this.$router.push('jobInfo');
       },
       getList() {
         fetch
