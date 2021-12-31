@@ -4,26 +4,26 @@
       <div>
         <span @click="redirect(1)" class="tab">首页</span>
         <span v-if="isHr && isLogin" @click="createJob=true" class="tab">发布职位</span>
-        <span v-if="isHr && !isLogin" @click="redirect(6)" class="tab">个人中心</span>
-        <span @click="redirect(2)" class="tab" v-if="!isHr && !isLogin">个人中心</span>
-        <span @click="redirect(7)" class="tab" v-if="!isHr && !isLogin">工作广场</span>
+        <span v-if="isHr && isLogin" @click="redirect(6)" class="tab">个人中心</span>
+        <span @click="redirect(2)" class="tab" v-if="!isHr && isLogin">个人中心</span>
+        <span @click="redirect(7)" class="tab" v-if="!isHr && isLogin">工作广场</span>
         <!-- <span class="tab" v-if="!isHr">
           <el-input placeholder="搜索心仪的职位" style="width:18rem" v-model="content" @change="getJob(content)" prefix-icon="iconfont el-icon-search"></el-input>
         </span> -->
       </div>
       <div>
-        <span @click="redirect(3)" class="tab" v-show="!isLogin">
+        <span @click="redirect(3)" class="tab" v-show="isLogin">
           <i class="el-icon-message" style="margin-right:0.3rem" @click="redirect(5)">
             </i>消息中心<span class="icon" v-show="count > 0" ref="icon">{{ count }}</span>
           </span>
-        <span v-if="isLogin">
+        <span v-if="!isLogin">
           <el-button style="background:#2F2F2F;" @click="redirect(4)"> <span class="tab">登录</span></el-button>
           <el-button style="background:#2F2F2F;" @click="toRegister()"> <span class="tab">注册</span></el-button>
         </span>
 
         <NewJob v-bind:newJobVisible="createJob" v-on:update:newJobVisible='createJob=$event'></NewJob>
 
-        <span v-if="!isLogin" class="tab" @click="logout()">退出登录</span>
+        <span v-if="isLogin" class="tab" @click="logout()">退出登录</span>
       </div>
     </div>
   </el-header>
@@ -80,7 +80,7 @@ export default {
       content: '',
       companyList: [],
       msg: '',
-      isLogin: true,
+      isLogin: false,
       publishRules: {
         title: [{validator: checktitle, trigger: 'blur'}],
         content: [{validator: checkintroduce, trigger: 'blur'}],
@@ -132,7 +132,7 @@ export default {
             localStorage.removeItem('token');
             // localStorage.removeItem('count')
 
-            this.isLogin=true;
+            this.isLogin=false;
             this.$router.push('login');
           }
         })
@@ -169,7 +169,8 @@ export default {
     
     // console.log(sessionStorage.getItem('token'));
     if(localStorage.getItem('token')){
-      this.isLogin=false;
+      
+      this.isLogin=true;
     }
 
     if(localStorage.getItem('role')==='2'){
