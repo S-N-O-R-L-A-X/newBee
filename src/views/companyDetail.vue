@@ -5,7 +5,6 @@
       <div class="introduce">
       <p class="title">{{detail.name}}</p>
       <p>{{detail.description}}</p>
-      <p>{{detail.address}}<span>|</span>{{detail.scale}}<span>|</span>{{detail.type}}</p>
       </div>
     </el-card>
     <!-- <el-card class="companycard">
@@ -133,3 +132,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+  .avatar{
+    width:10rem;
+  }
+</style>

@@ -126,7 +126,7 @@
 
 <script>/* eslint-disable indent */
 
-  import fetch from '../api/fetch'
+  import axios from "axios"
 
   export default {
     props: ['list', 'imageUrl'],
@@ -320,36 +320,6 @@
           }
         })
       },
-      // 获取公司名称
-      getCompanyName () {
-        fetch.getComName().then(res => {
-          if(res.status === 200) {
-            const companyList = res.data.data;
-            for(let i = 0; i < companyList.length; i++) {
-              const object = {};
-              object.value = companyList[i].name;
-              object.label = companyList[i].name;
-              this.companyOptions.push(object);
-            }
-          }
-        }).catch(e => {
-          console.log('err', e)
-        })
-      },
-      // 获取职位名称
-      getJobName () {
-        fetch.getRecommandJob().then(res => {
-          if(res.status === 200) {
-            const nameList = res.data.data;
-            for (let i = 0; i < nameList.length; i++) {
-              const object = {};
-              object.value = nameList[i];
-              object.label = nameList[i];
-              this.jobOptions.push(object);
-            }
-          }
-        })
-      }
     }
   }
 </script>

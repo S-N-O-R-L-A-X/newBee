@@ -9,21 +9,28 @@
 
     <CompanyCarousel></CompanyCarousel>
     
-    <div class="aboutus">
+    <!-- <div class="aboutus">
       <div id="aboutusInfo">
         <h2>关于我们</h2>
         <p>面向互联网求职招聘，提供更多的实习和工作机会</p>
         <p>即刻起，点赞你的生活，从这一份工作开始。</p>
       </div>
-    </div>
-    <div class="division"><h3>联系我们</h3>
-      <h3 style="color: #888;font-weight: 400">--- CONTACT ---</h3>
-    </div>
+    </div> -->
+
+    <footer class="footer">
+      <div class="division"><h3>联系我们</h3>
+      
+        <h3 style="color:white;font-weight: 400">--- CONTACT ---</h3>
+        <i class="el-icon-link"></i>
+        <el-link href="https://github.com/S-N-O-R-L-A-X/newBee" target="_blank"  style="color:white">https://github.com/S-N-O-R-L-A-X/newBee</el-link>
+       
+      </div>
+    </footer>
   </div>
 </template>
 
 <script>
-import fetch from '../api/fetch';
+
 import axios from 'axios';
 import Advertisement from '../components/indexComponents/advertisement';
 import CompanyCarousel from '../components/indexComponents/companyCarousel.vue';
@@ -66,9 +73,9 @@ export default {
 
   mounted () {
     window.addEventListener('scroll', this.handler);
-    // this.getCompany();
-    this.getJob();
-    this.getRecommand();
+    this.getCompany();
+    // this.getJob();
+
   },
   
   methods: {
@@ -97,19 +104,19 @@ export default {
       this.$router.push('companyDetail');
     },
 
-    getJob () {
-      axios.get('http://youngoldman.top:5555/api/company/getCompany',{
-      })
-      .then(res => {
-        if (res.status === 200) {
-          if (res.data.code===0) {
-            this.jobList=res.data;
-          }
-        }
-      }).catch(e => {
-        console.log(e)
-      })
-    },
+    // getJob () {
+    //   axios.get('http://youngoldman.top:5555/api/company/getCompany',{
+    //   })
+    //   .then(res => {
+    //     if (res.status === 200) {
+    //       if (res.data.code===0) {
+    //         this.jobList=res.data;
+    //       }
+    //     }
+    //   }).catch(e => {
+    //     console.log(e)
+    //   })
+    // },
 
     getCompany () {
       axios.get('http://youngoldman.top:5555/api/company/getCompany',{
@@ -222,11 +229,11 @@ body {
   width: 100%;
   height: 100px;
   background: black;
-  padding-top:20px
+  /* padding-top:20px */
 }
 
 .footer a {
-  color: white;
+  color: black;
   text-decoration: none;
 }
 
@@ -290,7 +297,8 @@ body {
   margin: 30px  auto;
   text-align: center;
   padding-left: 10px;
-   color: #5a5a5a;
+  color: white;
+  bottom:0;
 }
 
 .footer img{
@@ -303,29 +311,6 @@ body {
   margin-right: 20px;
 }
 
-.recommand {
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  padding: 36px 0;
-  font-size: 18px;
-}
-
-.recommandList {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  color: #5a5a5a;
-  font-weight: 500;
-}
-
-.recommandInfo {
-  margin-left: 16px;
-}
-
-.recommandInfo p {
-  margin-bottom: 6px;
-}
 
 .el-progress__text {
   font-size: 16px !important;
