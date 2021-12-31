@@ -52,16 +52,7 @@
        <el-form-item label="姓名" prop="name">
         <el-input v-model="list.name" auto-complete="off"></el-input>
       </el-form-item>
-      <!-- <el-form-item label="性别" prop="sex">
-        <el-select v-model="list.sex" placeholder="请选择性别" style="width: 100%">
-          <el-option label="男" value="男"></el-option>
-          <el-option label="女" value="女"></el-option>
-        </el-select>
-      </el-form-item> -->
-
-      <!-- <el-form-item label="我的简介" prop="introduce">
-        <el-input v-model="list.introduce"></el-input>
-      </el-form-item> -->
+      
       
       <el-form-item label="学历信息" prop="school"  v-for="(item, key) in list.education" :key="key">
         <el-row :gutter="20">
@@ -82,11 +73,11 @@
         </el-col>
         
         <el-col :span="10" size="small">
-          <el-input-number v-model="item.startTime" controls-position="right" :min="1930" :max="2022"></el-input-number>
+          入学年份<el-input-number v-model="item.startTime" controls-position="right" :min="1930" :max="2022"></el-input-number>
         </el-col>
 
         <el-col :span="10" size="small">
-          <el-input-number v-model="item.endTime" controls-position="right" :min="1930" :max="2022"></el-input-number>
+          毕业年份<el-input-number v-model="item.endTime" controls-position="right" :min="1930" :max="2022"></el-input-number>
         </el-col>
         <i class="el-icon-error delete" @click="deleteItem(key)" v-if="list.education.length>1"></i>
         <el-col :span="4">
@@ -95,17 +86,6 @@
         </el-row>
       </el-form-item>
 
-
-      <!-- <el-form-item label="我想去的公司" prop="intentionCompany">
-        <el-select v-model="intentionCompany" multiple placeholder="请选择" style="width: 100%">
-          <el-option
-            v-for="item in companyOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-        </el-option>
-       </el-select>
-      </el-form-item> -->
       <el-form-item label="感兴趣的工作" prop="intentionJob">
         <el-select v-model="intentionJob" multiple placeholder="请选择" style="width: 100%">
           <el-option
@@ -320,8 +300,9 @@
           if (valid) {
             this.list.intentionCompany = this.intentionCompany.toString();
             this.list.intentionJob = this.intentionJob.toString();
-            fetch
-              .putUserInfo(this.list)
+            axios.post("http://youngoldman.top:5555/api/jobHunter/"+localStorage.getItem('token'),{
+              qualification:this.list.education
+            })
               .then(res => {
                 console.log('list', this.list)
                 if (res.data.code===0) {
