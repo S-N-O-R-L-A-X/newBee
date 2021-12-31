@@ -1,9 +1,7 @@
 <template>
   <div class="deliveryWrap">
     <div v-if="!show" class="nofind">
-      <img
-        src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1524746733938&di=9ae24b5205e97c2876b48d3ff26f1c23&imgtype=0&src=http%3A%2F%2Fwww.snlfjx.com%2Fforum%2FSkin%2Fimgs%2Fno-data.png" style="margin: 0 auto">
-      <p>暂时没有记录哦</p>
+      <el-empty description="暂时没有记录哦"></el-empty>
     </div>
     <div v-for="(item, index) in list" :key="index" v-if="show" @click="checkDetail(item.recruitId)">
       <el-card shadow="hover" class="deliverycard">
@@ -50,8 +48,8 @@
 </style>
 
 <script>
-  import fetch from '../api/fetch'
 
+  import axios from 'axios'
   export default {
     data() {
       return {
@@ -68,8 +66,8 @@
         this.$router.push('jobInfo');
       },
       getList() {
-        fetch
-          .deliveryList()
+        
+          axios.get()//
           .then(res => {
             if (res.status === 200) {
               if (res.data.data === null) {

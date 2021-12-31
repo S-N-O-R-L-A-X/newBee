@@ -26,10 +26,10 @@
           <span slot="label">我的简历<i class="el-icon-arrow-right"></i></span>
           <my-resume></my-resume>
         </el-tab-pane>
-        <el-tab-pane>
+        <!-- <el-tab-pane> could be 
           <span slot="label">投递记录<i class="el-icon-arrow-right"></i></span>
           <delivery></delivery>
-        </el-tab-pane>
+        </el-tab-pane> -->
         <el-tab-pane>
           <span slot="label">设置<i class="el-icon-arrow-right"></i></span>
           <ModifyAccount></ModifyAccount>

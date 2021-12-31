@@ -27,8 +27,12 @@
     </el-card>
 
     <el-card v-else>
-      <el-input v-model="cid" placeholder="请修改您所在的公司id"></el-input>
-      <el-button @click="changeCompany()">提交</el-button>
+      <el-col :span="14">
+        <el-input v-model="cid" placeholder="请修改您所在的公司id"></el-input>
+      </el-col>
+      <el-col :span="10">
+        <el-button @click="changeCompany()">修改您所在的公司</el-button>
+      </el-col>
     </el-card>
 
   </div>

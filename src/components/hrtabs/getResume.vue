@@ -10,7 +10,8 @@
           <el-progress :width="80" type="circle" :percentage="item.rate" color="#A6F6AF" class="circle"></el-progress>
           <span class="pipei">简历匹配度</span>
           <p class="receiveInfo">收到{{item.name}}的{{item.title}}求职信息</p>
-          <el-button @click="getTableList(item.userId)" class="clickbtn">查看</el-button>
+          <el-button @click="getTableList(item.hid)" class="clickbtn">查看</el-button>
+          <el-button @click="getTableList(item.hid)" class="clickbtn">接受</el-button>
         </div>
         <p class="receive">{{item.time}}</p>
       </el-card>
@@ -21,26 +22,28 @@
             <td>{{getResumeList.name}}</td>
           </tr>
           <tr>
-            <td>年龄：</td>
-            <td>{{getResumeList.age}}</td>
+            <td>生日：</td>
+            <td>{{getResumeList.birthday}}</td>
           </tr>
           <tr>
             <td>性别：</td>
-            <td>{{getResumeList.sex}}</td>
+            <td>{{getResumeList.gender}}</td>
           </tr>
+
           <tr>
             <td>电话：</td>
             <td>{{getResumeList.phone}}</td>
           </tr>
           <tr>
-            <td>邮箱：</td>
+            <td>电话：</td>
             <td>{{getResumeList.email}}</td>
           </tr>
           <tr>
-            <td>地址：</td>
-            <td>{{getResumeList.address}}</td>
+            <td>对公司的期望：</td>
+            <td>{{getResumeList.expect}}</td>
           </tr>
-          <tr>
+          
+          <!-- <tr>
             <td>学校：</td>
             <td>{{getResumeList.school}}</td>
           </tr>
@@ -70,7 +73,7 @@
           <tr>
             <td>获奖经历：</td>
             <td>{{getResumeList.awards}}</td>
-          </tr>
+          </tr> -->
         </table>
       </el-dialog>
     </div>
@@ -174,8 +177,11 @@
     },
     methods: {
       getList() {
-        let link="http://youngoldman.top:5555/api/employee/getJHResumes/"+localStorage.getItem('token');
-        axios.get(link)
+        // let link="http://youngoldman.top:5555/api/employee/getJHResumes/"+localStorage.getItem('token');
+        let link="http://youngoldman.top:5555/api/resume/query/";
+        axios.get(link,{
+          eid:localStorage.getItem('uid')
+        })
         .then(res => {
           console.log(res);
           this.list = res.data.data;
@@ -188,20 +194,22 @@
       },
       getTableList(id) {
         this.getResumev = true
-        fetch
-          .getResume(id)
-          .then(res => {
-            if (res.status === 200) {
-              if (res.data.code === 0) {
-                if (res.data.data !== null) {
-                  this.getResumeList = res.data.data
-                }
-              }
-            }
-          })
-          .catch(e => {
-            console.log(e)
-          })
+        this.getResumeList=this.list[id];
+        console.log(this.getResumeList);
+        // fetch
+        //   .getResume(id)
+        //   .then(res => {
+        //     if (res.status === 200) {
+        //       if (res.data.code === 0) {
+        //         if (res.data.data !== null) {
+        //           this.getResumeList = res.data.data
+        //         }
+        //       }
+        //     }
+        //   })
+        //   .catch(e => {
+        //     console.log(e)
+        //   })
       }
     }
   }

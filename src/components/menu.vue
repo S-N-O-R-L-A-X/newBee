@@ -3,7 +3,7 @@
     <div class="contain">
       <div>
         <span @click="redirect(1)" class="tab">首页</span>
-        <span v-if="isHr" @click="createJob=true" class="tab">发布职位</span>
+        <span v-if="isHr && isLogin" @click="createJob=true" class="tab">发布职位</span>
         <span v-if="isHr && !isLogin" @click="redirect(6)" class="tab">个人中心</span>
         <span @click="redirect(2)" class="tab" v-if="!isHr && !isLogin">个人中心</span>
         <span @click="redirect(7)" class="tab" v-if="!isHr && !isLogin">工作广场</span>
