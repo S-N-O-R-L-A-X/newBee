@@ -31,7 +31,7 @@ export default {
   methods: {
     checkDetail (id) {
       localStorage.setItem('jobId', id)
-      this.$router.push({name: 'jobInfo'})
+      this.$router.push('jobInfo')
     },
     checkAllJobs () {
       axios.get("http://youngoldman.top:5555/api/job/query/employee/"+localStorage.getItem('uid'))
@@ -52,10 +52,11 @@ export default {
       })
     },
     deletejob (id) {
-      fetch.deletejob(id).then(res => {
+      axios.get("http://youngoldman.top:5555/api/job/delete/"+id)
+      then(res => {
         if (res.status === 200) {
-          if (res.data.code === true) {
-            this.count++
+          if (res.data.code === 0) {
+            this.count++;
           }
         }
       }).catch(e => {

@@ -192,7 +192,7 @@
           .getResume(id)
           .then(res => {
             if (res.status === 200) {
-              if (res.data.code === true) {
+              if (res.data.code === 0) {
                 if (res.data.data !== null) {
                   this.getResumeList = res.data.data
                 }

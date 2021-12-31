@@ -68,7 +68,7 @@ export default {
         .then(res => {
           if (res.status === 200) {
             console.log(res);
-            if (res.data.code === true) {
+            if (res.data.code === 0) {
               if (res.data.data !== null) {
                 this.haveResume = true
                 this.resumeList = res.data.data
