@@ -61,6 +61,7 @@ export default {
         if(res.status === 200){
           if(res.data.code===0){
             localStorage.setItem('uid',res.data.data.uid);
+            localStorage.setItem('cid',res.data.data.cid);
           }
         }
       })

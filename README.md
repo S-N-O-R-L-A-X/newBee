@@ -38,7 +38,7 @@ how to save tokens
 
 #### Bugs to be fixed
 
-
+1.the error of dialog
 
 
 

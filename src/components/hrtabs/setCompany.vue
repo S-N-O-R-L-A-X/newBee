@@ -25,9 +25,9 @@
         </el-form-item>
       </el-form>
     </el-card>
-    
+
     <el-card v-else>
-      <el-input v-model="cid">请输入您所在的公司id</el-input>
+      <el-input v-model="cid" placeholder="请修改您所在的公司id"></el-input>
       <el-button @click="changeCompany()">提交</el-button>
     </el-card>
 
