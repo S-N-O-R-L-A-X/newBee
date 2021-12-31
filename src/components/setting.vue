@@ -15,14 +15,14 @@
       <el-collapse-item title="修改密码" name="2" class="set">
         <el-form :model="passForm" status-icon :rules="passwordrules" ref="passForm" label-width="100px"
                  class="demo-ruleForm">
-          <el-form-item label="密码" prop="pass" class="settinginput">
+          <el-form-item label="新密码" prop="pass" class="settinginput">
             <el-input type="password" v-model="passForm.password" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="checkpass" class="settinginput">
             <el-input type="password" v-model="passForm.checkpass" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class="btn" @click="changePass('passForm')">确定</el-button>
+            <el-button class="btn" @click="changePass('passForm')">修改密码</el-button>
           </el-form-item>
         </el-form>
       </el-collapse-item>
@@ -64,8 +64,8 @@
 
 <script>/* eslint-disable indent */
 
-  import fetch from '../api/fetch'
 
+  import axios from 'axios'
   export default {
     data () {
       var checkphone = (rule, value, callback) => {
@@ -166,19 +166,19 @@
           }
         })
       },
-      changeEmail (formName) {
-        this.$refs[formName].validate(valid => {
-          if (valid) {
-            fetch.changeEmail(this.emailForm).then(res => {
-            }).catch(e => {
-              console.log(e)
-            })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      }
+      // changeEmail (formName) {
+      //   this.$refs[formName].validate(valid => {
+      //     if (valid) {
+      //       fetch.changeEmail(this.emailForm).then(res => {
+      //       }).catch(e => {
+      //         console.log(e)
+      //       })
+      //     } else {
+      //       console.log('error submit!!')
+      //       return false
+      //     }
+      //   })
+      // }
     }
 
   }
