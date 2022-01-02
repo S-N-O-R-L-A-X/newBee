@@ -128,10 +128,10 @@ export default {
               type: 'success'
             })
             // sessionStorage.removeItem('userId')
-            localStorage.removeItem('role');
-            localStorage.removeItem('token');
+            // localStorage.removeItem('role');
+            // localStorage.removeItem('token');
             // localStorage.removeItem('count')
-
+            localStorage.clear();
             this.isLogin=false;
             this.$router.push('login');
           }
