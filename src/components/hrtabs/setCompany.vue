@@ -77,6 +77,7 @@ export default {
   mounted () {
     this.getCompany();
     console.log(localStorage.getItem("cid"));
+    
   },
   watch: {
     count () {
@@ -85,6 +86,7 @@ export default {
   },
   methods: {
     getCompany () {
+        
         axios.get('http://youngoldman.top:5555/api/company/getCompany',{
         })
         .then(res => {

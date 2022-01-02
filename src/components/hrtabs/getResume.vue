@@ -11,7 +11,7 @@
           <span class="pipei">简历匹配度</span>
           <p class="receiveInfo">收到{{item.name}}的{{item.title}}求职信息</p>
           <el-button @click="getTableList(item.hid)" class="clickbtn">查看</el-button>
-          <el-button @click="getTableList(item.hid)" class="clickbtn">接受</el-button>
+          <el-button @click="deleteResume(item.jid)" class="clickbtn">删除</el-button>
         </div>
         <p class="receive">{{item.time}}</p>
       </el-card>
@@ -142,7 +142,6 @@
 </style>
 
 <script>
-  import fetch from '../../api/fetch'
   import axios from 'axios'
   export default {
     data() {
@@ -169,11 +168,17 @@
         },
         list: [],
         show: false,
-        getResumev: false
+        getResumev: false,
+        refresh:0,
       }
     },
     mounted() {
       this.getList()
+    },
+    watch:{
+      refresh(){
+        location.reload();
+      }
     },
     methods: {
       getList() {
@@ -188,7 +193,8 @@
           if (this.list.length === 0) {
             this.show = true
           }
-        }).catch(e => {
+        })
+        .catch(e => {
           console.log(e)
         })
       },
@@ -196,20 +202,25 @@
         this.getResumev = true
         this.getResumeList=this.list[id];
         console.log(this.getResumeList);
-        // fetch
-        //   .getResume(id)
-        //   .then(res => {
-        //     if (res.status === 200) {
-        //       if (res.data.code === 0) {
-        //         if (res.data.data !== null) {
-        //           this.getResumeList = res.data.data
-        //         }
-        //       }
-        //     }
-        //   })
-        //   .catch(e => {
-        //     console.log(e)
-        //   })
+      },
+      deleteResume(id) {
+        let link="http://youngoldman.top:5555/api/resume/delete/"+id;
+        axios.get(link)
+        .then(res => {
+          console.log(res);
+          if(res.status===200){
+            if(res.data.code===0){
+              this.$message({
+                message: res.data.msg,
+                type: 'success'
+              });
+              this.refresh++;
+            }
+          }
+        })
+        .catch(e => {
+          console.log(e)
+        })
       }
     }
   }
