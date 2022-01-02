@@ -3,7 +3,6 @@
     <Advertisement></Advertisement>
     <CompanyCarousel></CompanyCarousel>
     <ContactUs></ContactUs>
-    
   </div>
 </template>
 
@@ -260,24 +259,7 @@ body {
 }
 
 
-.division {
-  width: 100%;
-  margin: 30px  auto;
-  text-align: center;
-  padding-left: 10px;
-  color: white;
-  bottom:0;
-}
 
-.footer img{
-  width:25px;
-  height: 25px;
-  margin-right: 10px
-}
-
-.footer span {
-  margin-right: 20px;
-}
 
 
 .el-progress__text {
