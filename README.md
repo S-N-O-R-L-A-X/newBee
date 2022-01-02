@@ -54,6 +54,10 @@ how to save tokens
 
 1.the error of dialog
 
+2.show Company
+
+3.delete resume
+
 
 
 #### What can be improved

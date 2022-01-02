@@ -1,6 +1,6 @@
 <template>
  <div>
-    <el-card class="companycard" style="height: 180px">
+    <el-card class="companycard" style="height: 20rem">
       <img :src="detail.logo" class="avatar">
       <div class="introduce">
       <p class="title">{{detail.name}}</p>

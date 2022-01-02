@@ -161,6 +161,12 @@ export default {
                             this.$refs[formName].resetFields();
                             this.newJobVisible=false;
                         }
+                        else{
+                            this.$message({
+                                message:"sorry，我们的服务器出了一些问题。",
+                                type: "error"
+                            })
+                        }
                     }).catch(e => {
                         console.log(e)
                     })

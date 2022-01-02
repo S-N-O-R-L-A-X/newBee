@@ -162,24 +162,29 @@ export default {
 
     },
 
-    changeCompany(formName){
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          axios.post("http://youngoldman.top:5555/api/employee/setCompany"+localStorage.getItem('token'),{
-            cid:this.cid
-          })
-          .then(res => {
-            if(res.status === 200){
-              if (res.data.code === 0) {
-                this.$message({
-                  message:"修改公司成功",
-                  type: "success"
-                })
-              }
-            }
+    changeCompany(){
+      
+      axios.post("http://youngoldman.top:5555/api/employee/setCompany/"+localStorage.getItem('token'),{
+        cid:this.cid
+      })
+      .then(res => {
+        console.log(res);
+        if(res.status === 200){
+          if (res.data.code === 0) {
+            this.$message({
+              message:"修改公司成功",
+              type: "success"
+            })
+          }
+        }
+        else{
+          this.$message({
+            message:"sorry，我们的服务器出了一些问题。",
+            type: "error"
           })
         }
       })
+       
 
     },
   }
