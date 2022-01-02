@@ -41,9 +41,11 @@ export default {
     setCompany,
   },
   mounted () {
-    this.getBasicInfo();
+    this.getBasicInfo()
     
     this.hrRefresh = this.$route.params.hrRefresh !== undefined ? this.$route.params.hrRefresh : 0
+        
+    // this.hrRefresh = this.$route.params.hrRefresh !== undefined ? this.$route.params.hrRefresh : 0
   },
   watch: {
     hrRefresh () {
@@ -63,11 +65,22 @@ export default {
             localStorage.setItem('uid',res.data.data.uid);
             localStorage.setItem('cid',res.data.data.cid);
           }
+
+          if(localStorage.getItem("uid")===null){
+            this.hrRefresh++;
+          }
+          else{
+            console.log(localStorage.getItem("cid"));
+            
+          }
         }
+
       })
+      
       .catch(e => {
         console.log(e);
       })
+      
     }
   }
 }

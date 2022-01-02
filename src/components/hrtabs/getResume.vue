@@ -7,15 +7,13 @@
     <div v-for="(item, index) in list" :key="index" v-if="!show">
       <el-card shadow="hover" class="receiveBox">
         <div class="flex">
-          <el-progress :width="80" type="circle" :percentage="item.rate" color="#A6F6AF" class="circle"></el-progress>
-          <span class="pipei">简历匹配度</span>
           <p class="receiveInfo">收到{{item.name}}的{{item.title}}求职信息</p>
           <el-button @click="getTableList(item.hid)" class="clickbtn">查看</el-button>
           <el-button @click="deleteResume(item.jid)" class="clickbtn">删除</el-button>
         </div>
         <p class="receive">{{item.time}}</p>
       </el-card>
-      <el-dialog :title="getResumeList.name+'的简历'" :visible.sync="getResumev">
+      <el-dialog :title="getResumeList.name+'的简历'" :visible.sync="showResume">
         <table border="1" cellspacing="0" style="border-color:#ededed" class="mytable">
           <tr>
             <td>姓名：</td>
@@ -79,6 +77,94 @@
     </div>
   </div>
 </template>
+
+
+<script>
+  import axios from 'axios'
+  export default {
+    data() {
+      return {
+        getResumeList: {
+          name: '',
+          sex: '',
+          age: '',
+          skills: [{
+            id: 1,
+            name: '',
+            level: '',
+            resumeId: 1
+          }],
+          school: '',
+          address: '',
+          endTime: 2019,
+          phone: '',
+          email: '',
+          introduce: '',
+          experience: '',
+          awards: '',
+          avatar: ''
+        },
+        list: [],
+        show: false,
+        showResume: false,
+        refresh:0,
+      }
+    },
+    mounted() {
+      this.getList()
+    },
+    watch:{
+      refresh(){
+        location.reload();
+      }
+    },
+    methods: {
+      getList() {
+        // let link="http://youngoldman.top:5555/api/employee/getJHResumes/"+localStorage.getItem('token');
+        let link="http://youngoldman.top:5555/api/resume/query/";
+        axios.get(link,{
+          eid:localStorage.getItem('uid')
+        })
+        .then(res => {
+          console.log(res);
+          this.list = res.data.data;
+          if (this.list.length === 0) {
+            this.show = true
+          }
+        })
+        .catch(e => {
+          console.log(e)
+        })
+      },
+      getTableList(id) {
+        this.showResume = true
+        this.getResumeList=this.list[id];
+        console.log(this.getResumeList);
+      },
+      deleteResume(id) {
+        let link="http://youngoldman.top:5555/api/resume/delete/"+id;
+        axios.get(link)
+        .then(res => {
+          console.log(res);
+          if(res.status===200){
+            if(res.data.code===0){
+              this.$message({
+                message: res.data.msg,
+                type: 'success'
+              });
+              this.refresh++;
+            }
+          }
+        })
+        .catch(e => {
+          console.log(e)
+        })
+      }
+    }
+  }
+</script>
+
+
 <style>
   .getResumeWrap {
     height: 1000px;
@@ -140,88 +226,3 @@
     margin: 28px 28rem auto auto;
   }
 </style>
-
-<script>
-  import axios from 'axios'
-  export default {
-    data() {
-      return {
-        getResumeList: {
-          name: '',
-          sex: '',
-          age: '',
-          skills: [{
-            id: 1,
-            name: '',
-            level: '',
-            resumeId: 1
-          }],
-          school: '',
-          address: '',
-          endTime: 2019,
-          phone: '',
-          email: '',
-          introduce: '',
-          experience: '',
-          awards: '',
-          avatar: ''
-        },
-        list: [],
-        show: false,
-        getResumev: false,
-        refresh:0,
-      }
-    },
-    mounted() {
-      this.getList()
-    },
-    watch:{
-      refresh(){
-        location.reload();
-      }
-    },
-    methods: {
-      getList() {
-        // let link="http://youngoldman.top:5555/api/employee/getJHResumes/"+localStorage.getItem('token');
-        let link="http://youngoldman.top:5555/api/resume/query/";
-        axios.get(link,{
-          eid:localStorage.getItem('uid')
-        })
-        .then(res => {
-          console.log(res);
-          this.list = res.data.data;
-          if (this.list.length === 0) {
-            this.show = true
-          }
-        })
-        .catch(e => {
-          console.log(e)
-        })
-      },
-      getTableList(id) {
-        this.getResumev = true
-        this.getResumeList=this.list[id];
-        console.log(this.getResumeList);
-      },
-      deleteResume(id) {
-        let link="http://youngoldman.top:5555/api/resume/delete/"+id;
-        axios.get(link)
-        .then(res => {
-          console.log(res);
-          if(res.status===200){
-            if(res.data.code===0){
-              this.$message({
-                message: res.data.msg,
-                type: 'success'
-              });
-              this.refresh++;
-            }
-          }
-        })
-        .catch(e => {
-          console.log(e)
-        })
-      }
-    }
-  }
-</script>

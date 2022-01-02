@@ -95,7 +95,7 @@
                     } else {
                       this.$router.push({name: 'HRInfo', params: {hrRefresh: 2}})
                     }
-                    window.location.reload();
+                    
                   } 
                   else if(res.data.code===100){
                     this.$message({
@@ -103,6 +103,7 @@
                       type: 'warning'
                     })
                   }
+                  window.location.reload();
                 }
               })
               .catch(e => {
