@@ -38,7 +38,7 @@
 
 
 <script>
-import fetch from '../api/fetch'
+
 import axios from 'axios'
 import NewResume from '../components/newResume'
 export default {

@@ -66,9 +66,6 @@
 </style>
 
 <script>/* eslint-disable indent */
-
-  import fetch from '../api/fetch'
-
   export default {
     data () {
       var checkphone = (rule, value, callback) => {
@@ -126,26 +123,26 @@
       }
     },
     methods: {
-      changePhone (formName) {
-        this.$refs[formName].validate(valid => {
-          if (valid) {
-            fetch.changePhone(this.phoneForm).then(res => {
-              if (res.status === 200) {
-                if (res.data.code===0) {
-                  this.$message({
-                    message: '修改成功',
-                    type: 'success'
-                  })
-                }
-              }
-            }).catch(e => {
-              console.log(e)
-            })
-          } else {
-            console.log('error submit!!')
-          }
-        })
-      },
+      // changePhone (formName) {
+      //   this.$refs[formName].validate(valid => {
+      //     if (valid) {
+      //       fetch.changePhone(this.phoneForm).then(res => {
+      //         if (res.status === 200) {
+      //           if (res.data.code===0) {
+      //             this.$message({
+      //               message: '修改成功',
+      //               type: 'success'
+      //             })
+      //           }
+      //         }
+      //       }).catch(e => {
+      //         console.log(e)
+      //       })
+      //     } else {
+      //       console.log('error submit!!')
+      //     }
+      //   })
+      // },
       changePassword (formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
@@ -155,7 +152,7 @@
               "newpassword":this.passwordForm.newpassword,
             })
 
-            fetch.changePass(this.passwordForm).then(res => {
+            .then(res => {
                if (res.data.code===0) {
                  this.$message({
                    message: '修改成功',
@@ -171,19 +168,19 @@
           }
         })
       },
-      changeEmail (formName) {
-        this.$refs[formName].validate(valid => {
-          if (valid) {
-            fetch.changeEmail(this.emailForm).then(res => {
-            }).catch(e => {
-              console.log(e)
-            })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      }
+      // changeEmail (formName) {
+      //   this.$refs[formName].validate(valid => {
+      //     if (valid) {
+      //       fetch.changeEmail(this.emailForm).then(res => {
+      //       }).catch(e => {
+      //         console.log(e)
+      //       })
+      //     } else {
+      //       console.log('error submit!!')
+      //       return false
+      //     }
+      //   })
+      // }
     }
 
   }

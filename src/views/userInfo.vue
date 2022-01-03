@@ -22,10 +22,10 @@
           <span slot="label">个人信息<i class="el-icon-arrow-right"></i></span>
           <user :list="list" :imageUrl="imageUrl" class="user"></user>
         </el-tab-pane>
-        <el-tab-pane>
+        <!-- <el-tab-pane>
           <span slot="label">我的简历<i class="el-icon-arrow-right"></i></span>
           <my-resume></my-resume>
-        </el-tab-pane>
+        </el-tab-pane> -->
         <el-tab-pane>
           <span slot="label">投递记录<i class="el-icon-arrow-right"></i></span>
           <delivery></delivery>
@@ -95,16 +95,6 @@ export default {
   },
   
   methods: {
-    // getUserInfo () {
-    //   fetch
-    //     .getUserInfo()
-    //     .then(res => {
-    //       this.list = res.data.data !== null ? res.data.data : this.list
-    //     })
-    //     .catch(err => {
-    //       console.log(err)
-    //     })
-    // },
     getUserInfo(){
       
       axios.get("http://youngoldman.top:5555/api/jobHunter/getJHInfo/"+localStorage.getItem('token'))

@@ -21,69 +21,6 @@
   </div>
 </template>
 
-<script>
-import fetch from '../api/fetch'
-export default {
-  data () {
-    return {
-      num: 0,
-      infoList: [],
-      dialogVisible: false,
-      content: '',
-      isShow: true,
-      count: localStorage.getItem('count')
-    }
-  },
-  
-  mounted () {
-    this.getMessage()
-  },
-  watch: {
-    num () {
-      location.reload()
-    },
-    count () {
-      location.reload()
-    }
-  },
-  methods: {
-    confirmClick () {
-      this.dialogVisible = false
-      this.num++
-    },
-    getMessage () {
-      fetch
-        .getMessage()
-        .then(res => {
-          if (res.status === 200) {
-            if (res.data.code === 0) {
-              this.infoList = res.data.data
-              if (this.infoList.length !== 0) {
-                this.isShow = false
-              }
-            }
-          }
-        })
-        .catch(e => {
-          console.log(e)
-        })
-    },
-    info (msg, num) {
-      this.dialogVisible = true
-      this.content = msg
-      let info = {
-        id: num,
-        userId: sessionStorage.getItem('userId')
-      }
-      fetch.readMessage(info).then(res => {
-        console.log('已读', res)
-      }).catch(e => {
-        console.log(e)
-      })
-    }
-  }
-}
-</script>
 
 <style>
 .infocard {
@@ -115,3 +52,35 @@ export default {
   margin-top: -70px;
 }
 </style>
+
+
+<script>
+
+export default {
+  data () {
+    return {
+      num: 0,
+      infoList: [],
+      dialogVisible: false,
+      content: '',
+      isShow: true,
+      count: localStorage.getItem('count')
+    }
+  },
+  
+  mounted () {
+    this.getMessage()
+  },
+  watch: {
+    num () {
+      location.reload()
+    },
+    count () {
+      location.reload()
+    }
+  },
+  methods: {
+
+  }
+}
+</script>

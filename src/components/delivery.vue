@@ -78,9 +78,19 @@
                 this.list = res.data.data.sendList ? res.data.data.sendList : []
               }
             }
+            else{
+              this.$message({
+                  message:"sorry，我们的服务器出了一些问题。",
+                  type: "error"
+              })
+            }
           })
           .catch(e => {
-            console.log(e)
+            console.log(e); 
+            this.$message({
+                message:"sorry，我们的服务器出了一些问题。",
+                type: "error"
+            })
           })
       }
     }

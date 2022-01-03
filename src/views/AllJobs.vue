@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import fetch from '../api/fetch'
+
 import axios from 'axios'
 import {regionDataPlus,CodeToText} from 'element-china-area-data'
 

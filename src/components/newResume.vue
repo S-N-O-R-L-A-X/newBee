@@ -47,7 +47,6 @@
 
 <script>/* eslint-disable indent */
 
-import fetch from '../api/fetch'
 import axios from 'axios'
 
 export default {

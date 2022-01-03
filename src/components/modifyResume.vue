@@ -225,7 +225,7 @@
 
 <script>/* eslint-disable indent */
 
-import fetch from '../api/fetch'
+
 import NewResume from './newResume'
 
 export default {

@@ -27,9 +27,6 @@
 
 
 <script>/* eslint-disable indent */
-
-  import fetch from '../api/fetch'
-  import index from '../api/index'
   import axios from 'axios'
   export default {
     data () {

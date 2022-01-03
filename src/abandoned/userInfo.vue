@@ -338,7 +338,7 @@
       changeEdit () {
         this.isEdit = !this.isEdit
       },
-      // 提交订单信息
+      
       submitInfo (formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {

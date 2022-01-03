@@ -237,7 +237,6 @@
 
 <script>/* eslint-disable indent */
 
-import fetch from '../api/fetch'
 import NewResume from './newResume'
 
 export default {
@@ -388,7 +387,7 @@ export default {
     }
   },
   mounted () {
-    let userId = sessionStorage.getItem('userId')
+    let userId = sessionStorage.getItem('uid')
     this.getResume(userId)
   },
   watch: {
@@ -406,49 +405,7 @@ export default {
     deleteItem (key) {
       this.resumeList.skills.splice(key, 1)
     },
-    changeResume (formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          fetch.sendResume(this.resumeList).then(res => {
-            if (res.status === 200) {
-              if (res.data.code===0) {
-                this.$message({
-                  message: '保存成功',
-                  type: 'success'
-                })
-                this.tip++
-                this.resumeFormVisible = false
-                this.dialogFormVisible = false
-                this.isChange = false
-              }
-            }
-          }).catch(e => {
-            console.log(e)
-          })
-        }
-      })
-    },
-    getResume (userId) {
-      fetch
-        .getResume(userId)
-        .then(res => {
-          if (res.status === 200) {
-            if (res.data.code === 0) {
-              if (res.data.data !== null) {
-                this.haveResume = true
-                this.resumeList = res.data.data
-                this.tableList = res.data.data
-                this.len = res.data.data.skills.length
-              } else {
-                this.haveResume = false
-              }
-            }
-          }
-        })
-        .catch(e => {
-          console.log(e)
-        })
-    },
+    
     addSkill () {
       let newskills = {
         id: 0,
