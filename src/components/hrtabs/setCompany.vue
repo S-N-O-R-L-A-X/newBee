@@ -26,7 +26,7 @@
       </el-form>
     </el-card>
 
-    <el-card v-else>
+    <el-card v-else style="height:5rem">
       <el-col :span="14">
         <el-input v-model="cid" placeholder="请修改您所在的公司id"></el-input>
       </el-col>
