@@ -14,7 +14,7 @@
       <div>
         <span @click="redirect(3)" class="tab" v-show="isLogin">
           <i class="el-icon-message" style="margin-right:0.3rem" @click="redirect(5)">
-            </i>消息中心<span class="icon" v-show="count > 0" ref="icon">{{ count }}</span>
+            </i>通知中心<span class="icon" v-show="count > 0" ref="icon">{{ count }}</span>
           </span>
         <span v-if="!isLogin">
           <el-button style="background:#2F2F2F;" @click="redirect(4)"> <span class="tab">登录</span></el-button>

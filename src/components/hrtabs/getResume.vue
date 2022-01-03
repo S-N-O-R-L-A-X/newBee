@@ -9,7 +9,7 @@
         <div class="flex">
           <p class="receiveInfo">收到{{item.name}}的{{item.title}}求职信息</p>
           <el-button @click="getTableList(item.hid)" class="clickbtn">查看</el-button>
-          <el-button @click="deleteResume(item.jid)" class="clickbtn">删除</el-button>
+          <!-- <el-button @click="deleteResume(item.jid)" class="clickbtn">删除</el-button> -->
         </div>
         <p class="receive">{{item.time}}</p>
       </el-card>

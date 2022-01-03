@@ -10,7 +10,7 @@
         <manage-job></manage-job>
       </el-tab-pane>
       <el-tab-pane>
-        <span slot="label">投递记录<i class="el-icon-arrow-right"></i></span>
+        <span slot="label">收到的简历<i class="el-icon-arrow-right"></i></span>
         <receive></receive>
       </el-tab-pane>
       <el-tab-pane>

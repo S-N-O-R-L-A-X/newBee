@@ -26,13 +26,13 @@
           <span slot="label">我的简历<i class="el-icon-arrow-right"></i></span>
           <my-resume></my-resume>
         </el-tab-pane> -->
-        <el-tab-pane>
+        <!-- <el-tab-pane>
           <span slot="label">投递记录<i class="el-icon-arrow-right"></i></span>
           <delivery></delivery>
-        </el-tab-pane>
+        </el-tab-pane> -->
         <el-tab-pane>
           <span slot="label">设置<i class="el-icon-arrow-right"></i></span>
-          <ModifyAccount></ModifyAccount>
+          <Setting></Setting>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -43,7 +43,8 @@
 import Info from '../components/userInfo'
 import Resume from '../components/resume'
 import Delivery from '../components/delivery'
-import ModifyAccount from '../components/modifyAccount'
+// import ModifyAccount from '../components/modifyAccount'
+import Setting from '../components/setting'
 import axios from 'axios'
 
 export default {
@@ -51,7 +52,8 @@ export default {
     user: Info,
     myResume: Resume,
     delivery: Delivery,
-    ModifyAccount,
+
+    Setting,
   },
   data () {
     return {
