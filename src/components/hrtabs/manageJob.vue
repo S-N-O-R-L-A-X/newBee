@@ -3,15 +3,18 @@
     <div v-if="show" class="nofind">
       <el-empty description="暂时没有发布的职位哦，快去发布吧"></el-empty>
     </div>
-    <el-card  v-for="(item, key) in jobList" :key="key" class="mycard" v-if="!show" @click="checkDetail(item.id)">
-        <p class="myflex">{{item.type}} {{item.companyName}} {{item.location}}</p>
-        <p class="myflex"></p>
-        <el-button class="delbtn" @click="deletejob(item.id)">删除职位</el-button>
-        
-    </el-card>  
-    <!-- <el-pagination layout="prev, pager, next" :page-size="5" :current-page="currentPage" @current-change="handleCurrentChange()">
+    <div v-for="(item, key) in showList" :key="key" class="mycard" v-if="!show" @click="checkDetail(item.id)">
+      <el-card>
+          <p class="myflex">{{item.type}} {{item.companyName}} {{item.location}}</p>
+          <p class="myflex"></p>
+          <el-button class="delbtn" @click="deletejob(item.id)">删除职位</el-button>
+          
+      </el-card>  
+    </div>
+    <el-pagination layout="prev, pager, next" :total="1000" 
+    :page-size="pageSize" :current-page="currentPage" @current-change="handleCurrentChange">
       
-    </el-pagination> -->
+    </el-pagination>
     
   </div>
 </template>
@@ -22,10 +25,11 @@ export default {
   data () {
     return {
       jobList: [],
-      // showList:[],
+      showList:[],
       count: 0,
       show: true,
-      // currentPage:0,
+      currentPage:1,
+      pageSize:10,
     }
   },
   mounted () {
@@ -48,7 +52,7 @@ export default {
         if (res.status === 200) {
           if(res.data.code===0){
             this.jobList = res.data.data;
-            // handleCurrentChange();
+            this.showList=this.jobList.slice(0,this.pageSize);
           }
           
           if (this.jobList.length>0) {//no jobs published
@@ -76,12 +80,12 @@ export default {
         console.log(e)
       })
     },
-    // handleCurrentChange() {
-    //   // this.currentPage = val;
-    //   let val=this.currentPage;
-    //   this.showList=this.jobList.slice(10*val);
-    //   console.log(`当前页: ${val}`);
-    // }
+    handleCurrentChange(val) {
+      this.showList=this.jobList.slice(10*(val-1),10*val);
+      // this.currentPage=val;
+      console.log(this.showList);
+      console.log(`当前页: ${val}`);
+    }
   }
 }
 </script>
@@ -89,9 +93,9 @@ export default {
 <style>
 
 .mycard {
-  border-left: 5px solid #888;
-  height: 100px;
-  margin-bottom: 14px;
+  /* border-left: 5px solid #888; */
+  height: 5rem;
+  margin-bottom: 1rem;
 }
 .myflex {
   float: left;

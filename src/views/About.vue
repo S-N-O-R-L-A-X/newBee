@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-form>
-      <el-form-item>
-      <v-md-editor v-model="md" height="400px"></v-md-editor>
-      </el-form-item>
-    </el-form>
-  <!-- <v-md-editor :value="md" height="400px"></v-md-editor> -->
-   <!-- <v-md-preview :text="md"></v-md-preview> -->
-  <!-- <v-md-preview-html :html="md" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
+    <el-button @click="produceCards"></el-button>
+      <div v-for="card of cards">
+        <el-card>{{card.name}}+{{card.content}}</el-card>
+      </div>
+    <el-pagination background layout="prev, pager, next" :total="1000" 
+    :current-page="currentPage" :page-size="pageSize" @current-change="handlePageChange">
+    </el-pagination>
+    
  </div>
 </template>
 
@@ -18,10 +18,14 @@ import axios from 'axios'
 export default {
 
     data () {
-   
+      
     return {
+      cards:[],
+      totalCards:[],
       md:'#### 标题',
       list: [],
+      pageSize:2,
+      currentPage:1,
       showSearch:false,
       jobInfo:{
         location:"",
@@ -42,6 +46,20 @@ export default {
     
   },
   methods: {
+    produceCards(){
+      for(let i=0;i<10;++i){
+        let cd={};
+        cd.name="card"+i;
+        cd.content="content"+i;
+        this.totalCards.push(cd);
+      }
+      this.cards=this.totalCards.slice(0,this.pageSize);
+    },
+    handlePageChange(val){
+      this.currentPage=val;
+      console.log(val);
+      this.cards=this.totalCards.slice(1*val,2*val);
+    },
     cancelChange () {
       this.isChange = !this.isChange
     },
@@ -67,31 +85,6 @@ export default {
         })
       })
       
-    },
-    async  getResume () {
-      await this.getEmployeeInfo();
-      
-      console.log(this.employeeId);
-      let link='http://youngoldman.top:5555/api/resume/query/employee/'+this.employeeId;
-      axios.get(link)
-        .then(res => {
-          if (res.status === 200) {
-            console.log(res);
-            if (res.data.code === 0) {
-              if (res.data.data !== null) {
-                this.haveResume = true
-                this.resumeList = res.data.data
-                this.tableList = res.data.data
-                this.len = res.data.data.skills.length
-              } else {
-                this.haveResume = false
-              }
-            }
-          }
-        })
-        .catch(e => {
-          console.log(e)
-        })
     },
   },
 
