@@ -11,7 +11,7 @@
           
       </el-card>  
     </div>
-    <el-pagination layout="prev, pager, next" :total="1000" 
+    <el-pagination layout="prev, pager, next" :total="total" 
     :page-size="pageSize" :current-page="currentPage" @current-change="handleCurrentChange">
       
     </el-pagination>
@@ -30,6 +30,7 @@ export default {
       show: true,
       currentPage:1,
       pageSize:10,
+      total:0,
     }
   },
   mounted () {
@@ -53,6 +54,7 @@ export default {
           if(res.data.code===0){
             this.jobList = res.data.data;
             this.showList=this.jobList.slice(0,this.pageSize);
+            this.total = this.jobList.length;
           }
           
           if (this.jobList.length>0) {//no jobs published
