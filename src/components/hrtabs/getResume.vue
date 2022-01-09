@@ -4,7 +4,7 @@
       <el-empty description="暂时没有收到简历哦"></el-empty>
       
     </div>
-    <div v-for="(item, index) in list" :key="index" v-if="!show">
+    <div v-for="(item, index) in showList" :key="index" v-if="!show">
       <el-card shadow="hover" class="receiveBox">
         <div class="flex">
           <p class="receiveInfo">收到{{item.name}}的{{item.title}}求职信息</p>
@@ -13,6 +13,10 @@
         </div>
         <p class="receive">{{item.time}}</p>
       </el-card>
+
+    <el-pagination layout="prev, pager, next" :total="total" 
+    :page-size="pageSize" :current-page="currentPage" @current-change="handleCurrentChange">
+    </el-pagination>
       <el-dialog :title="getResumeList.name+'的简历'" :visible.sync="showResume">
         <table border="1" cellspacing="0" style="border-color:#ededed" class="mytable">
           <tr>
@@ -33,7 +37,7 @@
             <td>{{getResumeList.phone}}</td>
           </tr>
           <tr>
-            <td>电话：</td>
+            <td>邮箱：</td>
             <td>{{getResumeList.email}}</td>
           </tr>
           <tr>
@@ -105,9 +109,13 @@
           avatar: ''
         },
         list: [],
+        showList: [],
         show: false,
         showResume: false,
         refresh:0,
+        currentPage:1,
+        pageSize:10,
+        total:0,
       }
     },
     mounted() {
@@ -128,6 +136,8 @@
         .then(res => {
           console.log(res);
           this.list = res.data.data;
+          this.total=this.list.length;
+          this.showList=this.list.slice(0,this.pageSize);
           if (this.list.length === 0) {
             this.show = true
           }
@@ -159,6 +169,12 @@
         .catch(e => {
           console.log(e)
         })
+      },
+      handleCurrentChange(val) {
+        this.showList=this.list.slice(10*(val-1),10*val);
+        // this.currentPage=val;
+        console.log(this.showList);
+        console.log(`当前页: ${val}`);
       }
     }
   }
